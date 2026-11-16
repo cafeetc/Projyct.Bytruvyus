@@ -1,0 +1,7 @@
+{
+  "name": "Bitruvius Puppyt – FK Pose & Rig Studio",
+  "description": "Interactive FK pose puppetry and rig editor with custom skull and anatomy kits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

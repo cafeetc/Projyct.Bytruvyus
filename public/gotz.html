@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>projyct.gotz — Gotz.Puppyt Hand Rig v2</title>
+<style>
+:root{
+  --bg:#262822;
+  --panel:#30322a;
+  --panel2:#22241e;
+  --stage:#595d4f;
+  --border:#505347;
+  --fg:#e2e4dc;
+  --muted:#9da193;
+  --acc:#8f6a8f;
+  --lime:#1ea875;
+  --bone-fill:#e2e2e8;
+  --bone-stroke:#4b4e42;
+  --wrist:#9e5b42;
+  --pin:#1ea875;
+  --guide:rgba(226,228,220,.14);
+}
+:root[data-theme="legacy-digital"]{
+  --bg:#120e18;
+  --panel:#1c1626;
+  --panel2:#100c15;
+  --stage:#e2e2e8;
+  --border:#3d3054;
+  --fg:#f2ecff;
+  --muted:#a696c4;
+  --acc:#a855f7;
+  --lime:#adff2f;
+  --bone-fill:#ffffff;
+  --bone-stroke:#2a1f3d;
+  --wrist:#b8552e;
+  --pin:#a855f7;
+  --guide:rgba(42,31,61,.16);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font:12px/1.35 system-ui,-apple-system,Segoe UI,sans-serif;user-select:none}
+body{display:flex;flex-direction:column}
+
+/* Header */
+#hdr{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:6px 10px;background:var(--panel);border-bottom:1px solid var(--border);flex:none;
+}
+.brand{font-weight:700;letter-spacing:.04em;color:var(--lime);margin-right:4px}
+.grp{display:flex;align-items:center;gap:3px;padding:0 6px;border-left:1px solid var(--border)}
+.grp:first-of-type{border-left:0;padding-left:0}
+.glbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:3px}
+button,select,input{font:inherit;color:inherit}
+button.btn{
+  padding:3px 7px;border:1px solid var(--border);background:var(--panel2);
+  border-radius:4px;cursor:pointer;transition:background .12s,border-color .12s;
+}
+button.btn:hover{border-color:var(--lime)}
+button.btn.on{background:var(--acc);border-color:var(--acc);color:#fff}
+button.btn:disabled{opacity:.4;cursor:default}
+
+/* Main workspace */
+#ws{flex:1;min-height:0;display:flex}
+#leftRail,#rightRail{
+  width:210px;background:var(--panel);overflow:auto;padding:8px;flex:none;
+  display:flex;flex-direction:column;gap:8px;
+}
+#leftRail{border-right:1px solid var(--border);width:176px}
+#rightRail{border-left:1px solid var(--border);width:248px}
+@media(max-width:860px){
+  #leftRail{width:140px}
+  #rightRail{width:205px}
+}
+@media(max-width:640px){
+  #ws{flex-direction:column}
+  #leftRail,#rightRail{width:auto;height:140px;border:0;border-top:1px solid var(--border)}
+  #stageWrap{order:-1}
+}
+
+.sec{background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:7px}
+.sec h3{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--lime);display:flex;justify-content:space-between;align-items:center}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.srow{display:flex;align-items:center;gap:6px;margin:4px 0}
+.srow label{width:46px;font-size:11px;color:var(--muted);flex:none}
+.srow input[type=range]{flex:1;min-width:0;accent-color:var(--acc)}
+.srow .val{width:34px;text-align:right;font-variant-numeric:tabular-nums;font-size:11px}
+
+/* Center stage */
+#stageWrap{flex:1;min-width:0;min-height:0;position:relative;background:var(--stage);display:flex;flex-direction:column}
+#stageSvg{flex:1;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#stageSvg.dragging{cursor:grabbing}
+#stageInfo{
+  position:absolute;top:8px;left:10px;pointer-events:none;
+  background:rgba(34,36,30,.72);color:#e2e4dc;padding:4px 8px;border-radius:4px;font-size:11px;
+  border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);
+}
+:root[data-theme="legacy-digital"] #stageInfo{background:rgba(18,14,24,.78)}
+
+/* Wrist Wheel */
+.wheelWrap{display:flex;align-items:center;gap:10px}
+#wristWheel{
+  width:68px;height:68px;border-radius:50%;border:2px solid var(--border);
+  background:radial-gradient(circle at center,var(--panel) 45%,var(--bg) 100%);
+  position:relative;cursor:pointer;flex:none;touch-action:none;
+}
+#wristNeedle{
+  position:absolute;left:50%;top:50%;width:2px;height:28px;background:var(--lime);
+  transform-origin:50% 0%;border-radius:2px;pointer-events:none;
+}
+#wristKnob{
+  position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;
+  background:var(--wrist);border:1.5px solid #fff;transform:translate(-50%,-50%);pointer-events:none;
+}
+
+/* Finger cards */
+.fcard{border:1px solid var(--border);border-radius:5px;padding:5px 6px;background:var(--panel);margin-bottom:5px}
+.fcard.active{border-color:var(--lime)}
+.fcard-hdr{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin-bottom:3px;cursor:pointer}
+.fcard-hdr span.ftag{font-size:10px;color:var(--muted);font-weight:400}
+
+/* Timeline bar */
+#timeline{
+  background:var(--panel);border-top:1px solid var(--border);padding:5px 10px;
+  display:flex;align-items:center;gap:8px;flex:none;
+}
+#timeline[hidden]{display:none}
+#tlRange{flex:1;accent-color:var(--lime)}
+
+/* Bottom HUD */
+#hud{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:4px 10px;background:var(--panel2);border-top:1px solid var(--border);font-size:11px;flex:none;
+}
+#poseCode{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--lime);letter-spacing:.03em}
+
+/* Help Modal */
+#helpModal{
+  position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:20;
+}
+#helpModal[hidden]{display:none}
+#helpCard{
+  max-width:460px;width:92%;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;
+  box-shadow:0 12px 36px rgba(0,0,0,.5);
+}
+#helpCard h2{margin:0 0 8px;font-size:14px;color:var(--lime)}
+#helpCard ul{margin:6px 0 10px 18px;padding:0}
+#helpCard li{margin:4px 0;color:var(--fg)}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <span class="brand">projyct.gotz // v2</span>
+  <div class="grp">
+    <span class="glbl">Build</span>
+    <button class="btn bbtn on" data-build="standard">5F</button>
+    <button class="btn bbtn" data-build="claw">Claw</button>
+    <button class="btn bbtn" data-build="trident">Trident</button>
+    <button class="btn bbtn" data-build="mickey">Mickey</button>
+  </div>
+  <div class="grp">
+    <span class="glbl">Limits</span>
+    <select id="limSel">
+      <option value="realistic">Realistic</option>
+      <option value="elastic">Elastic</option>
+      <option value="expert">Expert</option>
+    </select>
+    <select id="layerSel" title="Digit crossing rule">
+      <option value="free">Layer: Free</option>
+      <option value="rigid">Layer: Rigid</option>
+      <option value="rigid-reverse">Layer: Rev</option>
+    </select>
+    <select id="styleSel" title="Bone outline style">
+      <option value="hand-app-1">Style: Studio</option>
+      <option value="hand-app-2">Style: Sculpt</option>
+      <option value="legacy">Style: Octagon</option>
+    </select>
+  </div>
+  <div class="grp">
+    <button class="btn" id="wholeIkBtn" title="Couples adjacent metacarpals during IK drag">Coupled IK</button>
+    <button class="btn" id="guidesBtn">Guides</button>
+    <button class="btn" id="mirrorBtn">Side: L</button>
+  </div>
+  <div class="grp">
+    <button class="btn" id="undoBtn" disabled>Undo</button>
+    <button class="btn" id="redoBtn" disabled>Redo</button>
+    <button class="btn" id="tlBtn">Timeline</button>
+    <button class="btn" id="themeBtn">Theme</button>
+    <button class="btn" id="helpBtn">?</button>
+  </div>
+</div>
+
+<div id="ws">
+  <div id="leftRail">
+    <div class="sec">
+      <h3>Pose Library</h3>
+      <div class="pgrid" id="presetGrid"></div>
+    </div>
+    <div class="sec">
+      <h3>Quick Actions</h3>
+      <div class="pgrid">
+        <button class="btn" id="actOpen">+15° Open</button>
+        <button class="btn" id="actClose">+15° Curl</button>
+        <button class="btn" id="actShuffle">Shuffle</button>
+        <button class="btn" id="actReset">Reset</button>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>Export</h3>
+      <div class="pgrid">
+        <button class="btn" id="expSvg">Save SVG</button>
+        <button class="btn" id="expPng">Save PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="stageWrap">
+    <svg id="stageSvg" viewBox="-7.5 -11.8 15 14" preserveAspectRatio="xMidYMid meet"></svg>
+    <div id="stageInfo">Drag any phalange or tip for 14-pass CCD IK · Drag metacarpal to splay/rotate · Shift+drag wrist to pan</div>
+  </div>
+
+  <div id="rightRail">
+    <div class="sec">
+      <h3>Wrist &amp; Carpal</h3>
+      <div class="wheelWrap">
+        <div id="wristWheel" title="Drag to rotate wrist">
+          <div id="wristNeedle"></div>
+          <div id="wristKnob"></div>
+        </div>
+        <div style="flex:1">
+          <div class="srow"><label>Wrist</label><input id="wristRange" type="range" min="-180" max="180" step="1"><span class="val" id="wristVal">0°</span></div>
+          <div class="srow"><label>Splay</label><input id="splayRange" type="range" min="-100" max="100" step="1"><span class="val" id="splayVal">45</span></div>
+          <div class="srow"><label>Tilt</label><input id="tiltRange" type="range" min="-45" max="45" step="1"><span class="val" id="tiltVal">0°</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Global Morph</h3>
+      <div class="srow"><label>Grip</label><input id="gripRange" type="range" min="-35" max="105" step="1" value="0"><span class="val" id="gripVal">0°</span></div>
+      <div class="srow"><label>Meta</label><input id="metaRange" type="range" min="-45" max="45" step="1" value="0"><span class="val" id="metaVal">0°</span></div>
+      <div class="srow"><label>Width</label><input id="widthRange" type="range" min="0.45" max="1.1" step="0.05"><span class="val" id="widthVal">0.75</span></div>
+      <div class="pgrid" style="margin-top:4px">
+        <button class="btn" id="propAnatBtn">4:3:2:1</button>
+        <button class="btn" id="propLegBtn">4:2:1:1</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Digits <span id="activeDigitLbl" style="color:var(--muted);font-weight:400">middle</span></h3>
+      <div id="fingerCards"></div>
+    </div>
+  </div>
+</div>
+
+<div id="timeline" hidden>
+  <button class="btn" id="capFrom">Set From</button>
+  <button class="btn" id="capMid">Set Mid</button>
+  <button class="btn" id="capTo">Set To</button>
+  <input id="tlRange" type="range" min="0" max="100" value="0">
+  <span id="tlTime" style="min-width:34px;text-align:right">0%</span>
+  <button class="btn" id="tlPlay">Play</button>
+  <button class="btn" id="onionBtn">Onion</button>
+</div>
+
+<div id="hud">
+  <div>Pose: <span id="poseCode">Thumb | - | Index | Bird | Ring | Pinky</span></div>
+  <div id="hudHint">Drag finger tips/bones to pose · Double-click hand on figure to inspect</div>
+</div>
+
+<div id="helpModal" hidden>
+  <div id="helpCard">
+    <h2>projyct.gotz — Hand Rig Controls</h2>
+    <ul>
+      <li><b>14-Pass CCD IK Drag:</b> Grab any finger tip or distal/middle/proximal bone to curl and aim cleanly into place.</li>
+      <li><b>Metacarpal Manipulation:</b> Drag any metacarpal bone shaft (or use finger cards) to adjust palm arch, splay, and rotation.</li>
+      <li><b>Coupled IK:</b> When active, rotating one metacarpal subtly recruits adjacent metacarpals (35%).</li>
+      <li><b>Wrist Wheel:</b> Drag the rotary dial to rotate the entire hand from the carpal hub.</li>
+      <li><b>Live Sync:</b> When opened from the main Puppyt figure, every pose update syncs live back onto the figure.</li>
+    </ul>
+    <button class="btn on" id="closeHelp">Got it</button>
+  </div>
+</div>
+
+<script type="module">
+// ======================================================= Constants & Proportions
+const DIGITS = ['thumb', 'index', 'middle', 'ring', 'pinky'];
+const TE = { thumb: -120, index: -30, middle: 0, ring: 30, pinky: 60 };
+const S  = { thumb: -1, index: 1, middle: 1, ring: 1, pinky: 1 };
+const BUILDS = {
+  standard: ['thumb', 'index', 'middle', 'ring', 'pinky'],
+  claw:     ['thumb', 'middle'],
+  trident:  ['thumb', 'middle', 'ring'],
+  mickey:   ['thumb', 'index', 'middle', 'ring']
+};
+const D_REAL = {
+  index:  [[-35, 90], [0, 110], [-5, 85]],
+  middle: [[-35, 90], [0, 110], [-5, 85]],
+  ring:   [[-35, 90], [0, 120], [-5, 85]],
+  pinky:  [[-35, 90], [0, 135], [-5, 90]],
+  thumb:  [[0, 77.5], [-7.5, 77.5]]
+};
+const F_REAL = { index:[-30,30], middle:[-22.5,22.5], ring:[-22.5,22.5], pinky:[-25,25], thumb:[-26.25,26.25] };
+const F_ELAS = { index:[-75,75], middle:[-75,75],   ring:[-75,75],     pinky:[-24,90], thumb:[-90,90] };
+
+const M_ANAT = {
+  bones: {
+    middle: [4, 3, 2, 1],
+    ring:   [3.75, 2.8125, 1.875, 0.9375],
+    index:  [3.75, 2.8125, 1.875, 0.9375],
+    pinky:  [3.5, 2.625, 1.75, 0.875],
+    thumb:  [3, 2, 1]
+  },
+  kn: { middle: 1, ring: 1, index: 1, pinky: 1, thumb: 0.5 },
+  width: 0.75
+};
+const H_LEG = {
+  bones: {
+    middle: [4, 2, 1, 1],
+    ring:   [3.75, 1.875, 0.9375, 0.9375],
+    index:  [3.75, 1.875, 0.9375, 0.9375],
+    pinky:  [3.5, 1.75, 0.875, 0.875],
+    thumb:  [3, 1.5, 1]
+  },
+  kn: { middle: 0.75, ring: 0.75, index: 0.75, pinky: 0.75, thumb: 0.4 },
+  width: 0.75
+};
+
+const PRESETS = {
+  Neutral: { splay:45, tilt:0, wrist:0, thumb:0, fs:{index:0,ring:0,pinky:0}, rot:{thumb:0,index:0,middle:0,ring:0,pinky:0}, cj:{thumb:[10,12],index:[8,12,8],middle:[6,10,6],ring:[10,14,8],pinky:[14,18,10]} },
+  Open:    { splay:72, tilt:0, wrist:0, thumb:12, fs:{index:-10,ring:8,pinky:18}, rot:{thumb:-6,index:-3,middle:0,ring:3,pinky:6}, cj:{thumb:[0,0],index:[-10,0,0],middle:[-8,0,0],ring:[-10,0,0],pinky:[-12,0,0]} },
+  Fist:    { splay:18, tilt:0, wrist:0, thumb:-22, fs:{index:0,ring:0,pinky:0}, rot:{thumb:18,index:4,middle:0,ring:-4,pinky:-8}, cj:{thumb:[62,68],index:[88,104,78],middle:[88,106,80],ring:[88,112,80],pinky:[88,122,82]} },
+  Point:   { splay:35, tilt:0, wrist:0, thumb:-10, fs:{index:-12,ring:0,pinky:0}, rot:{thumb:12,index:-4,middle:0,ring:-2,pinky:-4}, cj:{thumb:[45,40],index:[0,0,0],middle:[86,102,75],ring:[88,108,78],pinky:[88,118,80]} },
+  Peace:   { splay:50, tilt:0, wrist:0, thumb:-15, fs:{index:-25,ring:0,pinky:0}, rot:{thumb:16,index:-10,middle:6,ring:-4,pinky:-8}, cj:{thumb:[52,48],index:[0,0,0],middle:[0,0,0],ring:[88,110,78],pinky:[88,120,82]} },
+  Rock:    { splay:48, tilt:0, wrist:0, thumb:10, fs:{index:-15,ring:0,pinky:20}, rot:{thumb:-8,index:-6,middle:0,ring:-4,pinky:10}, cj:{thumb:[12,18],index:[0,0,0],middle:[88,105,78],ring:[88,112,78],pinky:[0,0,0]} },
+  Pinch:   { splay:30, tilt:0, wrist:0, thumb:-20, fs:{index:15,ring:-5,pinky:-5}, rot:{thumb:24,index:14,middle:0,ring:-4,pinky:-6}, cj:{thumb:[42,50],index:[52,65,42],middle:[22,26,15],ring:[32,38,20],pinky:[42,50,28]} },
+  Flat:    { splay:0, tilt:0, wrist:0, thumb:-45, fs:{index:0,ring:0,pinky:0}, rot:{thumb:20,index:0,middle:0,ring:0,pinky:0}, cj:{thumb:[0,0],index:[0,0,0],middle:[0,0,0],ring:[0,0,0],pinky:[0,0,0]} }
+};
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const clone = o => JSON.parse(JSON.stringify(o));
+const RAD = Math.PI / 180;
+
+function makeInitialState(){
+  const p = clone(PRESETS.Neutral);
+  return {
+    ...p,
+    mirror: false,
+    build: 'standard',
+    limits: 'realistic',
+    layerOrder: 'free',
+    wholeIk: true,
+    guides: true,
+    style: 'hand-app-1',
+    theme: 'sepia',
+    props: clone(M_ANAT)
+  };
+}
+
+let E = makeInitialState();
+let activeDigit = 'middle';
+let hostHandId = null; // when embedded in puppyt.html ('handL' | 'handR')
+const undoStack = [];
+const redoStack = [];
+
+// Timeline state
+const keyframes = { from: null, mid: null, to: null };
+let onionSkin = false;
+let playing = false;
+let rafPlay = 0;
+
+// ======================================================= Kinematics (FK + 14-Pass CCD IK)
+function curlBounds(d, j, lim){
+  if(lim === 'expert') return [-90, 90];
+  return (D_REAL[d] && D_REAL[d][j]) ? D_REAL[d][j] : [-35, 90];
+}
+function rotBounds(d, lim){
+  if(lim === 'expert') return [-90, 90];
+  if(lim === 'elastic') return F_ELAS[d] || [-75, 75];
+  return F_REAL[d] || [-30, 30];
+}
+
+function ce(d, st = E){
+  const spreadOff = d === 'thumb' ? st.thumb : d === 'middle' ? 0 : (st.fs[d] || 0);
+  const effSpread = clamp(st.splay + spreadOff, -100, 100);
+  return TE[d] * (effSpread / 100) + st.tilt + (st.rot[d] || 0);
+}
+
+function enforceLayerOrder(changedDigit, st = E){
+  if(st.layerOrder === 'free') return;
+  const order = BUILDS[st.build] || DIGITS;
+  const rev = st.layerOrder === 'rigid-reverse';
+  const list = rev ? [...order].reverse() : order;
+  const idx = list.indexOf(changedDigit);
+  if(idx < 0) return;
+  const minGap = 4;
+  for(let i = idx - 1; i >= 0; i--){
+    const dPrev = list[i], dNext = list[i + 1];
+    const diff = ce(dNext, st) - ce(dPrev, st);
+    if(diff < minGap){
+      const [lo, hi] = rotBounds(dPrev, st.limits);
+      st.rot[dPrev] = clamp(st.rot[dPrev] - (minGap - diff), lo, hi);
+    }
+  }
+  for(let i = idx + 1; i < list.length; i++){
+    const dPrev = list[i - 1], dNext = list[i];
+    const diff = ce(dNext, st) - ce(dPrev, st);
+    if(diff < minGap){
+      const [lo, hi] = rotBounds(dNext, st.limits);
+      st.rot[dNext] = clamp(st.rot[dNext] + (minGap - diff), lo, hi);
+    }
+  }
+}
+
+function ye(d, st = E){
+  const lens = st.props.bones[d] || M_ANAT.bones[d];
+  const kn = (st.props.kn && st.props.kn[d]) ?? M_ANAT.kn[d];
+  let x = 0, y = 0;
+  let a = ((st.mirror ? -st.wrist : st.wrist) + ce(d, st)) * RAD;
+  const pts = [[0, 0]];
+  const segs = [];
+  for(let l = 0; l < lens.length; l++){
+    const rawL = lens[l];
+    const segLen = Math.max(0.18, (l === 1 ? -kn / 2 : 0) + rawL - (l === 0 ? kn : 0) / 2);
+    const nx = x + Math.sin(a) * segLen;
+    const ny = y - Math.cos(a) * segLen;
+    segs.push({ x1:x, y1:y, x2:nx, y2:ny, len:segLen, ang:a, boneIdx:l });
+    x = nx; y = ny;
+    pts.push([x, y]);
+    const cur = st.cj[d] || [];
+    if(l < cur.length){
+      a += -S[d] * (cur[l] || 0) * RAD;
+    }
+  }
+  return { pts, segs };
+}
+
+// Soft elastic damping near limits
+function oe(val, lo, hi){
+  if(val >= lo && val <= hi) return val;
+  const over = val < lo ? val - lo : val - hi;
+  const bound = val < lo ? lo : hi;
+  return bound + Math.tanh(over / 18) * 6;
+}
+
+// 14-Pass CCD IK solver targeting pts[endPtIdx] -> (tx, ty)
+function be(d, endPtIdx, tx, ty, st = E){
+  const lens = st.props.bones[d] || M_ANAT.bones[d];
+  const maxEnd = clamp(endPtIdx, 1, lens.length);
+  for(let pass = 0; pass < 14; pass++){
+    for(let k = maxEnd - 1; k >= -1; k--){
+      const { pts } = ye(d, st);
+      const pv = k === -1 ? pts[0] : pts[k + 1];
+      const ef = pts[maxEnd];
+      const vxE = ef[0] - pv[0], vyE = ef[1] - pv[1];
+      const vxT = tx - pv[0], vyT = ty - pv[1];
+      if(Math.hypot(vxE, vyE) < 1e-4 || Math.hypot(vxT, vyT) < 1e-4) continue;
+      let da = Math.atan2(vyT, vxT) - Math.atan2(vyE, vxE);
+      while(da > Math.PI) da -= Math.PI * 2;
+      while(da < -Math.PI) da += Math.PI * 2;
+      const dDeg = da / RAD;
+      if(k === -1){
+        const r0 = st.rot[d] || 0;
+        const [lo, hi] = rotBounds(d, st.limits);
+        const targetR = st.limits === 'realistic' ? oe(r0 + dDeg, lo, hi) : clamp(r0 + dDeg, lo, hi);
+        st.rot[d] = targetR;
+        const dv = st.rot[d] - r0;
+        if(st.wholeIk && Math.abs(dv) > 1e-4){
+          for(const o of (BUILDS[st.build] || DIGITS)){
+            if(o === d) continue;
+            const [olo, ohi] = rotBounds(o, st.limits);
+            const weight = (d === 'thumb' || o === 'thumb') ? 0.12 : 0.35;
+            st.rot[o] = clamp((st.rot[o] || 0) + weight * dv, olo, ohi);
+          }
+        }
+        enforceLayerOrder(d, st);
+      } else {
+        const cArr = st.cj[d];
+        if(k < cArr.length){
+          const [cLo, cHi] = curlBounds(d, k, st.limits);
+          const nextC = cArr[k] + (-S[d]) * dDeg;
+          cArr[k] = clamp(nextC, cLo, cHi);
+        }
+      }
+    }
+  }
+}
+
+// ======================================================= Pose Code & Serialization
+function curlGlyph(deg){
+  const a = Math.abs(deg);
+  if(a < 18) return '|';
+  if(a < 58) return '\\';
+  return ']';
+}
+function poseCode(st = E){
+  const active = BUILDS[st.build] || DIGITS;
+  const map = { thumb:'Thumb', index:'Index', middle:'Bird', ring:'Ring', pinky:'Pinky' };
+  return active.map(d=>{
+    const c = st.cj[d] || [];
+    const avg = c.length ? c.reduce((s,v)=>s+Math.abs(v),0)/c.length : 0;
+    return map[d] + ' ' + curlGlyph(avg);
+  }).join(' · ');
+}
+function packPose(st = E){
+  return {
+    wrist: Math.round(st.wrist * 10) / 10,
+    splay: Math.round(st.splay * 10) / 10,
+    tilt:  Math.round(st.tilt * 10) / 10,
+    thumb: Math.round(st.thumb * 10) / 10,
+    fs:    clone(st.fs),
+    rot:   clone(st.rot),
+    cj:    clone(st.cj),
+    build: st.build,
+    limits: st.limits,
+    layerOrder: st.layerOrder,
+    wholeIk: st.wholeIk,
+    style: st.style,
+    theme: st.theme,
+    mirror: !!st.mirror,
+    props: clone(st.props)
+  };
+}
+
+// ======================================================= SVG Renderer
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs = {}, parent = null){
+  const el = document.createElementNS(NS, tag);
+  for(const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  if(parent) parent.appendChild(el);
+  return el;
+}
+
+function bonePath(seg, boneIdx, totalBones, widthMul, style){
+  const L = seg.len;
+  const baseW = (style === 'legacy' ? 0.56 : 0.62) * widthMul;
+  const taper = [1.0, 0.78, 0.62, 0.50][boneIdx] ?? 0.48;
+  const w1 = baseW * taper * (boneIdx === 0 ? 0.85 : 0.92);
+  const w2 = baseW * taper * (boneIdx === totalBones - 1 ? 0.68 : 0.96);
+  const half1 = w1 * 0.5, half2 = w2 * 0.5;
+  const ch = Math.min(L * 0.22, Math.max(half1, half2) * 0.65);
+
+  if(style === 'legacy'){
+    // Octagonal chamfered bone
+    return `M ${-half1*0.6} 0 L ${half1*0.6} 0 L ${half1} ${-ch} L ${half2} ${-(L-ch)} L ${half2*0.6} ${-L} L ${-half2*0.6} ${-L} L ${-half2} ${-(L-ch)} L ${-half1} ${-ch} Z`;
+  }
+  if(style === 'hand-app-2'){
+    // Sculpted hourglass waist phalange
+    const waist = Math.min(half1, half2) * 0.76;
+    return `M 0 0 C ${half1} 0 ${half1} ${-L*0.2} ${waist} ${-L*0.5} C ${half2} ${-L*0.8} ${half2} ${-L} 0 ${-L} C ${-half2} ${-L} ${-half2} ${-L*0.8} ${-waist} ${-L*0.5} C ${-half1} ${-L*0.2} ${-half1} 0 0 0 Z`;
+  }
+  // hand-app-1 anatomical articulated bone silhouette
+  const neck = Math.min(half1, half2) * 0.84;
+  return `M ${-half1*0.55} ${ch*0.18}
+    Q 0 ${ch*0.45} ${half1*0.55} ${ch*0.18}
+    C ${half1} ${-ch*0.35} ${neck} ${-L*0.45} ${half2*0.95} ${-(L-ch)}
+    Q ${half2*0.6} ${-L-ch*0.22} 0 ${-L-ch*0.22}
+    Q ${-half2*0.6} ${-L-ch*0.22} ${-half2*0.95} ${-(L-ch)}
+    C ${-neck} ${-L*0.45} ${-half1} ${-ch*0.35} ${-half1*0.55} ${ch*0.18} Z`;
+}
+
+function renderHandInto(gRoot, st, opacity = 1, interactive = true){
+  const active = BUILDS[st.build] || DIGITS;
+  const wMul = st.props.width || 0.75;
+  const gWrap = svgEl('g', {
+    transform: st.mirror ? 'scale(-1,1)' : '',
+    opacity: String(opacity)
+  }, gRoot);
+
+  // Box / Proportion guides (4:3:2:1 concentric rings)
+  if(st.guides && interactive){
+    const gg = svgEl('g', { stroke:'var(--guide)', 'stroke-width':'0.03', fill:'none', 'stroke-dasharray':'0.16 0.18' }, gWrap);
+    for(const r of [3.5, 6.0, 8.0, 9.0]){
+      svgEl('circle', { cx:0, cy:0, r:String(r) }, gg);
+    }
+    svgEl('line', { x1:0, y1:1.4, x2:0, y2:-10.2 }, gg);
+    svgEl('line', { x1:-6.2, y1:0, x2:6.2, y2:0 }, gg);
+  }
+
+  // Subtle web / palm span polygon connecting metacarpal heads
+  const metaHeads = active.filter(d=>d!=='thumb').map(d => ye(d, st).pts[1]);
+  if(metaHeads.length >= 2){
+    const poly = ['0,0', ...metaHeads.map(p=>`${p[0].toFixed(3)},${p[1].toFixed(3)}`)].join(' ');
+    svgEl('polygon', {
+      points: poly,
+      fill: 'var(--bone-fill)',
+      'fill-opacity': '0.11',
+      stroke: 'var(--bone-stroke)',
+      'stroke-width': '0.035',
+      'stroke-dasharray': '0.12 0.12'
+    }, gWrap);
+  }
+
+  // Draw digits back-to-front (middle center-most slightly behind outer thumb/pinky)
+  const drawOrder = ['middle', 'ring', 'index', 'pinky', 'thumb'].filter(d=>active.includes(d));
+  for(const d of drawOrder){
+    const { pts, segs } = ye(d, st);
+    const isAct = interactive && d === activeDigit;
+    const fg = svgEl('g', { 'data-digit': d }, gWrap);
+
+    for(let i = 0; i < segs.length; i++){
+      const seg = segs[i];
+      const deg = seg.ang / RAD;
+      const bg = svgEl('g', {
+        transform: `translate(${seg.x1.toFixed(4)},${seg.y1.toFixed(4)}) rotate(${deg.toFixed(3)})`,
+        style: interactive ? 'cursor:grab' : ''
+      }, fg);
+      if(interactive){
+        bg.dataset.digit = d;
+        bg.dataset.endpt = String(i + 1);
+      }
+      svgEl('path', {
+        d: bonePath(seg, i, segs.length, wMul, st.style),
+        fill: 'var(--bone-fill)',
+        stroke: isAct ? 'var(--acc)' : 'var(--bone-stroke)',
+        'stroke-width': isAct ? '0.075' : '0.055',
+        'stroke-linejoin': 'round'
+      }, bg);
+
+      // Subtle center bone ridge
+      svgEl('line', {
+        x1: 0, y1: (-seg.len * 0.16).toFixed(3),
+        x2: 0, y2: (-seg.len * 0.84).toFixed(3),
+        stroke: isAct ? 'var(--lime)' : 'var(--bone-stroke)',
+        'stroke-opacity': isAct ? '0.65' : '0.28',
+        'stroke-width': '0.035',
+        'stroke-linecap': 'round'
+      }, bg);
+    }
+
+    // Joint pins & end-effector tip handles
+    for(let j = 1; j < pts.length; j++){
+      const [px, py] = pts[j];
+      const isTip = j === pts.length - 1;
+      const r = isTip ? 0.17 : 0.115;
+      const pin = svgEl('circle', {
+        cx: px.toFixed(4), cy: py.toFixed(4), r: String(r),
+        fill: isTip ? (isAct ? 'var(--lime)' : 'var(--acc)') : 'var(--pin)',
+        stroke: 'var(--bone-stroke)',
+        'stroke-width': '0.04',
+        style: interactive ? 'cursor:pointer' : ''
+      }, fg);
+      if(interactive){
+        pin.dataset.digit = d;
+        pin.dataset.endpt = String(j);
+      }
+    }
+  }
+
+  // Octagonal Red Wrist Hub (r = 0.36)
+  const r = 0.36, oct = [];
+  for(let k = 0; k < 8; k++){
+    const a = (k * 45 + 22.5) * RAD;
+    oct.push(`${(Math.cos(a)*r).toFixed(3)},${(Math.sin(a)*r).toFixed(3)}`);
+  }
+  svgEl('polygon', {
+    points: oct.join(' '),
+    fill: 'var(--wrist)',
+    stroke: '#fff',
+    'stroke-width': '0.045',
+    id: interactive ? 'wristHub' : ''
+  }, gWrap);
+  svgEl('circle', { cx:0, cy:0, r:'0.10', fill:'#fff', 'pointer-events':'none' }, gWrap);
+  return gWrap;
+}
+
+const svg = document.getElementById('stageSvg');
+function drawStage(){
+  document.documentElement.dataset.theme = E.theme;
+  svg.innerHTML = '';
+  if(onionSkin){
+    if(keyframes.from) renderHandInto(svg, keyframes.from, 0.25, false);
+    if(keyframes.to && keyframes.to !== keyframes.from) renderHandInto(svg, keyframes.to, 0.25, false);
+  }
+  renderHandInto(svg, E, 1, true);
+}
+
+// ======================================================= UI Sync + Host PostMessage
+function emitToHost(){
+  if(window.parent && window.parent !== window){
+    window.parent.postMessage({
+      type: 'gotz:change',
+      handId: hostHandId,
+      pose: packPose(E),
+      code: poseCode(E)
+    }, '*');
+  }
+}
+
+function pushUndo(){
+  undoStack.push(clone(E));
+  if(undoStack.length > 60) undoStack.shift();
+  redoStack.length = 0;
+  updateHistoryBtns();
+}
+function updateHistoryBtns(){
+  document.getElementById('undoBtn').disabled = !undoStack.length;
+  document.getElementById('redoBtn').disabled = !redoStack.length;
+}
+
+function buildFingerCards(){
+  const host = document.getElementById('fingerCards');
+  host.innerHTML = '';
+  const active = BUILDS[E.build] || DIGITS;
+  for(const d of active){
+    const card = document.createElement('div');
+    card.className = 'fcard' + (d === activeDigit ? ' active' : '');
+    const hdr = document.createElement('div');
+    hdr.className = 'fcard-hdr';
+    hdr.innerHTML = `<span>${d[0].toUpperCase()+d.slice(1)}</span><span class="ftag">${Math.round(E.rot[d]||0)}° meta</span>`;
+    hdr.onclick = ()=>{ activeDigit = d; syncUI(); drawStage(); };
+    card.appendChild(hdr);
+
+    // Metacarpal Rot
+    const [rLo, rHi] = rotBounds(d, E.limits);
+    card.appendChild(makeSliderRow('Meta', E.rot[d]||0, rLo, rHi, 0.5, v=>{
+      E.rot[d] = v;
+      enforceLayerOrder(d, E);
+      syncUI(); drawStage(); emitToHost();
+    }));
+
+    // Individual curls
+    const curls = E.cj[d] || [];
+    const names = d === 'thumb' ? ['Prox', 'Dist'] : ['MCP', 'PIP', 'DIP'];
+    curls.forEach((c, idx)=>{
+      const [cLo, cHi] = curlBounds(d, idx, E.limits);
+      card.appendChild(makeSliderRow(names[idx], c, cLo, cHi, 1, v=>{
+        E.cj[d][idx] = v;
+        syncUI(); drawStage(); emitToHost();
+      }));
+    });
+    host.appendChild(card);
+  }
+}
+
+function makeSliderRow(lbl, val, min, max, step, onChange){
+  const row = document.createElement('div');
+  row.className = 'srow';
+  const l = document.createElement('label'); l.textContent = lbl;
+  const inp = document.createElement('input');
+  inp.type = 'range'; inp.min = min; inp.max = max; inp.step = step; inp.value = clamp(val, min, max);
+  const out = document.createElement('span'); out.className = 'val'; out.textContent = Math.round(val) + '°';
+  inp.onpointerdown = ()=>pushUndo();
+  inp.oninput = ()=>{
+    const v = parseFloat(inp.value);
+    out.textContent = Math.round(v) + '°';
+    onChange(v);
+  };
+  row.append(l, inp, out);
+  return row;
+}
+
+function syncUI(){
+  document.querySelectorAll('.bbtn').forEach(b=>b.classList.toggle('on', b.dataset.build === E.build));
+  document.getElementById('limSel').value = E.limits;
+  document.getElementById('layerSel').value = E.layerOrder;
+  document.getElementById('styleSel').value = E.style;
+  document.getElementById('wholeIkBtn').classList.toggle('on', E.wholeIk);
+  document.getElementById('guidesBtn').classList.toggle('on', E.guides);
+  document.getElementById('mirrorBtn').textContent = E.mirror ? 'Side: R' : 'Side: L';
+  document.getElementById('mirrorBtn').classList.toggle('on', E.mirror);
+  document.getElementById('activeDigitLbl').textContent = activeDigit;
+
+  document.getElementById('wristRange').value = E.wrist;
+  document.getElementById('wristVal').textContent = Math.round(E.wrist) + '°';
+  document.getElementById('wristNeedle').style.transform = `translate(-50%, -100%) rotate(${E.wrist}deg)`;
+  document.getElementById('splayRange').value = E.splay;
+  document.getElementById('splayVal').textContent = Math.round(E.splay);
+  document.getElementById('tiltRange').value = E.tilt;
+  document.getElementById('tiltVal').textContent = Math.round(E.tilt) + '°';
+  document.getElementById('widthRange').value = E.props.width;
+  document.getElementById('widthVal').textContent = Number(E.props.width).toFixed(2);
+
+  document.getElementById('poseCode').textContent = poseCode(E);
+  buildFingerCards();
+}
+
+function commitAndRedraw(){
+  drawStage();
+  syncUI();
+  emitToHost();
+}
+
+// ======================================================= Direct SVG Dragging (14-Pass CCD IK)
+let drag = null;
+function clientToHandSvg(clientX, clientY){
+  const pt = svg.createSVGPoint();
+  pt.x = clientX; pt.y = clientY;
+  const ctm = svg.getScreenCTM();
+  if(!ctm) return [0, 0];
+  const sp = pt.matrixTransform(ctm.inverse());
+  return [E.mirror ? -sp.x : sp.x, sp.y];
+}
+
+svg.addEventListener('pointerdown', e=>{
+  const target = e.target.closest('[data-digit]');
+  if(target){
+    pushUndo();
+    svg.setPointerCapture(e.pointerId);
+    svg.classList.add('dragging');
+    const digit = target.dataset.digit;
+    const endpt = parseInt(target.dataset.endpt || '4', 10);
+    activeDigit = digit;
+    drag = { kind: 'ik', digit, endpt };
+    const [tx, ty] = clientToHandSvg(e.clientX, e.clientY);
+    be(digit, endpt, tx, ty, E);
+    commitAndRedraw();
+    return;
+  }
+  // Dragging background rotates wrist gently
+  pushUndo();
+  svg.setPointerCapture(e.pointerId);
+  svg.classList.add('dragging');
+  const rect = svg.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2, cy = rect.top + rect.height * 0.84;
+  drag = { kind: 'wrist', a0: E.wrist, s0: Math.atan2(e.clientY - cy, e.clientX - cx), cx, cy };
+});
+
+svg.addEventListener('pointermove', e=>{
+  if(!drag) return;
+  if(drag.kind === 'ik'){
+    const [tx, ty] = clientToHandSvg(e.clientX, e.clientY);
+    be(drag.digit, drag.endpt, tx, ty, E);
+    commitAndRedraw();
+  } else if(drag.kind === 'wrist'){
+    let da = (Math.atan2(e.clientY - drag.cy, e.clientX - drag.cx) - drag.s0) / RAD;
+    while(da > 180) da -= 360;
+    while(da < -180) da += 360;
+    E.wrist = clamp(((drag.a0 + da + 540) % 360) - 180, -180, 180);
+    commitAndRedraw();
+  }
+});
+
+svg.addEventListener('pointerup', ()=>{ drag = null; svg.classList.remove('dragging'); });
+svg.addEventListener('pointercancel', ()=>{ drag = null; svg.classList.remove('dragging'); });
+
+// Wrist Wheel interaction
+const wheel = document.getElementById('wristWheel');
+let wheelDrag = false;
+function updateWheelFromPointer(e){
+  const r = wheel.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  let deg = Math.atan2(e.clientX - cx, -(e.clientY - cy)) / RAD;
+  if(deg > 180) deg -= 360;
+  E.wrist = clamp(Math.round(deg), -180, 180);
+  commitAndRedraw();
+}
+wheel.addEventListener('pointerdown', e=>{ pushUndo(); wheelDrag = true; wheel.setPointerCapture(e.pointerId); updateWheelFromPointer(e); });
+wheel.addEventListener('pointermove', e=>{ if(wheelDrag) updateWheelFromPointer(e); });
+wheel.addEventListener('pointerup', ()=>{ wheelDrag = false; });
+
+// Presets & Controls
+const pGrid = document.getElementById('presetGrid');
+for(const name of Object.keys(PRESETS)){
+  const b = document.createElement('button');
+  b.className = 'btn'; b.textContent = name;
+  b.onclick = ()=>{
+    pushUndo();
+    const p = clone(PRESETS[name]);
+    E.splay = p.splay; E.tilt = p.tilt; E.wrist = p.wrist; E.thumb = p.thumb;
+    E.fs = p.fs; E.rot = p.rot; E.cj = p.cj;
+    commitAndRedraw();
+  };
+  pGrid.appendChild(b);
+}
+
+document.querySelectorAll('.bbtn').forEach(b=>{
+  b.onclick = ()=>{ pushUndo(); E.build = b.dataset.build; commitAndRedraw(); };
+});
+document.getElementById('limSel').onchange = e=>{ pushUndo(); E.limits = e.target.value; commitAndRedraw(); };
+document.getElementById('layerSel').onchange = e=>{ pushUndo(); E.layerOrder = e.target.value; enforceLayerOrder(activeDigit, E); commitAndRedraw(); };
+document.getElementById('styleSel').onchange = e=>{ E.style = e.target.value; commitAndRedraw(); };
+document.getElementById('wholeIkBtn').onclick = ()=>{ E.wholeIk = !E.wholeIk; syncUI(); };
+document.getElementById('guidesBtn').onclick = ()=>{ E.guides = !E.guides; commitAndRedraw(); };
+document.getElementById('mirrorBtn').onclick = ()=>{ E.mirror = !E.mirror; commitAndRedraw(); };
+document.getElementById('themeBtn').onclick = ()=>{ E.theme = E.theme === 'sepia' ? 'legacy-digital' : 'sepia'; drawStage(); };
+document.getElementById('helpBtn').onclick = ()=>{ document.getElementById('helpModal').hidden = false; };
+document.getElementById('closeHelp').onclick = ()=>{ document.getElementById('helpModal').hidden = true; };
+
+document.getElementById('undoBtn').onclick = ()=>{
+  if(!undoStack.length) return;
+  redoStack.push(clone(E));
+  E = undoStack.pop();
+  updateHistoryBtns(); commitAndRedraw();
+};
+document.getElementById('redoBtn').onclick = ()=>{
+  if(!redoStack.length) return;
+  undoStack.push(clone(E));
+  E = redoStack.pop();
+  updateHistoryBtns(); commitAndRedraw();
+};
+
+const bindSlider = (id, fn)=>{
+  const el = document.getElementById(id);
+  el.onpointerdown = ()=>pushUndo();
+  el.oninput = ()=>{ fn(parseFloat(el.value)); commitAndRedraw(); };
+};
+bindSlider('wristRange', v=>{ E.wrist = v; });
+bindSlider('splayRange', v=>{ E.splay = v; });
+bindSlider('tiltRange',  v=>{ E.tilt = v; });
+bindSlider('widthRange', v=>{ E.props.width = v; });
+
+bindSlider('gripRange', v=>{
+  document.getElementById('gripVal').textContent = Math.round(v) + '°';
+  for(const d of DIGITS){
+    E.cj[d] = E.cj[d].map((_, i)=>clamp(v, ...curlBounds(d, i, E.limits)));
+  }
+});
+bindSlider('metaRange', v=>{
+  document.getElementById('metaVal').textContent = Math.round(v) + '°';
+  for(const d of DIGITS){
+    const sgn = TE[d] === 0 ? 0 : Math.sign(TE[d]);
+    E.rot[d] = clamp(sgn * v * 0.5, ...rotBounds(d, E.limits));
+  }
+});
+
+document.getElementById('propAnatBtn').onclick = ()=>{ pushUndo(); E.props = clone(M_ANAT); commitAndRedraw(); };
+document.getElementById('propLegBtn').onclick  = ()=>{ pushUndo(); E.props = clone(H_LEG); commitAndRedraw(); };
+
+document.getElementById('actOpen').onclick = ()=>{
+  pushUndo();
+  for(const d of DIGITS) E.cj[d] = E.cj[d].map((c,i)=>clamp(c - 15, ...curlBounds(d, i, E.limits)));
+  commitAndRedraw();
+};
+document.getElementById('actClose').onclick = ()=>{
+  pushUndo();
+  for(const d of DIGITS) E.cj[d] = E.cj[d].map((c,i)=>clamp(c + 15, ...curlBounds(d, i, E.limits)));
+  commitAndRedraw();
+};
+document.getElementById('actShuffle').onclick = ()=>{
+  pushUndo();
+  E.splay = Math.round(15 + Math.random() * 65);
+  for(const d of DIGITS){
+    const [rl, rh] = rotBounds(d, E.limits);
+    E.rot[d] = Math.round((rl + Math.random() * (rh - rl)) * 0.5);
+    E.cj[d] = E.cj[d].map((_, i)=>{
+      const [cl, ch] = curlBounds(d, i, E.limits);
+      return Math.round(Math.max(0, cl) + Math.random() * (ch - Math.max(0, cl)) * 0.85);
+    });
+  }
+  commitAndRedraw();
+};
+document.getElementById('actReset').onclick = ()=>{
+  pushUndo();
+  const mirror = E.mirror, theme = E.theme;
+  E = makeInitialState();
+  E.mirror = mirror; E.theme = theme;
+  commitAndRedraw();
+};
+
+// Export SVG / PNG
+document.getElementById('expSvg').onclick = ()=>{
+  const xml = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([xml], { type:'image/svg+xml' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gotz-hand-pose.svg';
+  a.click();
+};
+document.getElementById('expPng').onclick = ()=>{
+  const xml = new XMLSerializer().serializeToString(svg);
+  const img = new Image();
+  img.onload = ()=>{
+    const c = document.createElement('canvas'); c.width = 1200; c.height = 1120;
+    const x = c.getContext('2d');
+    x.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--stage').trim();
+    x.fillRect(0, 0, c.width, c.height);
+    x.drawImage(img, 0, 0, c.width, c.height);
+    const a = document.createElement('a');
+    a.href = c.toDataURL('image/png');
+    a.download = 'gotz-hand-pose.png';
+    a.click();
+  };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+};
+
+// Timeline Morphing
+document.getElementById('tlBtn').onclick = ()=>{
+  const tl = document.getElementById('timeline');
+  tl.hidden = !tl.hidden;
+  document.getElementById('tlBtn').classList.toggle('on', !tl.hidden);
+  if(!keyframes.from) keyframes.from = clone(E);
+  if(!keyframes.to) keyframes.to = clone(PRESETS.Fist ? { ...clone(E), ...clone(PRESETS.Fist) } : E);
+};
+document.getElementById('capFrom').onclick = ()=>{ keyframes.from = clone(E); drawStage(); };
+document.getElementById('capMid').onclick  = ()=>{ keyframes.mid  = clone(E); drawStage(); };
+document.getElementById('capTo').onclick   = ()=>{ keyframes.to   = clone(E); drawStage(); };
+document.getElementById('onionBtn').onclick = ()=>{ onionSkin = !onionSkin; document.getElementById('onionBtn').classList.toggle('on', onionSkin); drawStage(); };
+
+function lerpPose(a, b, t){
+  const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+  E.wrist = a.wrist + (b.wrist - a.wrist) * ease;
+  E.splay = a.splay + (b.splay - a.splay) * ease;
+  E.tilt  = a.tilt  + (b.tilt  - a.tilt)  * ease;
+  E.thumb = a.thumb + (b.thumb - a.thumb) * ease;
+  for(const d of DIGITS){
+    E.rot[d] = (a.rot[d]||0) + ((b.rot[d]||0) - (a.rot[d]||0)) * ease;
+    for(let i = 0; i < E.cj[d].length; i++){
+      E.cj[d][i] = (a.cj[d][i]||0) + ((b.cj[d][i]||0) - (a.cj[d][i]||0)) * ease;
+    }
+  }
+}
+const tlRange = document.getElementById('tlRange');
+tlRange.oninput = ()=>{
+  const t = parseFloat(tlRange.value) / 100;
+  document.getElementById('tlTime').textContent = Math.round(t * 100) + '%';
+  const f = keyframes.from || E, m = keyframes.mid, to = keyframes.to || E;
+  if(m){
+    if(t <= 0.5) lerpPose(f, m, t * 2);
+    else lerpPose(m, to, (t - 0.5) * 2);
+  } else {
+    lerpPose(f, to, t);
+  }
+  commitAndRedraw();
+};
+document.getElementById('tlPlay').onclick = ()=>{
+  playing = !playing;
+  document.getElementById('tlPlay').textContent = playing ? 'Stop' : 'Play';
+  if(!playing){ cancelAnimationFrame(rafPlay); return; }
+  let val = parseFloat(tlRange.value) || 0, dir = 1;
+  const step = ()=>{
+    if(!playing) return;
+    val += dir * 1.4;
+    if(val >= 100){ val = 100; dir = -1; }
+    if(val <= 0){ val = 0; dir = 1; }
+    tlRange.value = String(val);
+    tlRange.oninput({ target: tlRange });
+    rafPlay = requestAnimationFrame(step);
+  };
+  rafPlay = requestAnimationFrame(step);
+};
+
+// Host Bridge (postMessage from Bitruvius Puppyt)
+window.addEventListener('message', e=>{
+  const msg = e.data;
+  if(!msg || typeof msg !== 'object') return;
+  if(msg.type === 'gotz:init'){
+    hostHandId = msg.handId || null;
+    const base = makeInitialState();
+    if(msg.pose && typeof msg.pose === 'object'){
+      Object.assign(base, clone(msg.pose));
+      base.fs = Object.assign({ index:0, ring:0, pinky:0 }, msg.pose.fs || {});
+      base.rot = Object.assign({ thumb:0, index:0, middle:0, ring:0, pinky:0 }, msg.pose.rot || {});
+      base.cj = Object.assign(base.cj, msg.pose.cj || {});
+      base.props = Object.assign(clone(M_ANAT), msg.pose.props || {});
+    }
+    if(typeof msg.wrist === 'number') base.wrist = msg.wrist;
+    if(typeof msg.mirror === 'boolean') base.mirror = msg.mirror;
+    E = base;
+    undoStack.length = 0; redoStack.length = 0; updateHistoryBtns();
+    drawStage(); syncUI();
+  }
+});
+
+// Init
+drawStage();
+syncUI();
+if(window.parent && window.parent !== window){
+  window.parent.postMessage({ type: 'gotz:ready' }, '*');
+}
+</script>
+</body>
+</html>
