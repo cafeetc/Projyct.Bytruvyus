@@ -16,9 +16,9 @@ body{background:var(--bg);color:var(--fg);font:13px/1.4 system-ui,sans-serif;dis
 #side{width:274px;display:flex;flex-direction:column;overflow:hidden;background:var(--pn);border-right:1px solid var(--bd);padding:0;flex:none}
 #sideUpper{flex:1.618 1 0;min-height:0;overflow:auto;padding:10px;border-bottom:1px solid var(--bd)}
 #sideBottom{flex:1 1 0;min-height:0;overflow:auto;padding:8px 10px;background:rgba(34,36,30,.42)}
-#stage{flex:1;min-width:0;position:relative;background:#a7b29e;display:flex;flex-direction:row;overflow:hidden}
+#stage{flex:1;min-width:0;position:relative;background:#e8e9e6;display:flex;flex-direction:row;overflow:hidden}
 #mainWrap{flex:1 1 56%;min-width:0;position:relative;height:100%}
-canvas#c{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair;background:#a7b29e}
+canvas#c{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair;background:#e8e9e6}
 @media(max-width:700px){
   body{flex-direction:column}
   #stage{order:-1;flex:1 1 61.8%;min-height:0}
@@ -79,6 +79,50 @@ canvas#dc{width:100%;height:100%;display:block;touch-action:none;background:#a7b
 #detailBtns .b{padding:2px 7px;font-size:11px}
 #stage.digital-view, #stage.digital-view #mainWrap, #stage.digital-view canvas#c, #stage.digital-view #detailPane, #stage.digital-view canvas#dc{background:#171914;border-color:rgba(226,228,220,.16)}
 #stage.digital-view #detailLbl{color:#e2e4dc;background:rgba(34,36,30,.84);border-color:var(--bd)}
+
+/* ---- top Motion Mode switcher + compact left-side draggable Snap & Clockwork menus ---- */
+#motionBar{position:absolute;top:10px;left:10px;z-index:5;width:auto;max-width:calc(33.333% - 16px);display:flex;flex-direction:column;gap:4px;padding:5px 6px;background:rgba(34,36,30,.92);border:1px solid var(--bd);border-radius:8px;backdrop-filter:blur(4px);box-shadow:0 2px 10px #0004}
+#motionBar .mb-row{display:flex;align-items:center;gap:3px;width:100%}
+#motionBar .b{padding:3px 8px;font-size:11px;font-weight:600}
+#motionBar .b.on{background:var(--tq);border-color:var(--tq2);color:#fff}
+.hud-hdr{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-bottom:4px;margin-bottom:5px;border-bottom:1px solid var(--bd);cursor:grab;user-select:none;touch-action:none}
+.hud-hdr:active,.hud-dragging .hud-hdr{cursor:grabbing}
+.hud-hdr b{color:var(--tq2);font-size:11.5px}
+.hud-grip{font-size:11px;letter-spacing:1px;color:var(--muted);opacity:.75}
+.hud-dragging{opacity:.96;box-shadow:0 8px 24px #0009 !important}
+#snapBar{position:absolute;top:76px;left:10px;z-index:5;width:238px;max-width:calc(33.333% - 16px);display:flex;flex-direction:column;gap:5px;padding:7px;background:rgba(34,36,30,.92);border:1px solid var(--bd);border-radius:8px;backdrop-filter:blur(4px);font-size:11px;box-shadow:0 3px 14px #0005}
+#snapBar[hidden]{display:none}
+#snapBar .sb-row{display:flex;align-items:center;gap:4px}
+#snapBar .sb-lbl{font-size:10px;color:var(--muted);min-width:30px}
+#snapBar .b{padding:3px 6px;font-size:11px}
+#snapBar .b.saved{border-color:var(--tq2);color:var(--tq2)}
+#snapBar .b.on{background:var(--tq);border-color:var(--tq2);color:#fff}
+#snapBar input[type=range]{flex:1;min-width:44px;accent-color:var(--tq2)}
+#snapBar input[type=number]{width:44px;padding:2px 4px;font-size:11px;background:var(--pn);color:var(--fg);border:1px solid var(--bd);border-radius:4px;font-family:ui-monospace,monospace}
+#snapBar select{padding:2px 4px;font-size:11px;background:var(--pn);color:var(--fg);border:1px solid var(--bd);border-radius:4px}
+#snapBar label{display:flex;align-items:center;gap:3px;cursor:pointer;white-space:nowrap}
+#fkIkCue{position:absolute;left:10px;bottom:10px;z-index:4;max-width:calc(100% - 230px);padding:4px 8px;border-radius:6px;background:rgba(34,36,30,.86);border:1px solid var(--bd);backdrop-filter:blur(4px);font-size:11px;color:var(--fg);pointer-events:none;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 8px #0004}
+#fkIkCue .cue-k{font-weight:600;padding:1px 5px;border-radius:4px;font-size:10.5px}
+#fkIkCue .cue-fk{background:rgba(245,158,11,.22);color:#fbbf24;border:1px solid rgba(245,158,11,.42)}
+#fkIkCue .cue-ik{background:rgba(30,168,117,.22);color:#34d399;border:1px solid rgba(30,168,117,.45)}
+#fkIkCue .cue-sep{color:var(--muted)}
+#clockDrawer{position:absolute;top:76px;left:10px;z-index:5;width:232px;max-width:calc(33.333% - 16px);max-height:calc(100% - 90px);overflow:auto;padding:7px;background:rgba(34,36,30,.94);border:1px solid var(--bd);border-radius:8px;backdrop-filter:blur(5px);font-size:11px;box-shadow:0 4px 16px #0006}
+#clockDrawer[hidden]{display:none}
+#clockDrawer .cw-hdr{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--bd);cursor:grab;user-select:none;touch-action:none}
+#clockDrawer .cw-hdr:active{cursor:grabbing}
+#clockDrawer .cw-hdr b{color:var(--tq2);font-size:11.5px}
+#clockDrawer .cw-row{display:flex;align-items:center;gap:5px;margin:5px 0}
+#clockDrawer .cw-row input[type=range]{flex:1;accent-color:var(--tq2)}
+#clockDrawer .cw-row input[type=number],#clockDrawer select{background:var(--pn);color:var(--fg);border:1px solid var(--bd);border-radius:4px;padding:2px 4px;font-size:11px}
+#clockDrawer .cw-row input[type=number]{width:44px}
+#clockDrawer .cw-stages{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+#clockDrawer .cw-stage{padding:2px 7px;font-size:11px;border-radius:4px;border:1px solid var(--bd);background:var(--pn);color:var(--fg);cursor:pointer}
+#clockDrawer .cw-stage.on{background:var(--ac);border-color:var(--tq2);color:#fff}
+#clockDrawer .cw-bonebox{margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
+#clockDrawer .cw-val{min-width:30px;text-align:right;font:10.5px ui-monospace,monospace;color:var(--tq2)}
+#cwCurveSvg{width:100%;height:60px;display:block;background:var(--bg);border:1px solid var(--bd);border-radius:5px;margin:4px 0}
+#canvasLegend{position:absolute;bottom:54px;right:10px;z-index:4;width:252px;max-width:calc(100% - 20px);padding:6px 8px;background:rgba(34,36,30,.92);border:1px solid var(--bd);border-radius:8px;backdrop-filter:blur(4px);box-shadow:0 3px 14px #0005;font-size:11px}
+#canvasLegend[hidden]{display:none}
 </style></head><body>
 
 <div id="side">
@@ -125,46 +169,98 @@ canvas#dc{width:100%;height:100%;display:block;touch-action:none;background:#a7b
 </div>
 
 <div id="bodySide">
-<small>Click hand = rotate wrist (hover ~0.65s then click = arm IK, dbl-click = Gotz). Hover wing ~1s = pivot wing. Drag horizon, ground, or vanishing point on canvas.</small>
-<div class="row"><b id="sel">–</b></div>
-<div class="row"><input id="ang" type="range" min="-180" max="180" step="1" value="0"><input id="angn" type="number" min="-180" max="180" value="0"></div>
-<div id="rootrow" style="display:none">
-  <div class="row">X <input id="tx" type="range" min="-600" max="600" value="0"></div>
-  <div class="row">Y <input id="ty" type="range" min="-600" max="600" value="0"></div>
-</div>
-<div class="row"><label><input id="sp" type="checkbox" checked> joints</label><label><input id="digitalView" type="checkbox"> digital view</label><label><input id="ep" type="checkbox"> edit pivots</label></div>
-<div class="row"><label><input id="bv" type="checkbox"> back view (flip z-order)</label></div>
-<div class="row"><label><input id="constrain" type="checkbox" checked> constrain swivel / rib limits</label></div>
-<div class="row"><label><input id="footGrav" type="checkbox" checked> foot gravity</label><label><input id="perspOn" type="checkbox" checked> perspective grid</label></div>
-<div class="row"><label title="Chungus pose snaps back on release unless you hold steady (~0.55s) at the final pose; once held, pulling inward only stretches a little unless held there too"><input id="chungusPose" type="checkbox" checked> chungus hold</label></div>
-<div class="row">Pose: <select id="ikMode" style="flex:1"><option value="balance">Balance + Straight IK</option><option value="pinFeet">Pin Feet (Reverse)</option><option value="pinAll">Pin Feet + Hands</option><option value="fk">Pure FK</option></select></div>
-<div class="row">Shoulders: <select id="swivelMode" style="flex:1"><option value="mirror">Mirror ribs</option><option value="parallel">Parallel sway</option><option value="free">Free</option><option value="locked">Lock ribs</option></select></div>
-<div class="row">Hips: <select id="hipMode" style="flex:1"><option value="mirror">Mirror hips</option><option value="parallel">Parallel tilt</option><option value="free">Free</option><option value="locked">Lock hips</option></select></div>
-<div class="row">Skull: <select id="skullView" style="flex:1"><option value="front">Front</option><option value="back">Back</option><option value="side">Side (+X)</option><option value="sideFlip">Side (-X)</option></select></div>
-<div class="row">360°: <input id="turn" type="range" min="0" max="360" step="1" value="0"><span id="turnv" style="min-width:34px;text-align:right">0°</span></div>
-<div class="row"><button class="b tbtn" data-t="0">0°</button><button class="b tbtn" data-t="90">90°</button><button class="b tbtn" data-t="180">180°</button><button class="b tbtn" data-t="270">270°</button></div>
+  <small style="color:var(--muted)"><b>FK</b> = quick click-drag. <b>IK</b> = hold ~0.26s then drag.</small>
+  <div class="row"><b id="sel">–</b></div>
 
-<details class="card" id="transLab">
-  <summary>Shoulder Transition Lab (Paddle · Swivel · Bone)</summary>
-  <small>Compare &amp; scrub transition behaviors across midline to pick your favorite feel.</small>
-  <div class="pgrid" id="trPresets">
-    <button class="b trp on" data-tr="compact">Compact Tuck</button>
-    <button class="b trp" data-tr="scurve">S-Curve Whip</button>
-    <button class="b trp" data-tr="wing">Wing Flare</button>
-    <button class="b trp" data-tr="clavicle">Clavicle Arc</button>
-    <button class="b trp" data-tr="stagger" style="grid-column:span 2">Counter Stagger (Depth)</button>
+  <!-- Section 1: Universal Sliders & Root Controls -->
+  <div class="card" style="margin:4px 0;padding:6px">
+    <b style="font-size:11px;color:var(--tq2)">Universal Controls & Rotation</b>
+    <div class="row" style="margin-top:4px"><input id="ang" type="range" min="-180" max="180" step="1" value="0"><input id="angn" type="number" min="-180" max="180" value="0"></div>
+    <div id="rootrow" style="display:none">
+      <div class="row">X <input id="tx" type="range" min="-600" max="600" value="0"></div>
+      <div class="row">Y <input id="ty" type="range" min="-600" max="600" value="0"></div>
+    </div>
+    <div class="row" style="margin-top:4px">360°: <input id="turn" type="range" min="0" max="360" step="1" value="0"><span id="turnv" style="min-width:34px;text-align:right">0°</span></div>
+    <div class="row"><button class="b tbtn" data-t="0">0°</button><button class="b tbtn" data-t="90">90°</button><button class="b tbtn" data-t="180">180°</button><button class="b tbtn" data-t="270">270°</button></div>
+    <div class="row" style="margin-top:4px"><label><input id="sp" type="checkbox" checked> joints</label><label><input id="digitalView" type="checkbox"> digital view</label><label><input id="ep" type="checkbox"> edit pivots</label></div>
+    <div class="row"><label><input id="bv" type="checkbox"> back view</label><label title="Perspective shifts"><input id="sideShifts" type="checkbox" checked> persp shifts</label></div>
+    <div class="row"><label><input id="constrain" type="checkbox" checked> constrain limits</label><label><input id="footGrav" type="checkbox" checked> foot gravity</label></div>
+    <div class="row"><label><input id="perspOn" type="checkbox" checked> persp grid</label><label title="Chungus hold"><input id="chungusPose" type="checkbox" checked> chungus hold</label><button class="b" id="floatToggle" style="padding:1px 6px;font-size:11px;margin-left:auto">Float</button></div>
   </div>
-  <div class="row"><small style="width:42px">Scrub</small><input id="trScrub" type="range" min="0" max="100" value="100"><span id="trScrubV" style="min-width:32px;text-align:right">100%</span></div>
-  <div class="row">
-    <button class="b" id="trDir" style="flex:1">Face: Right (+X)</button>
-    <button class="b" id="trApply">Apply Side</button>
+
+  <!-- Section 2: FK / IK Form & Pinned Handles Toggles -->
+  <div class="card" style="margin:4px 0;padding:6px">
+    <b style="font-size:11px;color:var(--tq2)">FK / IK Form Toggles & Pinned Effectors</b>
+    <div class="row" style="margin-top:4px">
+      <span style="font-size:10.5px;min-width:38px">Pose:</span>
+      <select id="ikMode" style="flex:1">
+        <option value="balance">Balance + Straight IK</option>
+        <option value="pinFeet">Pin Feet (Reverse)</option>
+        <option value="pinAll">Pin Feet + Hands</option>
+        <option value="pinFull">Pin Full Rig (Feet+Hands+Head+Shoulders)</option>
+        <option value="fk">Pure FK</option>
+      </select>
+    </div>
   </div>
-  <div class="row"><small style="width:42px">Swivel</small><input id="trSwiv" type="range" min="-35" max="25" value="-20"><span id="trSwivV" style="min-width:30px;text-align:right">-20°</span></div>
-  <div class="row"><small style="width:42px">Paddle</small><input id="trPad" type="range" min="-40" max="40" value="8"><span id="trPadV" style="min-width:30px;text-align:right">8°</span></div>
-  <div class="row"><small style="width:42px">Bone</small><input id="trBone" type="range" min="-40" max="40" value="12"><span id="trBoneV" style="min-width:30px;text-align:right">12°</span></div>
-  <div class="row"><small style="width:42px">Stagger</small><input id="trStag" type="range" min="0" max="24" value="0"><span id="trStagV" style="min-width:30px;text-align:right">0°</span></div>
-  <div id="trReadout" style="font:10.5px ui-monospace,monospace;color:var(--tq2)">Ready</div>
-</details>
+
+  <!-- Section 3: Part-Specific Sliders & Toggles (Shoulders) -->
+  <div class="card" style="margin:4px 0;padding:6px">
+    <b style="font-size:11px;color:var(--tq2)">Shoulder Parts & Toggles</b>
+    <div class="row" style="margin-top:4px">
+      <span style="font-size:10.5px;min-width:52px">Swivel:</span>
+      <select id="swivelMode" style="flex:1">
+        <option value="mirror">Mirror ribs</option>
+        <option value="parallel">Parallel sway</option>
+        <option value="free">Free</option>
+        <option value="locked">Lock ribs</option>
+      </select>
+    </div>
+    <details class="card" id="transLab" style="margin-top:4px">
+      <summary style="font-size:11px">Shoulder Transition Lab</summary>
+      <div class="pgrid" id="trPresets" style="margin-top:4px">
+        <button class="b trp on" data-tr="compact">Compact Tuck</button>
+        <button class="b trp" data-tr="scurve">S-Curve Whip</button>
+        <button class="b trp" data-tr="wing">Wing Flare</button>
+        <button class="b trp" data-tr="clavicle">Clavicle Arc</button>
+        <button class="b trp" data-tr="stagger" style="grid-column:span 2">Counter Stagger</button>
+      </div>
+      <div class="row"><small style="width:42px">Scrub</small><input id="trScrub" type="range" min="0" max="100" value="100"><span id="trScrubV" style="min-width:32px;text-align:right">100%</span></div>
+      <div class="row"><button class="b" id="trDir" style="flex:1">Face: Right (+X)</button><button class="b" id="trApply">Apply Side</button></div>
+      <div class="row"><small style="width:42px">Swivel</small><input id="trSwiv" type="range" min="-35" max="25" value="-20"><span id="trSwivV" style="min-width:30px;text-align:right">-20°</span></div>
+      <div class="row"><small style="width:42px">Paddle</small><input id="trPad" type="range" min="-40" max="40" value="8"><span id="trPadV" style="min-width:30px;text-align:right">8°</span></div>
+      <div class="row"><small style="width:42px">Bone</small><input id="trBone" type="range" min="-40" max="40" value="12"><span id="trBoneV" style="min-width:30px;text-align:right">12°</span></div>
+      <div class="row"><small style="width:42px">Stagger</small><input id="trStag" type="range" min="0" max="24" value="0"><span id="trStagV" style="min-width:30px;text-align:right">0°</span></div>
+      <div id="trReadout" style="font:10px ui-monospace,monospace;color:var(--tq2)">Ready</div>
+    </details>
+  </div>
+
+  <!-- Section 4: Part-Specific Sliders & Toggles (Hips) -->
+  <div class="card" style="margin:4px 0;padding:6px">
+    <b style="font-size:11px;color:var(--tq2)">Hip Parts & Toggles</b>
+    <div class="row" style="margin-top:4px">
+      <span style="font-size:10.5px;min-width:52px">Hips:</span>
+      <select id="hipMode" style="flex:1">
+        <option value="mirror">Mirror hips</option>
+        <option value="parallel">Parallel tilt</option>
+        <option value="free">Free</option>
+        <option value="locked">Lock hips</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Section 5: Part-Specific Sliders & Toggles (Head & Skull) -->
+  <div class="card" style="margin:4px 0;padding:6px">
+    <b style="font-size:11px;color:var(--tq2)">Head & Skull View</b>
+    <div class="row" style="margin-top:4px">
+      <span style="font-size:10.5px;min-width:52px">Skull:</span>
+      <select id="skullView" style="flex:1">
+        <option value="front">Front</option>
+        <option value="back">Back</option>
+        <option value="side">Side (+X)</option>
+        <option value="sideFlip">Side (-X)</option>
+      </select>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -190,6 +286,158 @@ canvas#dc{width:100%;height:100%;display:block;touch-action:none;background:#a7b
 </div>
 <div id="stage">
   <div id="mainWrap">
+    <canvas id="c"></canvas>
+    <div id="canvasLegend">
+      <div class="hud-hdr" id="legendDragHdr" title="Canvas Legend & Visual Clues">
+        <b>Canvas Clues Legend</b>
+        <div style="display:flex;align-items:center;gap:4px">
+          <button class="b" id="legendToggleBtn" title="Toggle legend view" style="padding:1px 5px;font-size:10px">–</button>
+        </div>
+      </div>
+      <div id="legendBody" style="font-size:11px;display:flex;flex-direction:column;gap:4px;margin-top:3px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#fbbf24;box-shadow:0 0 6px #fbbf24;flex:none"></span><span><b>Amber Glow:</b> Selected Part / FK Rotation</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;border:1.5px dashed #34d399;background:rgba(30,168,117,.25);flex:none"></span><span><b>Emerald Dashed:</b> Available IK Reach / Effector</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;transform:rotate(45deg);background:#d97706;border:1px solid #fbbf24;flex:none"></span><span><b>Diamond Pin:</b> Pinned Rig Handle (Feet/Hands/Head)</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#e879f9;opacity:.85;flex:none"></span><span><b>Purple Ghost:</b> Onion-Skin Snap Snapshot (A·B·C)</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#f97316;box-shadow:0 0 6px #f97316;flex:none"></span><span><b>Coral/Orange:</b> Spine Elastic Tension & Stretch</span></div>
+      </div>
+    </div>
+    <div id="motionBar">
+      <div class="mb-row">
+        <button class="b mb on" data-mode="fluid" title="Pure performance: responsive IK/FK with Spine soft-IK reach">Fluid</button>
+        <button class="b mb" data-mode="elastic" title="Bouncy overshoot springs with exact target placement">Elastic</button>
+        <button class="b mb" data-mode="snap" title="Onion-skin ghosts (A·B·C) + Pose-to-Pose frame stepping">ABC Keyframes</button>
+        <button class="b mb" data-mode="clockwork" hidden title="IK-controlled clockwork multi-stage sequencer with per-bone curve &amp; anticipation">Clockwork</button>
+      </div>
+      <div class="mb-row" style="margin-top:2px">
+        <span style="font-size:10.5px;color:var(--muted);font-weight:600;min-width:26px">FPS:</span>
+        <button class="b on" id="fpsBtn" title="Cycle visual animation &amp; posing FPS: 6, 8, 12, 24, 30, 60" style="flex:1">12 FPS</button>
+      </div>
+    </div>
+    <div id="snapBar" hidden>
+      <div class="hud-hdr" id="snapDragHdr" title="Drag ABC Keyframes menu">
+        <b>ABC Keyframes (A·B·C)</b>
+        <div style="display:flex;align-items:center;gap:5px">
+          <small id="snapStateLbl" style="color:var(--tq2)">Live: A</small>
+          <span class="hud-grip">⋮⋮</span>
+        </div>
+      </div>
+      <div class="sb-row">
+        <span class="sb-lbl">Save:</span>
+        <button class="b" id="snapCapA" style="flex:1" title="Capture current live pose as Pose A">A</button>
+        <button class="b" id="snapCapB" style="flex:1" title="Capture current live pose as Pose B">B</button>
+        <button class="b" id="snapCapC" style="flex:1" title="Capture current live pose as Pose C">C</button>
+      </div>
+      <div class="sb-row">
+        <span class="sb-lbl">Pose:</span>
+        <button class="b" id="snapGoA" style="flex:1" title="Snap directly to Pose A">A</button>
+        <button class="b" id="snapGoB" style="flex:1" title="Snap directly to Pose B">B</button>
+        <button class="b" id="snapGoC" style="flex:1" title="Snap directly to Pose C">C</button>
+      </div>
+      <div class="sb-row">
+        <button class="b tq" id="snapToggle" style="flex:1" title="Step to next pose in selected loop order">Step ▸</button>
+        <button class="b" id="snapLoopPlay" style="flex:1" title="Auto-play Ping-Pong or Direct C→A loop">Loop ⟳</button>
+      </div>
+      <div class="sb-row">
+        <select id="snapLoopMode" style="flex:1" title="Default loop rule after Pose C">
+          <option value="pingpong">Ping-Pong (A↔B↔C)</option>
+          <option value="cycle">Loop C → A (skip B)</option>
+        </select>
+      </div>
+      <div class="sb-row" id="snapStyleRow">
+        <span class="sb-lbl">Feel:</span>
+        <button class="b on" data-sstyle="snap" style="flex:1" title="Single snap setting with adjustable tension easing leading into movement">Snap</button>
+        <button class="b" data-sstyle="flow" style="flex:1" title="Fluid pose-to-pose travel without easing or overshoot">Flow</button>
+        <button class="b" data-sstyle="mechanical" style="flex:1" title="Crisp mechanical step with subtle controlled clockwork jitter">Mech</button>
+        <button class="b" data-sstyle="clock" style="flex:1" title="Joints index cleanly like interlocking precision clock gears">Clock</button>
+      </div>
+      <div class="sb-row" id="snapEaseRow">
+        <span class="sb-lbl" title="Tension easing leading into snap animation">Ease:</span>
+        <input id="snapEasing" type="range" min="0" max="100" value="55" title="Set easing tension leading into the snap animation">
+        <small id="snapEaseVal" style="min-width:30px;text-align:right;font:10px ui-monospace,monospace;color:var(--tq2)">55%</small>
+      </div>
+      <div class="sb-row">
+        <label title="Show translucent onion-skin ghosts"><input id="snapGhostOn" type="checkbox" checked> Ghost</label>
+        <input id="snapAlpha" type="range" min="10" max="70" value="32" title="Ghost opacity">
+      </div>
+      <div class="sb-row">
+        <label title="Number of frames per pose-to-pose transition">Frames <input id="snapFrames" type="number" min="1" max="120" step="1" value="3"></label>
+        <small id="snapDurReadout" style="margin-left:auto;color:var(--muted);font:10px ui-monospace,monospace">3 frames @ 12 FPS</small>
+      </div>
+    </div>
+    <div id="fkIkCue"></div>
+    <div id="clockDrawer" hidden>
+      <div class="cw-hdr" id="cwDragHdr" title="Drag Clockwork menu">
+        <b>Clockwork IK</b>
+        <div style="display:flex;align-items:center;gap:4px">
+          <button class="b" id="cwDemo" title="Build a 3-stage mechanical test cycle from current pose">Demo</button>
+          <button class="b" id="cwCollapse" title="Collapse or expand drawer">–</button>
+          <span class="hud-grip">⋮⋮</span>
+        </div>
+      </div>
+      <div id="cwBody">
+        <div class="cw-stages" id="cwStages"></div>
+        <div class="cw-row">
+          <button class="b tq" id="cwAdd">+ Stage</button>
+          <button class="b" id="cwUpdate" title="Overwrite active stage with current live pose">Set</button>
+          <button class="b" id="cwDup" title="Duplicate active stage">Dup</button>
+          <button class="b" id="cwDel" title="Delete active stage">Del</button>
+        </div>
+        <div class="cw-row">
+          <button class="b tq" id="cwPlay">Play</button>
+          <button class="b" id="cwStep" title="Step to next stage">Step</button>
+          <label><input id="cwLoop" type="checkbox" checked> Loop</label>
+          <label title="Interpolate limb end-effectors through world-space Spine IK"><input id="cwIkDrive" type="checkbox" checked> IK Drive</label>
+        </div>
+        <div class="cw-row">
+          <small>Scrub</small>
+          <input id="cwScrub" type="range" min="0" max="1000" value="0">
+          <span id="cwScrubV" style="min-width:42px;text-align:right;font:10.5px ui-monospace,monospace;color:var(--tq2)">S1</span>
+        </div>
+        <div class="cw-row">
+          <small>Stage ms</small>
+          <input id="cwDur" type="number" min="80" max="3000" step="20" value="420" style="width:62px">
+          <small id="cwTransLbl" style="margin-left:auto;color:var(--tq2)">S1 → S1</small>
+        </div>
+        <div class="cw-bonebox">
+          <div class="cw-row" style="margin:0 0 4px;justify-content:space-between">
+            <b id="cwBoneLbl" style="color:var(--ac);font-size:11.5px">Bone: Body</b>
+            <div style="display:flex;gap:3px">
+              <button class="b" id="cwCopyLimb" title="Copy curve settings to the whole limb chain">Chain</button>
+              <button class="b" id="cwResetBone" title="Reset bone curve to stage default">Reset</button>
+            </div>
+          </div>
+          <svg id="cwCurveSvg" viewBox="0 0 260 66"></svg>
+          <div class="cw-row">
+            <small>Curve</small>
+            <select id="cwCurve" style="flex:1">
+              <option value="ease">Mechanical Ease</option>
+              <option value="mech">Clockwork Detent</option>
+              <option value="linear">Linear</option>
+              <option value="stepped">Stepped (Hard Tick)</option>
+              <option value="elastic">Elastic Snap</option>
+              <option value="custom">Custom Bezier</option>
+            </select>
+          </div>
+          <div class="cw-row" style="gap:4px">
+            <small style="width:28px">Ant</small><input id="cwAnt" type="range" min="0" max="35" value="12"><span id="cwAntV" class="cw-val">12%</span>
+          </div>
+          <div class="cw-row" style="gap:4px">
+            <small style="width:28px">Stag</small><input id="cwStag" type="range" min="0" max="45" value="0"><span id="cwStagV" class="cw-val">0%</span>
+          </div>
+          <div class="cw-row" style="gap:4px">
+            <small style="width:28px">Over</small><input id="cwOver" type="range" min="0" max="25" value="4"><span id="cwOverV" class="cw-val">4%</span>
+          </div>
+          <div class="cw-row" style="gap:4px">
+            <small style="width:28px">Bez</small>
+            <input id="cwCx1" type="number" min="0" max="1" step="0.05" value="0.72" title="cx1">
+            <input id="cwCy1" type="number" min="-0.6" max="1.6" step="0.05" value="0.00" title="cy1">
+            <input id="cwCx2" type="number" min="0" max="1" step="0.05" value="0.18" title="cx2">
+            <input id="cwCy2" type="number" min="-0.6" max="1.6" step="0.05" value="1.00" title="cy2">
+          </div>
+        </div>
+      </div>
+    </div>
     <canvas id="c"></canvas>
     <div id="camRail" title="Drag or click to scroll figure vertically (wheel anytime to zoom simultaneously)"><div id="camThumb"></div></div>
     <div id="camBar">
@@ -392,9 +640,10 @@ function isSideState(){
   if(sk === 'sideFlip') return -1;
   return 0;
 }
+const sideShiftsOn = () => !!($('sideShifts') && $('sideShifts').checked);
 function parentOf(n){
   if(!n || !n.parent) return null;
-  if((n.id==='acromionL' || n.id==='acromionR') && isSideState() !== 0) return by.neck;
+  if(sideShiftsOn() && (n.id==='acromionL' || n.id==='acromionR') && isSideState() !== 0) return by.neck;
   return by[n.parent];
 }
 const rootShift = n => [n.tx||0, n.ty||0];
@@ -404,7 +653,9 @@ const parentWorld = n => { const p = parentOf(n); return p ? world(p) : IDENT; }
 // its pivot sits at the mirrored x. Rotation is applied on top, in screen terms.
 const pivotOf = n => n.flip ? [2*MX-n.piv[0], n.piv[1]] : n.piv;
 const flipMat = n => n.flip ? [-1,0,0,1,2*MX,0] : IDENT;
+const localFlipMat = n => n.localFlip ? [-1,0,0,1,2*pivotOf(n)[0],0] : IDENT;
 function sideLatchOffset(n){
+  if(!sideShiftsOn()) return [0, 0];
   const s = isSideState();
   if(!s || (n.id!=='acromionL' && n.id!=='acromionR')) return [0, 0];
   const [px, py] = pivotOf(n);
@@ -418,10 +669,10 @@ function effShift(n){
   return [(n.tx||0) + sx, (n.ty||0) + sy];
 }
 
-// Wing world matrix: in Front/Back follows neck->acromion brace; in Side folds anatomically along dorsal scapula line
+// Wing world matrix: in Front/Back follows neck->acromion brace; in Side folds anatomically along dorsal scapula line when sideShiftsOn
 function wingWorld(p){
   const n = p.node, s = isSideState();
-  if(!s || !p.wing) return world(n);
+  if(!sideShiftsOn() || !s || !p.wing) return world(n);
   const pw = parentWorld(n);
   const mir = pt => n.flip ? [2*MX-pt[0], pt[1]] : pt;
   const P = mir(n.piv);
@@ -449,8 +700,9 @@ function world(n){
     const a = Math.atan2(vy,vx) - Math.atan2(F[1]-P[1],F[0]-P[0]) + n.ang*RAD;
     const ux = vx/dist, uy = vy/dist;
     const delta = dist - L0;
-    const rawSlide = delta * (isSideState() !== 0 ? 0.12 : 0.55);
-    const [minS, maxS] = isSideState() !== 0
+    const sideLock = sideShiftsOn() && isSideState() !== 0;
+    const rawSlide = delta * (sideLock ? 0.12 : 0.55);
+    const [minS, maxS] = sideLock
       ? [-0.04*L0, 0.06*L0]
       : ($('constrain').checked ? [-0.32*L0, 0.10*L0] : [-0.50*L0, 0.25*L0]);
     const sb = (maxS - minS) * 0.24;
@@ -468,7 +720,7 @@ function world(n){
   }
   const [tx,ty] = effShift(n);
   const [px,py] = pivotOf(n);
-  return n._w = mul(pw, mul(rotAbout(n.ang*RAD, px, py, tx, ty), flipMat(n)));
+  return n._w = mul(pw, mul(rotAbout(n.ang*RAD, px, py, tx, ty), mul(flipMat(n), localFlipMat(n))));
 }
 // Position of a joint's pivot in figure space.
 function pos(n){
@@ -487,10 +739,62 @@ const persp = { ...PERSP_DEFAULT };
 const FIG_TOP = -140, FIG_BOT = 7780, FIG_H = FIG_BOT - FIG_TOP;
 let hoverPersp = null;                     // 'vp' | 'horizon' | 'ground' | null
 let wingArmed = null, wingDwell = null;    // 1s hover activation for Prometheus wing
-let handIkArmed = null, handDwell = null;  // hover-then-click activation for hand arm-IK (regular click rotates wrist)
+let handIkArmed = null, handDwell = null;  // legacy refs kept null; IK activates on universal long-click
+const LONG_IK_MS = 260;                    // long-click duration to engage Limb / Full Body IK
 let mechSnap = null;                       // mechanical toy snap anticipation + release state
 let gravRaf = 0, gravVel = 0;              // foot gravity settle animation
 let lastManualCamMs = 0;                   // timestamp of last user wheel/rail/pan action
+
+// ---- Synergistic FPS Performance Engine (6 · 8 · 12 · 24 · 30 · 60 FPS) ----
+const FPS_LEVELS = [6, 8, 12, 24, 30, 60];
+const FPS_STORE_KEY = 'puppyt_fps_v1';
+const fpsState = { fps: 12, active: true };
+const isFpsStepped = () => !!fpsState.active;
+const fpsStepMs = () => 1000 / (fpsState.fps || 12);
+let lastFpsInteractiveMs = 0, pendingFpsFn = null, fpsFlushRaf = 0;
+function runAtFpsCadence(fn, immediate=false){
+  if(!isFpsStepped() || immediate){
+    if(fpsFlushRaf){ cancelAnimationFrame(fpsFlushRaf); fpsFlushRaf = 0; }
+    pendingFpsFn = null;
+    lastFpsInteractiveMs = performance.now();
+    fn();
+    return;
+  }
+  const now = performance.now();
+  const step = fpsStepMs();
+  if(now - lastFpsInteractiveMs >= step - 1.5){
+    if(fpsFlushRaf){ cancelAnimationFrame(fpsFlushRaf); fpsFlushRaf = 0; }
+    pendingFpsFn = null;
+    lastFpsInteractiveMs = now;
+    fn();
+    return;
+  }
+  pendingFpsFn = fn;
+  if(!fpsFlushRaf){
+    const waitTick = t => {
+      fpsFlushRaf = 0;
+      if(!pendingFpsFn) return;
+      if(!isFpsStepped() || (t - lastFpsInteractiveMs >= fpsStepMs() - 1.5)){
+        const f = pendingFpsFn;
+        pendingFpsFn = null;
+        lastFpsInteractiveMs = t;
+        f();
+      } else {
+        fpsFlushRaf = requestAnimationFrame(waitTick);
+      }
+    };
+    fpsFlushRaf = requestAnimationFrame(waitTick);
+  }
+}
+function flushFpsInteractive(){
+  if(fpsFlushRaf){ cancelAnimationFrame(fpsFlushRaf); fpsFlushRaf = 0; }
+  if(pendingFpsFn){
+    const f = pendingFpsFn;
+    pendingFpsFn = null;
+    lastFpsInteractiveMs = performance.now();
+    f();
+  }
+}
 
 function fitParams(){
   const fz = Math.min(cv.height / (FIG_H * 1.03), cv.width / (W * 1.02));
@@ -528,8 +832,18 @@ function fit(){
 function animateView(tz, tox, toy, ms=340){
   cancelViewAnim();
   const z0 = z, ox0 = ox, oy0 = oy, t0 = performance.now();
+  let lastIdx = -1;
   const step = now=>{
-    const u = Math.min(1, (now - t0) / ms);
+    const stepped = isFpsStepped();
+    const fStep = fpsStepMs();
+    const totalF = Math.max(1, Math.round(ms / fStep));
+    let u = Math.min(1, (now - t0) / ms);
+    if(stepped && u < 1){
+      const idx = Math.floor((now - t0) / fStep);
+      if(idx === lastIdx){ viewRaf = requestAnimationFrame(step); return; }
+      lastIdx = idx;
+      u = Math.min(1, idx / totalF);
+    }
     const e = 1 - Math.pow(1 - u, 3);
     z = z0 + (tz - z0) * e;
     ox = ox0 + (tox - ox0) * e;
@@ -1141,6 +1455,101 @@ function drawPerspectiveSystem(sc){
 
 const analogBuf = document.createElement('canvas');
 const analogCtx = analogBuf.getContext('2d');
+const ghostBuf = document.createElement('canvas');
+const ghostCtx = ghostBuf.getContext('2d');
+
+function drawGhostPose(sc){
+  if(motionMode !== 'snap' || !snapState.ghostVisible) return;
+  const nextSlot = typeof nextSnapSlot === 'function' ? nextSnapSlot(false) : null;
+  const slots = ['A','B','C'].filter(s => s !== snapState.activeSlot && snapState.poses[s]);
+  if(!slots.length) return;
+  // Draw secondary ghosts subtly first, immediate next target last
+  slots.sort((a,b) => (a === nextSlot ? 1 : b === nextSlot ? -1 : 0));
+  const liveSnap = captureRigSnapshot();
+  const tintMap = {
+    A: ['rgba(217, 119, 6, 0.36)',  'rgba(217,119,6,0.85)'],
+    B: ['rgba(30, 168, 117, 0.36)', 'rgba(30,168,117,0.85)'],
+    C: ['rgba(163, 116, 168, 0.42)','rgba(163,116,168,0.88)']
+  };
+  if(ghostBuf.width !== cv.width || ghostBuf.height !== cv.height){
+    ghostBuf.width = cv.width; ghostBuf.height = cv.height;
+  }
+  let dirtySort = false;
+  for(const sl of slots){
+    const ghostSnap = snapState.poses[sl];
+    if(!ghostSnap) continue;
+    nodes.forEach(n=>{
+      const gs = ghostSnap.nodes[n.id];
+      if(gs){ n.ang = gs.ang; n.tx = gs.tx; n.ty = gs.ty; n.piv = gs.piv.slice(); n.flip = !!gs.flip; n.localFlip = !!gs.localFlip; }
+      if(ghostSnap.gotz && ghostSnap.gotz[n.id] && n.gotzPose){ n.gotzPose = gClone(ghostSnap.gotz[n.id]); }
+    });
+    Object.assign(persp, ghostSnap.persp);
+    if(($('skullView') && $('skullView').value !== ghostSnap.skull) || ($('bv') && $('bv').checked !== !!ghostSnap.bv)){
+      dirtySort = true;
+      if($('skullView')) setSkullView(ghostSnap.skull, false);
+      if($('bv')){ $('bv').checked = !!ghostSnap.bv; sortPieces(); }
+    }
+    clearWorld();
+
+    ghostCtx.setTransform(1,0,0,1,0,0);
+    ghostCtx.clearRect(0,0,ghostBuf.width,ghostBuf.height);
+    const gDrawnGotz = new Set();
+    for(const p of pieces){
+      ghostCtx.setTransform(...mul([z,0,0,z,ox,oy], pieceWorld(p)));
+      if(p.node.id==='handL' || p.node.id==='handR'){
+        if(!gDrawnGotz.has(p.node.id)){
+          gDrawnGotz.add(p.node.id);
+          drawGotzStatic(ghostCtx, p.node, false);
+        }
+        continue;
+      }
+      drawPiece(ghostCtx, p);
+    }
+    const [fillCol, strokeCol] = tintMap[sl] || tintMap.B;
+    ghostCtx.save();
+    ghostCtx.setTransform(1,0,0,1,0,0);
+    ghostCtx.globalCompositeOperation = 'source-atop';
+    ghostCtx.fillStyle = fillCol;
+    ghostCtx.fillRect(0, 0, ghostBuf.width, ghostBuf.height);
+    ghostCtx.restore();
+
+    const isPrimary = (sl === nextSlot) || slots.length === 1;
+    const alpha = isPrimary ? snapState.ghostOpacity : snapState.ghostOpacity * 0.52;
+    ctx.save();
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(ghostBuf, 0, 0);
+    ctx.globalAlpha = Math.min(0.68, alpha * 1.45);
+    ctx.strokeStyle = strokeCol;
+    ctx.lineWidth = (isPrimary ? 1.45 : 1.0) * sc;
+    ctx.setLineDash([4*sc, 4*sc]);
+    for(const n of nodes){
+      const pn = parentOf(n);
+      if(pn){
+        const [ax,ay] = toScreen(pos(pn)), [bx,by_] = toScreen(pos(n));
+        ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by_); ctx.stroke();
+      }
+      if(n.bone){
+        const [ax,ay] = toScreen(pos(n)), [bx,by_] = toScreen(apply(world(n), n.bone));
+        ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by_); ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  // Restore exact live snapshot before painting active puppet
+  nodes.forEach(n=>{
+    const ls = liveSnap.nodes[n.id];
+    if(ls){ n.ang = ls.ang; n.tx = ls.tx; n.ty = ls.ty; n.piv = ls.piv.slice(); n.flip = !!ls.flip; n.localFlip = !!ls.localFlip; }
+    if(liveSnap.gotz && liveSnap.gotz[n.id] && n.gotzPose){ n.gotzPose = gClone(liveSnap.gotz[n.id]); }
+  });
+  Object.assign(persp, liveSnap.persp);
+  if(dirtySort){
+    if($('skullView')) setSkullView(liveSnap.skull, false);
+    if($('bv')){ $('bv').checked = !!liveSnap.bv; sortPieces(); }
+  }
+  clearWorld();
+}
 
 function draw(){
   nodes.forEach(n=>{ n._w = null; n._inv = null; });
@@ -1150,6 +1559,7 @@ function draw(){
   ctx.clearRect(0,0,cv.width,cv.height);
   const sc = dpr();
   drawPerspectiveSystem(sc);
+  drawGhostPose(sc);
   const drawnGotz = new Set();
   if(dig){
     // Render analog skeleton cleanly once at 0.5x to offscreen buffer, then blur + purple-aura composite in a single pass
@@ -1222,7 +1632,7 @@ function draw(){
   const lwLink = (dig ? 2.1 : 0.72) * sc;
   const lwBone = (dig ? 3.5 : 1.25) * sc;
   const lwDot  = (dig ? 1.65 : 0.70) * sc;
-  const rSel   = (dig ? 9.5 : 5.4) * sc;
+  const rSel   = (dig ? 14 : 9.5) * sc;
   const rNode  = (dig ? 5.2 : 2.6) * sc;
   const rBall  = (dig ? 12 : 8.2) * sc;
 
@@ -1290,6 +1700,16 @@ function draw(){
       ctx.fillStyle = 'rgba(34, 197, 94, 0.55)'; ctx.fill();
       ctx.restore();
     }
+    if(n===sel){
+      ctx.save();
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 24 * sc;
+      ctx.beginPath(); ctx.arc(x, y, rSel + 5*sc, 0, 7);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.95)';
+      ctx.lineWidth = 3.2 * sc;
+      ctx.stroke();
+      ctx.restore();
+    }
     ctx.beginPath(); ctx.arc(x,y, n===sel?rSel:rNode, 0, 7);
     ctx.fillStyle = n===sel ? SEL_DOT : col(n); ctx.fill();
     ctx.strokeStyle = n===hover ? '#22c55e' : (dig ? '#0a0b09' : 'rgba(0,0,0,0.65)');
@@ -1303,15 +1723,27 @@ function draw(){
   ctx.restore(); // end digital/analog vector skeleton filter & alpha
 
   const ikm = $('ikMode').value;
-  if(ikm==='pinFeet' || ikm==='pinAll'){
-    for(const id of (ikm==='pinAll' ? ['footL','footR','handL','handR'] : ['footL','footR'])){
+  if(drag && drag.t==='fbik' && drag.wasGrounded){
+    for(const pl of [drag.plantL, drag.plantR]){
+      if(!pl) continue;
+      const [px,py] = toScreen(pl.pos), r = 16*sc;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(px, py-r); ctx.lineTo(px+r, py); ctx.lineTo(px, py+r); ctx.lineTo(px-r, py); ctx.closePath();
+      ctx.fillStyle = 'rgba(30,168,117,.36)'; ctx.fill();
+      ctx.strokeStyle = '#1ea875'; ctx.lineWidth = 2.0*sc; ctx.stroke();
+      ctx.restore();
+    }
+  } else if(ikm==='pinFeet' || ikm==='pinAll' || ikm==='pinFull'){
+    const pinKeys = ikm==='pinFull' ? ['footL','footR','handL','handR','head','acromionL','acromionR'] : (ikm==='pinAll' ? ['footL','footR','handL','handR'] : ['footL','footR']);
+    for(const id of pinKeys){
       const pt = pins[id] && pins[id].pos; if(!pt) continue;
-      const [px,py] = toScreen(pt), r = 10*sc;
+      const [px,py] = toScreen(pt), r = 16*sc;
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(px, py-r); ctx.lineTo(px+r, py); ctx.lineTo(px, py+r); ctx.lineTo(px-r, py); ctx.closePath();
       ctx.fillStyle = 'rgba(245,158,11,.35)'; ctx.fill();
-      ctx.strokeStyle = '#d97706'; ctx.lineWidth = 1.6*sc; ctx.stroke();
+      ctx.strokeStyle = '#d97706'; ctx.lineWidth = 2.0*sc; ctx.stroke();
       ctx.restore();
     }
   }
@@ -1339,41 +1771,133 @@ function draw(){
       ctx.restore();
     }
   }
-  if(handDwell && handDwell.node && handIkArmed !== handDwell.node){
-    const [hx_, hy_] = toScreen(pos(handDwell.node));
-    const u = Math.min(1, (performance.now() - handDwell.t0) / 650);
-    if(u > 0.12){
+  if(hover && !drag){
+    const [hx_, hy_] = toScreen(pos(hover));
+    const allowIK = $('ikMode') && $('ikMode').value !== 'fk';
+    const hasChain = allowIK && !!chainByEnd[hover.id];
+    const hasFb = allowIK && !hasChain && (hover.id==='femurL' || hover.id==='femurR' || FBIK_CHAIN_NODES.has(hover.id));
+    ctx.save();
+    // Inner FK ring (amber)
+    ctx.beginPath(); ctx.arc(hx_, hy_, 11*sc, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(245,158,11,0.78)'; ctx.lineWidth = 1.5*sc;
+    ctx.stroke();
+    // Outer dashed IK/FB-IK ring (emerald) when hold-for-IK is available
+    if(hasChain || hasFb){
+      ctx.beginPath(); ctx.arc(hx_, hy_, 24*sc, 0, Math.PI*2);
+      ctx.setLineDash([5*sc, 3.5*sc]);
+      ctx.strokeStyle = 'rgba(30,168,117,0.88)'; ctx.lineWidth = 2.0*sc;
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  if(drag && drag.ikPending){
+    const [ix_, iy_] = toScreen(drag.ikPending.q0);
+    const u = Math.min(1, (performance.now() - drag.ikPending.t0) / LONG_IK_MS);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(ix_, iy_, 22*sc, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(245,158,11,0.45)'; ctx.lineWidth = 2.0*sc; ctx.stroke();
+    if(u > 0.08){
+      ctx.beginPath();
+      ctx.arc(ix_, iy_, 22*sc, -Math.PI/2, -Math.PI/2 + Math.PI*2*u);
+      ctx.strokeStyle = 'rgba(30,168,117,0.95)';
+      ctx.lineWidth = 3.0*sc; ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+    ctx.font = `600 ${Math.round(10.5*sc)}px system-ui,sans-serif`;
+    const lbl = u > 0.14 ? 'Hold → IK · Move → FK' : 'Drag → FK · Hold → IK';
+    const tw = ctx.measureText(lbl).width;
+    ctx.fillStyle = 'rgba(24,26,21,0.86)';
+    ctx.fillRect(ix_ - tw*0.5 - 6*sc, iy_ - 36*sc, tw + 12*sc, 16*sc);
+    ctx.fillStyle = '#34d399';
+    ctx.fillText(lbl, ix_ - tw*0.5, iy_ - 24*sc);
+    ctx.restore();
+  } else if(drag && drag.t==='rot' && sel){
+    const [px_, py_] = toScreen(pos(sel));
+    const da = ((sel.ang - (drag.a0 || 0) + 540) % 360) - 180;
+    const rad0 = drag.s || 0;
+    const rad1 = rad0 + da * RAD;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(px_, py_, 22*sc, rad0, rad1, da < 0);
+    ctx.strokeStyle = 'rgba(245,158,11,0.88)';
+    ctx.lineWidth = 2.0*sc; ctx.lineCap = 'round';
+    ctx.stroke();
+    ctx.beginPath(); ctx.arc(px_, py_, 13*sc, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(245,158,11,0.68)'; ctx.lineWidth = 1.5*sc; ctx.stroke();
+    if(Math.abs(da) >= 1){
+      ctx.font = `600 ${Math.round(10.5*sc)}px ui-monospace,monospace`;
+      const txt = `FK ${da>0?'+':''}${Math.round(da)}°`;
+      ctx.fillStyle = 'rgba(24,26,21,0.84)';
+      const tw = ctx.measureText(txt).width;
+      ctx.fillRect(px_ + 16*sc, py_ - 18*sc, tw + 8*sc, 15*sc);
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillText(txt, px_ + 20*sc, py_ - 7*sc);
+    }
+    ctx.restore();
+  } else if(drag && (drag.t==='ik' || drag.t==='fbik')){
+    const chainPts = [];
+    if(drag.t==='ik' && drag.chain){
+      const c = drag.chain;
+      [by[c.swiv], by[c.U], by[c.L], by[c.E]].forEach(nn => { if(nn) chainPts.push(toScreen(pos(nn))); });
+    } else if(drag.t==='fbik'){
+      const fbIds = drag.isKnee
+        ? ['body', 'hip'+drag.kneeSide, 'femur'+drag.kneeSide, 'shin'+drag.kneeSide, 'foot'+drag.kneeSide]
+        : ['body', 'lumbar', 'thorax', 'neck', 'head'];
+      fbIds.forEach(id => { if(by[id]) chainPts.push(toScreen(pos(by[id]))); });
+    }
+    if(chainPts.length >= 2){
       ctx.save();
       ctx.beginPath();
-      ctx.arc(hx_, hy_, 17*sc, -Math.PI/2, -Math.PI/2 + Math.PI*2*u);
-      ctx.strokeStyle = 'rgba(163,116,168,0.92)';
-      ctx.lineWidth = 2.2*sc; ctx.lineCap = 'round';
+      ctx.moveTo(chainPts[0][0], chainPts[0][1]);
+      for(let i=1;i<chainPts.length;i++) ctx.lineTo(chainPts[i][0], chainPts[i][1]);
+      ctx.strokeStyle = 'rgba(30,168,117,0.44)';
+      ctx.lineWidth = 6.5*sc; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       ctx.stroke();
       ctx.restore();
     }
-  } else if(handIkArmed){
-    const [hx_, hy_] = toScreen(pos(handIkArmed));
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(hx_, hy_, 16*sc, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(30,168,117,0.95)';
-    ctx.lineWidth = 2.0*sc;
-    ctx.stroke();
-    ctx.restore();
+    const targetNode = drag.fbNode || (drag.chain && by[drag.chain.E]) || sel;
+    if(targetNode){
+      const [ix_, iy_] = toScreen(pos(targetNode));
+      const flashing = drag.ikFlashUntil && performance.now() < drag.ikFlashUntil;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ix_, iy_, (flashing ? 28 : 26)*sc, 0, Math.PI*2);
+      ctx.strokeStyle = flashing ? '#34d399' : 'rgba(30,168,117,0.92)';
+      ctx.lineWidth = (flashing ? 3.2 : 2.5)*sc;
+      ctx.stroke();
+      ctx.restore();
+    }
   }
   if(drag && drag.chungus && (drag.chungus.moved || drag.chungus.stage!=='posing')){
     const ch = drag.chungus;
     const pt = chungusEndPoint(ch.node, ch.chain);
     const [cx_, cy_] = toScreen(pt);
     const ancPt = ch.stage==='inwardStretch' ? ch.anchorPt : ch.originPt;
+    const ten = Math.max(0, Math.min(1, ch.tension || 0));
     if(ancPt){
       const [ax_, ay_] = toScreen(ancPt);
       ctx.save();
       ctx.setLineDash([4*sc, 4*sc]);
-      ctx.strokeStyle = ch.stage==='inwardStretch' ? 'rgba(30,168,117,0.68)' : 'rgba(163,116,168,0.62)';
-      ctx.lineWidth = 1.4*sc;
+      ctx.strokeStyle = ch.stage==='inwardStretch'
+        ? (ten > 0.55 ? 'rgba(249,115,22,0.88)' : 'rgba(30,168,117,0.78)')
+        : 'rgba(163,116,168,0.65)';
+      ctx.lineWidth = (1.4 + ten * 1.4)*sc;
       ctx.beginPath(); ctx.moveTo(ax_, ay_); ctx.lineTo(cx_, cy_); ctx.stroke();
       ctx.restore();
+    }
+    if(ten > 0.06 && ch.stretchPt){
+      const [sx_, sy_] = toScreen(ch.stretchPt);
+      if(Math.hypot(sx_ - cx_, sy_ - cy_) > 4*sc){
+        ctx.save();
+        ctx.strokeStyle = ten > 0.65 ? `rgba(249,115,22,${0.55 + 0.4*ten})` : `rgba(232,121,249,${0.48 + 0.38*ten})`;
+        ctx.lineWidth = (1.6 + ten * 2.2)*sc;
+        ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(cx_, cy_); ctx.lineTo(sx_, sy_); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx_, sy_, (3.5 + 3*ten)*sc, 0, Math.PI*2);
+        ctx.fillStyle = ten > 0.65 ? '#fb923c' : '#e879f9'; ctx.fill();
+        ctx.restore();
+      }
     }
     const nowMs = performance.now();
     const justLocked = ch.lockFlashUntil && nowMs < ch.lockFlashUntil;
@@ -1382,7 +1906,7 @@ function draw(){
       ctx.beginPath();
       const frac = justLocked ? 1 : Math.min(1, ch.holdProg);
       ctx.arc(cx_, cy_, 19*sc, -Math.PI/2, -Math.PI/2 + Math.PI*2*frac);
-      ctx.strokeStyle = justLocked ? '#1ea875' : (ch.stage==='inwardStretch' ? 'rgba(30,168,117,0.92)' : 'rgba(217,119,6,0.92)');
+      ctx.strokeStyle = justLocked ? '#1ea875' : (ch.stage==='inwardStretch' ? 'rgba(249,115,22,0.94)' : 'rgba(217,119,6,0.92)');
       ctx.lineWidth = 2.6*sc; ctx.lineCap = 'round';
       ctx.stroke();
       ctx.restore();
@@ -1397,6 +1921,7 @@ function draw(){
     }
   }
   updateCamUI();
+  if(typeof updateFkIkCue === 'function') updateFkIkCue();
 }
 
 // ======================================================= sidebar
@@ -1528,6 +2053,8 @@ function applyTurnStage(stageIdx){
     if(by.swivelR) setFlip(by.swivelR, false);
     if(by.hipL)    setFlip(by.hipL,    false);
     if(by.hipR)    setFlip(by.hipR,    false);
+    if(by.femurL)  by.femurL.localFlip = false;
+    if(by.femurR)  by.femurR.localFlip = false;
   } else if(st === 1){
     setSkullView('side', true);
     setRibsToSide(1); setHipsToSide(1);
@@ -1537,6 +2064,8 @@ function applyTurnStage(stageIdx){
     if(by.swivelR) setFlip(by.swivelR, true);
     if(by.hipL)    setFlip(by.hipL,    true);
     if(by.hipR)    setFlip(by.hipR,    true);
+    if(by.femurL)  by.femurL.localFlip = false;
+    if(by.femurR)  by.femurR.localFlip = false;
   } else if(st === 3){
     setSkullView('sideFlip', true);
     setRibsToSide(-1); setHipsToSide(-1);
@@ -1560,10 +2089,10 @@ function commitMechSnapNow(swiv, modeSnap, targetStage=null){
   const w = pairWing(swiv);
   const sgn = sideSign(swiv); // post-flip side (+1 or -1)
   const dir = (mechSnap && mechSnap.spinSign) ? mechSnap.spinSign : sgn;
-  const startSettle = clampAngle(swiv, dir * 6.5);
+  const startSettle = clampAngle(swiv, dir * 8.2);
   swiv.ang = startSettle;
   syncSwivelShift(swiv);
-  if(w) w.ang = sgn * -2.8;
+  if(w) w.ang = sgn * -3.6;
   // Refresh pose snapshot AFTER stage flip so opposite-side limbs aren't pulled back across midline
   if(mechSnap) mechSnap.poseSnap = snapshotPose();
   if(drag && drag.chungus){ drag.chungus = null; clearChungusAnchors(); }
@@ -1576,16 +2105,24 @@ function commitMechSnapNow(swiv, modeSnap, targetStage=null){
 }
 function ensureMechLoop(){
   if(!mechSnap || mechSnap.raf) return;
+  let lastDrawT = 0;
   const step = now=>{
     if(!mechSnap) return;
     mechSnap.raf = 0;
     const swiv = mechSnap.swiv;
+    const fStepped = isFpsStepped();
+    const fPeriod = fpsStepMs();
     if(mechSnap.mode === 'anticipate'){
       mechSnap.frames++;
       const u = Math.min(1, (now - mechSnap.t0) / mechSnap.durAnt);
+      if(fStepped && u < 1 && (now - lastDrawT) < fPeriod - 1.5){
+        mechSnap.raf = requestAnimationFrame(step);
+        return;
+      }
+      lastDrawT = now;
       // Expressive mechanical anticipation coil (~145-165ms) before snap across midline
-      const easeSlow = Math.sin(u * Math.PI * 0.5);
-      const coil = 1 - Math.pow(1 - u, 2.2);
+      const easeSlow = Math.pow(Math.sin(u * Math.PI * 0.5), 0.78);
+      const coil = 1 - Math.pow(1 - u, 2.4);
       if(mechSnap.creepAng !== undefined){
         swiv.ang = clampAngle(swiv, mechSnap.baseAng + mechSnap.creepAng * easeSlow);
         if(isSwivel(swiv)) syncSwivelShift(swiv);
@@ -1601,16 +2138,17 @@ function ensureMechLoop(){
         by.head.ang = clampAngle(by.head, mechSnap.headBase + (mechSnap.headCreep || 0) * coil);
       }
       draw();
-      if(u >= 1 && mechSnap.frames >= 5){
+      if(u >= 1 && mechSnap.frames >= 4){
         if(by.thorax && mechSnap.thoraxBase !== undefined) by.thorax.ang = mechSnap.thoraxBase;
         if(by.head && mechSnap.headBase !== undefined) by.head.ang = mechSnap.headBase;
         const res = commitMechSnapNow(swiv, mechSnap.poseSnap, mechSnap.targetStage ?? null);
         mechSnap.mode = 'snap';
         mechSnap.t0 = now;
-        mechSnap.durSnap = 155;
+        mechSnap.durSnap = 195;
         mechSnap.startSettle = res.startSettle;
         mechSnap.w = res.w;
         mechSnap.sgn = res.sgn;
+        lastDrawT = now;
         draw();
       }
       if(mechSnap) mechSnap.raf = requestAnimationFrame(step);
@@ -1618,13 +2156,24 @@ function ensureMechLoop(){
     }
     if(mechSnap.mode === 'snap'){
       const k = Math.min(1, (now - mechSnap.t0) / mechSnap.durSnap);
-      // Tactile spring whip -> overshoot & settle at 0°
-      const settle = 1 - Math.pow(k, 0.56);
-      const over = Math.sin(k * Math.PI * 2.2) * Math.exp(-3.6 * k) * 3.2 * mechSnap.sgn;
+      if(fStepped && k < 1 && (now - lastDrawT) < fPeriod - 1.5){
+        mechSnap.raf = requestAnimationFrame(step);
+        return;
+      }
+      lastDrawT = now;
+      // Tactile elastic whip -> overshoot & settle at 0°
+      const settle = 1 - Math.pow(k, 0.52);
+      const over = (Math.sin(k * Math.PI * 2.5) * 4.8 + Math.sin(k * Math.PI * 4.2) * 1.3) * Math.exp(-3.1 * k) * mechSnap.sgn;
       const targetA = k >= 1 ? 0 : (mechSnap.startSettle * settle + over);
       swiv.ang = clampAngle(swiv, targetA);
       syncSwivelShift(swiv);
-      if(mechSnap.w) mechSnap.w.ang = k >= 1 ? 0 : (-3.4 * mechSnap.sgn * settle);
+      if(mechSnap.w) mechSnap.w.ang = k >= 1 ? 0 : (-4.6 * mechSnap.sgn * settle + over * 0.45);
+      if(by.thorax && mechSnap.thoraxBase !== undefined){
+        by.thorax.ang = clampAngle(by.thorax, k >= 1 ? mechSnap.thoraxBase : (mechSnap.thoraxBase - over * 0.25));
+      }
+      if(by.head && mechSnap.headBase !== undefined){
+        by.head.ang = clampAngle(by.head, k >= 1 ? mechSnap.headBase : (mechSnap.headBase + over * 0.32));
+      }
       if(k >= 1){
         const snapPose = mechSnap.poseSnap;
         reanchorDragAfterSnap(swiv, true);
@@ -1833,8 +2382,9 @@ function setWorldDir(n, localTip, targetRad){
   const pW = parentWorld(n), det = pW[0]*pW[3] - pW[1]*pW[2] || 1;
   const wx = Math.cos(targetRad), wy = Math.sin(targetRad);
   const lx = (pW[3]*wx - pW[2]*wy)/det, ly = (-pW[1]*wx + pW[0]*wy)/det;
-  const P = n.flip ? [2*MX-n.piv[0], n.piv[1]] : n.piv;
-  const T = n.flip ? [2*MX-localTip[0], localTip[1]] : localTip;
+  const P = pivotOf(n);
+  let T = n.flip ? [2*MX-localTip[0], localTip[1]] : localTip;
+  if(n.localFlip) T = [2*P[0]-T[0], T[1]];
   n.ang = wrapDeg((Math.atan2(ly, lx) - Math.atan2(T[1]-P[1], T[0]-P[0]))/RAD);
   clearWorld();
 }
@@ -1851,7 +2401,9 @@ function solveLimbIK(c, target, forceStraight=false, bendHint=0){
   const pW = parentWorld(U), det = pW[0]*pW[3] - pW[1]*pW[2] || 1;
   const dx = target[0] - pW[4], dy = target[1] - pW[5];
   const tx = (pW[3]*dx - pW[2]*dy)/det, ty = (-pW[1]*dx + pW[0]*dy)/det;
-  const P1 = U.piv, P2 = L.piv, P3 = E.piv;
+  const P1 = pivotOf(U);
+  const P2 = U.localFlip ? [2*P1[0]-L.piv[0], L.piv[1]] : L.piv;
+  const P3 = U.localFlip ? [2*P1[0]-E.piv[0], E.piv[1]] : E.piv;
   const L1 = Math.hypot(P2[0]-P1[0], P2[1]-P1[1]), L2 = Math.hypot(P3[0]-P2[0], P3[1]-P2[1]);
   const base1 = Math.atan2(P2[1]-P1[1], P2[0]-P1[0]), base2 = Math.atan2(P3[1]-P2[1], P3[0]-P2[0]);
   const restDiff = wrapDeg((base2 - base1)/RAD);
@@ -1865,10 +2417,6 @@ function solveLimbIK(c, target, forceStraight=false, bendHint=0){
     U.ang = wrapDeg((aim - base1)/RAD);
     L.ang = 0;
   } else {
-    const bs = Math.abs(L.ang) > 4 ? Math.sign(L.ang)
-      : (bendHint ? Math.sign(bendHint)
-      : (c.kind==='leg' ? c.bendDefault
-      : (U.id==='humerusL' ? (tx < P1[0] ? 1 : -1) : (tx > P1[0] ? -1 : 1))));
     const minFold = Math.abs(L1 - L2) + 10;
     let d = Math.max(minFold, dist);
     if(dist > softStart){
@@ -1878,8 +2426,20 @@ function solveLimbIK(c, target, forceStraight=false, bendHint=0){
     }
     const alpha = Math.acos(Math.max(-1, Math.min(1, (L1*L1 + d*d - L2*L2)/(2*L1*d))));
     const beta  = Math.acos(Math.max(-1, Math.min(1, (L1*L1 + L2*L2 - d*d)/(2*L1*L2))));
+    let bs;
+    if(Math.abs(L.ang) > 4){
+      bs = (L.ang > 0 ? 1 : -1) * (U.localFlip ? -1 : 1);
+    } else if(bendHint){
+      bs = Math.sign(bendHint);
+    } else if(c.kind === 'leg' && isSideState() !== 0){
+      const sSide = isSideState();
+      const xAt = b => pW[0]*Math.cos(aim - b*alpha) + pW[2]*Math.sin(aim - b*alpha);
+      bs = (xAt(1) * sSide >= xAt(-1) * sSide) ? 1 : -1;
+    } else {
+      bs = (c.kind==='leg' ? c.bendDefault : (U.id==='humerusL' ? (tx < P1[0] ? 1 : -1) : (tx > P1[0] ? -1 : 1)));
+    }
     U.ang = wrapDeg((aim - bs*alpha - base1)/RAD);
-    L.ang = wrapDeg(bs*(Math.PI - beta)/RAD - restDiff);
+    L.ang = wrapDeg((U.localFlip ? -1 : 1) * (bs*(Math.PI - beta)/RAD - restDiff));
   }
   clearWorld();
 }
@@ -1979,11 +2539,342 @@ function dragEndEffectorIK(q, drag){
     if(res==='snapped' && swivWeight >= 0.99) drag.swiv0 = swiv.ang;
   }
   solveLimbIK(c, target, false, drag.bendHint || 0);
-  if(Math.abs(L.ang) > 4) drag.bendHint = Math.sign(L.ang);
+  if(Math.abs(L.ang) > 4) drag.bendHint = Math.sign(L.ang) * (U.localFlip ? -1 : 1);
   setWorldDir(E, E.bone, drag.endDir0);
+  if(drag.chungus){
+    const ch = drag.chungus;
+    const overPull = Math.max(0, distST - hardMax);
+    if(ch.stage !== 'inwardStretch'){
+      const excD = ch.originPt ? Math.hypot(target[0]-ch.originPt[0], target[1]-ch.originPt[1]) : 0;
+      ch.tension = Math.min(1, Math.max(overPull / 240, excD / 880 * 0.42));
+    }
+    ch.stretchPt = target.slice();
+  }
   if(drag.twinSwiv && swivelModeFor(swiv)!=='free') applyBalance(swiv, drag.snap, c.key);
   clearWorld();
   pins[E.id] = { pos: pos(E), endDir: drag.endDir0 };
+}
+
+// ---- Full-Body IK Engine (head, torso, waist, knees with planted-foot preservation + floating support) ----
+const GROUND_TOL = 28;
+const FBIK_CHAIN_NODES = new Set(['head','neck','thorax','lumbar','body','shinL','shinR']);
+function isFootOnGround(id, reuseWorld=false){
+  const f = by[id]; if(!f) return false;
+  const y = footContactInfo(f, reuseWorld).maxY;
+  return Math.abs(y - persp.groundY) <= GROUND_TOL;
+}
+function isAnyFootOnGround(reuseWorld=false){
+  if(!reuseWorld) clearWorld();
+  return isFootOnGround('footL', true) || isFootOnGround('footR', true);
+}
+function kneeNodeFor(n, q){
+  if(!n) return null;
+  if(n.id==='shinL' || n.id==='shinR') return n;
+  if(n.id==='femurL' || n.id==='femurR'){
+    const sh = by[n.id==='femurL' ? 'shinL' : 'shinR'];
+    if(sh && q && Math.hypot(pos(sh)[0]-q[0], pos(sh)[1]-q[1]) <= 280) return sh;
+  }
+  return null;
+}
+function clampPelvisToPlantedFeet(plantL, plantR, pullBiasX=MX, forceBoth=false){
+  if(!plantL && !plantR) return;
+  const cL = LIMB_CHAINS[0], cR = LIMB_CHAINS[1];
+  const [L1L, L2L] = limbLengths(cL), maxL = L1L + L2L - 4;
+  const [L1R, L2R] = limbLengths(cR), maxR = L1R + L2R - 4;
+  const primary = (plantL && plantR)
+    ? (Math.abs(pullBiasX - plantL.pos[0]) <= Math.abs(pullBiasX - plantR.pos[0]) ? 'L' : 'R')
+    : (plantL ? 'L' : 'R');
+
+  const relaxStep = (plant, chain, maxLen, weight) => {
+    if(!plant) return;
+    clearWorld();
+    const H = pos(by[chain.U]);
+    const vx = plant.pos[0] - H[0], vy = plant.pos[1] - H[1];
+    const d = Math.hypot(vx, vy) || 1;
+    if(d > maxLen){
+      const ex = (d - maxLen) * weight;
+      root.tx += (vx / d) * ex;
+      root.ty += (vy / d) * ex;
+    }
+  };
+  const sep = (plantL && plantR) ? Math.hypot(plantL.pos[0]-plantR.pos[0], plantL.pos[1]-plantR.pos[1]) : 0;
+  const bothReachableMax = maxL + maxR - 420;
+  for(let it=0; it<4; it++){
+    if(plantL && plantR && (forceBoth || sep <= bothReachableMax)){
+      relaxStep(plantL, cL, maxL, 0.55);
+      relaxStep(plantR, cR, maxR, 0.55);
+    } else if(plantL && plantR){
+      if(primary === 'L'){ relaxStep(plantR, cR, maxR, 0.28); relaxStep(plantL, cL, maxL, 0.90); }
+      else { relaxStep(plantL, cL, maxL, 0.28); relaxStep(plantR, cR, maxR, 0.90); }
+    } else {
+      relaxStep(plantL, cL, maxL, 1.0);
+      relaxStep(plantR, cR, maxR, 1.0);
+    }
+  }
+  // Keep hips above ground line, then strict final hard lock onto primary stance foot (guarantees 0 slip)
+  clearWorld();
+  const hMaxY = Math.max(plantL ? pos(by.femurL)[1] : -1e9, plantR ? pos(by.femurR)[1] : -1e9);
+  if(hMaxY > persp.groundY - 120){
+    root.ty -= (hMaxY - (persp.groundY - 120));
+  }
+  const pPlant = primary === 'L' ? plantL : plantR;
+  const pChain = primary === 'L' ? cL : cR;
+  const pMax = primary === 'L' ? maxL : maxR;
+  if(pPlant){
+    clearWorld();
+    const H = pos(by[pChain.U]);
+    const vx = pPlant.pos[0] - H[0], vy = pPlant.pos[1] - H[1];
+    const d = Math.hypot(vx, vy) || 1;
+    if(d > pMax){
+      root.tx += (vx / d) * (d - pMax);
+      root.ty += (vy / d) * (d - pMax);
+    }
+  }
+  clearWorld();
+}
+function solveFBIKLegs(plantL, plantR){
+  const items = [
+    { c: LIMB_CHAINS[0], plant: plantL },
+    { c: LIMB_CHAINS[1], plant: plantR }
+  ];
+  for(const {c, plant} of items){
+    if(!plant) continue;
+    const E = by[c.E], L = by[c.L], U = by[c.U];
+    solveLimbIK(c, plant.pos, false, plant.bend || 0);
+    setWorldDir(E, E.bone, plant.dir);
+    if(Math.abs(L.ang) > 4) plant.bend = Math.sign(L.ang) * (U.localFlip ? -1 : 1);
+  }
+  clearWorld();
+}
+function initFullBodyIKDrag(fbNode, q){
+  clearWorld();
+  const snap = snapshotPose();
+  const startSnap = captureRigSnapshot();
+  const onL = isFootOnGround('footL', true);
+  const onR = isFootOnGround('footR', true);
+  const footGravOn = !$('footGrav') || $('footGrav').checked;
+  const wasGrounded = footGravOn ? (onL || onR) : false;
+  const isKnee = (fbNode.id === 'shinL' || fbNode.id === 'shinR');
+  const kneeSide = fbNode.id === 'shinL' ? 'L' : (fbNode.id === 'shinR' ? 'R' : null);
+  const plantL = (wasGrounded && onL) ? {
+    pos: [pos(by.footL)[0], persp.groundY],
+    dir: getWorldDir(by.footL, by.footL.bone),
+    bend: Math.abs(by.shinL.ang) > 4 ? Math.sign(by.shinL.ang) * (by.femurL.localFlip ? -1 : 1) : 0
+  } : null;
+  const plantR = (wasGrounded && onR) ? {
+    pos: [pos(by.footR)[0], persp.groundY],
+    dir: getWorldDir(by.footR, by.footR.bone),
+    bend: Math.abs(by.shinR.ang) > 4 ? Math.sign(by.shinR.ang) * (by.femurR.localFlip ? -1 : 1) : 0
+  } : null;
+  const grabPt = isKnee ? pos(fbNode) : q;
+  const kShin = isKnee ? fbNode : null;
+  const kFoot = isKnee ? by['foot' + kneeSide] : null;
+  return {
+    t: 'fbik',
+    fbNode,
+    isKnee,
+    kneeSide,
+    q0: q.slice(),
+    lastQ: q.slice(),
+    localGrab: apply(invNode(fbNode), q),
+    grabOffset: isKnee ? [grabPt[0] - q[0], grabPt[1] - q[1]] : [0, 0],
+    knee0: isKnee ? pos(fbNode) : null,
+    shinDir0: (kShin && kFoot) ? getWorldDir(kShin, kFoot.piv) : Math.PI / 2,
+    footDir0: (kFoot && kFoot.bone) ? getWorldDir(kFoot, kFoot.bone) : 0,
+    headDir0: (by.head && by.head.bone) ? getWorldDir(by.head, by.head.bone) : -Math.PI / 2,
+    startSnap,
+    snap,
+    wasGrounded,
+    plantL,
+    plantR
+  };
+}
+function solveKneeFBIK(q, drag){
+  const s = drag.kneeSide, o = s === 'L' ? 'R' : 'L';
+  const cDrag = LIMB_CHAINS.find(c => c.key === 'leg' + s);
+  const cOther = LIMB_CHAINS.find(c => c.key === 'leg' + o);
+  const U = by[cDrag.U], L = by[cDrag.L], E = by[cDrag.E];
+  const [L1, L2] = limbLengths(cDrag);
+  const plantSelf = s === 'L' ? drag.plantL : drag.plantR;
+  const plantOther = s === 'L' ? drag.plantR : drag.plantL;
+
+  const targetRaw = [q[0] + drag.grabOffset[0], q[1] + drag.grabOffset[1]];
+  if(drag.wasGrounded) targetRaw[1] = Math.min(persp.groundY - 50, targetRaw[1]);
+
+  let keepSelfPlanted = false;
+  if(drag.wasGrounded){
+    if(!plantOther && plantSelf){
+      keepSelfPlanted = true; // Sole grounded foot must remain planted
+    } else if(plantSelf){
+      const distAnkle = Math.hypot(targetRaw[0] - plantSelf.pos[0], targetRaw[1] - plantSelf.pos[1]);
+      if(targetRaw[1] >= plantSelf.pos[1] - L2 - 22 && distAnkle <= L2 + 48){
+        keepSelfPlanted = true;
+      }
+    }
+  }
+
+  let kneePos = targetRaw;
+  if(keepSelfPlanted && plantSelf){
+    const vx = targetRaw[0] - plantSelf.pos[0];
+    const vy = Math.min(-45, targetRaw[1] - plantSelf.pos[1]);
+    const d = Math.hypot(vx, vy) || 1;
+    kneePos = [plantSelf.pos[0] + (vx / d) * L2, plantSelf.pos[1] + (vy / d) * L2];
+  }
+
+  clearWorld();
+  const H0 = pos(U);
+  const hx = H0[0] - kneePos[0], hy = H0[1] - kneePos[1], dHK = Math.hypot(hx, hy) || 1;
+  if(keepSelfPlanted && drag.wasGrounded){
+    const uy = Math.min(-0.22, hy / dHK);
+    const ux = (hx / dHK) * Math.sqrt(Math.max(0.01, 1 - uy * uy)) * (hx >= 0 ? 1 : -1) * (Math.abs(hx / dHK) > 0.001 ? Math.sign(hx / dHK) * Math.sign(hx) : 1);
+    const dirX = hx / dHK, dirY = Math.min(-0.22, hy / dHK);
+    const normD = Math.hypot(dirX, dirY) || 1;
+    const desH = [kneePos[0] + (dirX / normD) * L1, kneePos[1] + (dirY / normD) * L1];
+    root.tx += (desH[0] - H0[0]) * 0.88;
+    root.ty += (desH[1] - H0[1]) * 0.88;
+  } else if(dHK > L1){
+    const excess = dHK - L1;
+    root.tx += (-hx / dHK) * excess;
+    root.ty += (-hy / dHK) * excess;
+  }
+
+  if(drag.wasGrounded){
+    if(keepSelfPlanted && plantSelf && plantOther){
+      clampPelvisToPlantedFeet(drag.plantL, drag.plantR, kneePos[0], false);
+    } else if(plantOther){
+      clampPelvisToPlantedFeet(s === 'L' ? null : plantOther, s === 'R' ? null : plantOther, kneePos[0], false);
+    } else if(plantSelf){
+      clampPelvisToPlantedFeet(s === 'L' ? plantSelf : null, s === 'R' ? plantSelf : null, kneePos[0], false);
+    }
+  }
+
+  clearWorld();
+  const HL = pos(U);
+  if(keepSelfPlanted && plantSelf){
+    const cross = (plantSelf.pos[0] - HL[0]) * (kneePos[1] - HL[1]) - (plantSelf.pos[1] - HL[1]) * (kneePos[0] - HL[0]);
+    const bend = Math.abs(cross) > 40 ? Math.sign(cross) : (plantSelf.bend || cDrag.bendDefault);
+    solveLimbIK(cDrag, plantSelf.pos, false, bend);
+    setWorldDir(E, E.bone, plantSelf.dir);
+  } else {
+    setWorldDir(U, L.piv, Math.atan2(kneePos[1] - HL[1], kneePos[0] - HL[0]));
+    U.ang = clampAngle(U, U.ang);
+    clearWorld();
+    const knActual = pos(L);
+    const gravAng = Math.PI / 2;
+    const dA = ((gravAng - drag.shinDir0 + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+    let targetShinDir = drag.shinDir0 + dA * 0.65;
+    if(drag.wasGrounded && knActual[1] + L2 * Math.sin(targetShinDir) > persp.groundY - 4){
+      const maxSin = Math.max(-0.98, Math.min(0.98, (persp.groundY - 4 - knActual[1]) / (L2 || 1)));
+      const sideFwd = Math.cos(targetShinDir) >= 0 ? 1 : -1;
+      targetShinDir = Math.atan2(maxSin, sideFwd * Math.sqrt(Math.max(0.01, 1 - maxSin * maxSin)));
+    }
+    setWorldDir(L, E.piv, targetShinDir);
+    L.ang = clampAngle(L, L.ang);
+    clearWorld();
+    setWorldDir(E, E.bone, drag.footDir0);
+    E.ang = clampAngle(E, E.ang);
+  }
+
+  if(drag.wasGrounded && plantOther){
+    const Eo = by[cOther.E], Lo = by[cOther.L];
+    solveLimbIK(cOther, plantOther.pos, false, plantOther.bend || cOther.bendDefault);
+    setWorldDir(Eo, Eo.bone, plantOther.dir);
+    if(Math.abs(Lo.ang) > 4) plantOther.bend = Math.sign(Lo.ang);
+  }
+  clearWorld();
+  applyBalance(root, drag.snap, cDrag.key);
+  if(drag.wasGrounded) enforceGroundContact(false, false);
+  clearWorld();
+}
+function solveFullBodyIK(q, drag){
+  // Restore baseline pose for deterministic, drift-free solving
+  const st = drag.startSnap;
+  nodes.forEach(n => {
+    const sn = st.nodes[n.id];
+    if(sn){ n.ang = sn.ang; n.tx = sn.tx; n.ty = sn.ty; }
+  });
+  clearWorld();
+
+  if(drag.isKnee){
+    solveKneeFBIK(q, drag);
+    return;
+  }
+
+  const fn = drag.fbNode;
+  const dx = q[0] - drag.q0[0], dy = q[1] - drag.q0[1];
+
+  if(fn === root){
+    root.tx += dx;
+    root.ty += dy;
+    if(drag.wasGrounded){
+      root.ang = clampAngle(root, st.nodes.body.ang + Math.max(-14, Math.min(14, dx * 0.010)));
+      clampPelvisToPlantedFeet(drag.plantL, drag.plantR, q[0], false);
+      solveFBIKLegs(drag.plantL, drag.plantR);
+    } else if(!$('footGrav') || $('footGrav').checked){
+      enforceGroundContact(false, false);
+    }
+    applyBalance(root, drag.snap);
+    clearWorld();
+    return;
+  }
+
+  const chainIds = fn.id === 'head'   ? ['head', 'neck', 'thorax', 'lumbar', 'body']
+    : fn.id === 'neck'                ? ['neck', 'thorax', 'lumbar', 'body']
+    : fn.id === 'thorax'              ? ['thorax', 'lumbar', 'body']
+    : ['lumbar', 'body'];
+  const stiff = { head: 0.48, neck: 0.44, thorax: 0.38, lumbar: 0.34, body: 0.16 };
+  const pelGainX = fn.id === 'lumbar' ? 0.64 : fn.id === 'thorax' ? 0.44 : 0.28;
+  const pelGainY = fn.id === 'lumbar' ? 0.78 : fn.id === 'thorax' ? 0.68 : 0.54;
+  const headStab = (fn.id === 'lumbar' || fn.id === 'thorax') ? 0.48 : 0;
+  const rootRestAng = st.nodes.body ? st.nodes.body.ang : 0;
+  const rootBand = drag.wasGrounded ? 26 : 52;
+
+  for(let it = 0; it < 14; it++){
+    clearWorld();
+    const cur = apply(world(fn), drag.localGrab);
+    const ex = q[0] - cur[0], ey = q[1] - cur[1];
+    if(Math.hypot(ex, ey) < 2) break;
+
+    root.tx += ex * pelGainX * 0.36;
+    root.ty += ey * pelGainY * 0.36;
+    if(drag.wasGrounded){
+      clampPelvisToPlantedFeet(drag.plantL, drag.plantR, q[0], false);
+    }
+
+    for(const cid of chainIds){
+      const jn = by[cid]; if(!jn) continue;
+      clearWorld();
+      const P = pos(jn);
+      const C = apply(world(fn), drag.localGrab);
+      if(Math.hypot(C[0] - P[0], C[1] - P[1]) < 8) continue;
+      const dRad = Math.atan2(q[1] - P[1], q[0] - P[0]) - Math.atan2(C[1] - P[1], C[0] - P[0]);
+      const dDeg = ((dRad / RAD) + 540) % 360 - 180;
+      const step = dDeg * (stiff[cid] || 0.3);
+      if(jn === root){
+        jn.ang = clampAngle(jn, Math.max(rootRestAng - rootBand, Math.min(rootRestAng + rootBand, jn.ang + step)));
+      } else {
+        jn.ang = clampAngle(jn, jn.ang + step);
+      }
+    }
+
+    if(headStab > 0 && by.head && by.head.bone){
+      clearWorld();
+      const curH = getWorldDir(by.head, by.head.bone);
+      const dH = ((drag.headDir0 - curH + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      setWorldDir(by.head, by.head.bone, curH + dH * headStab * 0.35);
+      by.head.ang = clampAngle(by.head, by.head.ang);
+    }
+  }
+
+  if(drag.wasGrounded){
+    clampPelvisToPlantedFeet(drag.plantL, drag.plantR, q[0], false);
+    solveFBIKLegs(drag.plantL, drag.plantR);
+    enforceGroundContact(false, false);
+  } else if(!$('footGrav') || $('footGrav').checked){
+    enforceGroundContact(false, false);
+  }
+  applyBalance(by.thorax || root, drag.snap);
+  clearWorld();
 }
 
 // ---- Foot Gravity Engine (ground where shin meets heel so feet add weight & perspective) ----
@@ -2024,14 +2915,16 @@ function cancelGravity(){
   if(gravRaf){ cancelAnimationFrame(gravRaf); gravRaf = 0; }
   gravVel = 0;
 }
-function kickGravity(){
+function kickGravity(forceDrop=false){
   if($('footGrav') && !$('footGrav').checked) return;
-  if(drag && (drag.t==='persp' || drag.t==='ik' || drag.t==='rot')) return;
+  if(drag && (drag.t==='persp' || drag.t==='ik' || drag.t==='fbik' || drag.t==='rot')) return;
   const maxY = figureLowestFootY();
   const gap = persp.groundY - maxY;
   if(gap <= 1.2){ enforceGroundContact(false); return; }
+  // Preserve floating pose when no feet are on ground unless drop is explicitly requested
+  if(!forceDrop && !isAnyFootOnGround(true)) return;
   if(gravRaf) return;
-  let lastT = performance.now();
+  let lastT = performance.now(), lastDrawT = 0;
   const step = now=>{
     gravRaf = 0;
     if(($('footGrav') && !$('footGrav').checked) || (drag && drag.t!=='pan')){ gravVel = 0; return; }
@@ -2050,7 +2943,10 @@ function kickGravity(){
     clearWorld();
     if($('ty')) $('ty').value = Math.round(root.ty);
     syncPins();
-    ui(); draw();
+    if(!isFpsStepped() || (now - lastDrawT >= fpsStepMs() - 1.5)){
+      lastDrawT = now;
+      ui(); draw();
+    }
     gravRaf = requestAnimationFrame(step);
   };
   gravRaf = requestAnimationFrame(step);
@@ -2058,7 +2954,8 @@ function kickGravity(){
 
 function ui(){
   const g = groupRoot(sel), [lo,hi] = nodeBounds(sel), locked = isLocked(sel);
-  const ikNote = ($('ikMode').value!=='fk' && chainByEnd[sel.id]) ? ' [IK drag]' : '';
+  const ikActive = $('ikMode').value !== 'fk';
+  const ikNote = ikActive ? (chainByEnd[sel.id] ? ' [Long-click IK]' : (FBIK_CHAIN_NODES.has(sel.id) ? ' [Long-click Full Body IK]' : '')) : '';
   const gNote = (sel.gotzPose && sel.gotzPose.active) ? ' [Gotz]' : '';
   $('sel').textContent = sel.name + (g && g.flip ? ' (flipped)' : '') + (locked ? ' (locked)' : '') + (isWing(sel) ? ' [wing]' : '') + ikNote + gNote;
   $('parts').hidden = !PART_OF[sel.id];
@@ -2072,15 +2969,34 @@ function ui(){
   for(const b of list.children) b.classList.toggle('on', b.dataset.id===sel.id);
   const stDeg = getTurnStage() * 90;
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('on', +b.dataset.t === stDeg));
+  if($('floatToggle')) $('floatToggle').textContent = isAnyFootOnGround() ? 'Float' : 'Drop';
+  if(typeof syncClockworkBoneUI === 'function' && motionMode === 'clockwork') syncClockworkBoneUI();
+  if(typeof updateFkIkCue === 'function') updateFkIkCue();
 }
-const setAngle = v => { const s = snapshotPose(); applyAngle(sel, +v, undefined, true); applyBalance(sel, s); enforceGroundContact(false); kickGravity(); kickGolden(0.4); ui(); draw(); };
+const setAngle = v => { const s = snapshotPose(); applyAngle(sel, +v, undefined, true); applyBalance(sel, s); enforceGroundContact(false); kickGravity(); kickGolden(0.4); runAtFpsCadence(()=>{ ui(); draw(); }); };
 $('ang').oninput  = e => setAngle(e.target.value);
-$('angn').onchange = e => setAngle(e.target.value);
-$('tx').oninput = $('ty').oninput = ()=>{ const s = snapshotPose(); root.tx = +$('tx').value; root.ty = +$('ty').value; applyBalance(root, s); enforceGroundContact(false); draw(); };
-$('tx').onchange = $('ty').onchange = ()=>{ kickGravity(); };
+$('angn').onchange = e => { setAngle(e.target.value); flushFpsInteractive(); };
+$('tx').oninput = $('ty').oninput = ()=>{ const s = snapshotPose(); root.tx = +$('tx').value; root.ty = +$('ty').value; applyBalance(root, s); enforceGroundContact(false); runAtFpsCadence(()=>draw()); };
+$('tx').onchange = $('ty').onchange = ()=>{ flushFpsInteractive(); kickGravity(); };
 $('sp').onchange = draw;
 $('digitalView').onchange = ()=>{ draw(); ddraw(); };
-$('footGrav').onchange = ()=>{ if($('footGrav').checked){ enforceGroundContact(false); kickGravity(); } else cancelGravity(); draw(); };
+if($('sideShifts')) $('sideShifts').onchange = ()=>{ clearWorld(); syncPins(); ui(); draw(); };
+$('footGrav').onchange = ()=>{ if($('footGrav').checked){ enforceGroundContact(false); kickGravity(true); } else cancelGravity(); ui(); draw(); };
+if($('floatToggle')) $('floatToggle').onclick = ()=>{
+  if(isAnyFootOnGround()){
+    cancelGravity();
+    animatePoseSwitch(()=>{
+      root.ty -= 380;
+      clearWorld();
+      syncPins();
+      ui();
+    }, { dur: 320, antFrac: 0.16, antScale: 0.16 });
+  } else {
+    if($('footGrav')) $('footGrav').checked = true;
+    kickGravity(true);
+    ui(); draw();
+  }
+};
 $('perspOn').onchange = draw;
 $('constrain').onchange = ()=>{ nodes.forEach(n=>{ n.ang = clampAngle(n, n.ang); if(isSwivel(n)) syncSwivelShift(n); }); ui(); draw(); };
 $('ikMode').onchange = ()=>{ syncPins(); ui(); draw(); };
@@ -2109,14 +3025,17 @@ function setSkullView(key, syncBack=true){
   }
   sortPieces();
 }
-// Side-view alignment: face, ribs, AND hips/feet all face the SAME direction ('side' = +X right, 'sideFlip' = -X left).
+// Side-view alignment: face & ribs extend forward (+side), hips move back (-side), AND both legs face the SAME direction as ribs & head (+side).
 let wasBackBeforeSide = false;
 const ribSideOf = n => n.id==='swivelL' ? (n.flip ? -1 : 1) : (n.flip ? 1 : -1);
-const hipSideOf = n => n.id==='hipL'    ? (n.flip ? -1 : 1) : (n.flip ? 1 : -1);
+const hipSideOf = n => n.id==='hipL'    ? (n.flip ? 1 : -1) : (n.flip ? -1 : 1);
 function setHipsToSide(side){
   if(!by.hipL || !by.hipR) return;
-  setFlip(by.hipL, side < 0);
-  setFlip(by.hipR, side > 0);
+  // Hip blade moves back opposite facing direction; femurs flip locally so legs/feet still face ribs & head!
+  setFlip(by.hipL, side > 0);
+  setFlip(by.hipR, side < 0);
+  if(by.femurL) by.femurL.localFlip = true;
+  if(by.femurR) by.femurR.localFlip = true;
   by.hipL.ang = clampAngle(by.hipL, by.hipL.ang); syncSwivelShift(by.hipL);
   by.hipR.ang = clampAngle(by.hipR, by.hipR.ang); syncSwivelShift(by.hipR);
 }
@@ -2139,6 +3058,8 @@ function syncSideProfile(source='ribs'){
       setSkullView(rL > 0 ? 'side' : 'sideFlip', true);
     } else {
       setFlip(by.hipL, false); setFlip(by.hipR, false);
+      if(by.femurL) by.femurL.localFlip = false;
+      if(by.femurR) by.femurR.localFlip = false;
       by.hipL.ang = clampAngle(by.hipL, by.hipL.ang); syncSwivelShift(by.hipL);
       by.hipR.ang = clampAngle(by.hipR, by.hipR.ang); syncSwivelShift(by.hipR);
       if($('skullView').value==='side' || $('skullView').value==='sideFlip'){
@@ -2150,10 +3071,14 @@ function syncSideProfile(source='ribs'){
       if($('skullView').value==='back') wasBackBeforeSide = true;
       else if($('skullView').value==='front') wasBackBeforeSide = false;
       const ribSide = hL;
+      if(by.femurL) by.femurL.localFlip = true;
+      if(by.femurR) by.femurR.localFlip = true;
       setRibsToSide(ribSide);
       setSkullView(ribSide > 0 ? 'side' : 'sideFlip', true);
     } else {
       setFlip(by.swivelL, false); setFlip(by.swivelR, false);
+      if(by.femurL) by.femurL.localFlip = false;
+      if(by.femurR) by.femurR.localFlip = false;
       by.swivelL.ang = clampAngle(by.swivelL, by.swivelL.ang); syncSwivelShift(by.swivelL);
       by.swivelR.ang = clampAngle(by.swivelR, by.swivelR.ang); syncSwivelShift(by.swivelR);
       if($('skullView').value==='side' || $('skullView').value==='sideFlip'){
@@ -2163,7 +3088,53 @@ function syncSideProfile(source='ribs'){
   }
 }
 
-function setTurn(deg){
+function anchorFigureOnPerspectiveShift(fn){
+  if(!by.footL || !by.footR){ fn(); return; }
+  const onL = isFootOnGround('footL', true);
+  const onR = isFootOnGround('footR', true);
+  let anchorId = 'footL';
+  if(onL && onR){
+    anchorId = Math.abs(pos(by.footL)[0] - MX) <= Math.abs(pos(by.footR)[0] - MX) ? 'footL' : 'footR';
+  } else if(onL){
+    anchorId = 'footL';
+  } else if(onR){
+    anchorId = 'footR';
+  } else {
+    const yL = footContactInfo(by.footL, true).maxY;
+    const yR = footContactInfo(by.footR, true).maxY;
+    anchorId = yL >= yR ? 'footL' : 'footR';
+  }
+  const fNode = by[anchorId];
+  const p0 = pos(fNode);
+  const info0 = footContactInfo(fNode, true);
+  const prevMaxY = info0.maxY;
+
+  fn();
+
+  clearWorld();
+  const p1 = pos(fNode);
+  const info1 = footContactInfo(fNode, true);
+  const dx = p0[0] - p1[0];
+  const dy = prevMaxY - info1.maxY;
+  root.tx += dx;
+  root.ty += dy;
+  clearWorld();
+  if(onL || onR){
+    enforceGroundContact(false, true);
+  }
+  syncPins();
+  if($('tx')) $('tx').value = Math.round(root.tx);
+  if($('ty')) $('ty').value = Math.round(root.ty);
+}
+
+function setTurn(deg, preserveAnchor=true){
+  if(preserveAnchor){
+    anchorFigureOnPerspectiveShift(() => setTurnRaw(deg));
+  } else {
+    setTurnRaw(deg);
+  }
+}
+function setTurnRaw(deg){
   const t = ((+deg % 360) + 360) % 360;
   $('turn').value = Math.round(t);
   $('turnv').textContent = Math.round(t) + '°';
@@ -2178,13 +3149,17 @@ function setTurn(deg){
     if(by.swivelR) setFlip(by.swivelR, true);
     if(by.hipL)    setFlip(by.hipL,    true);
     if(by.hipR)    setFlip(by.hipR,    true);
+    if(by.femurL)  by.femurL.localFlip = false;
+    if(by.femurR)  by.femurR.localFlip = false;
   } else {
     if(by.swivelL) setFlip(by.swivelL, false);
     if(by.swivelR) setFlip(by.swivelR, false);
     if(by.hipL)    setFlip(by.hipL,    false);
     if(by.hipR)    setFlip(by.hipR,    false);
+    if(by.femurL)  by.femurL.localFlip = false;
+    if(by.femurR)  by.femurR.localFlip = false;
   }
-  const s = Math.sin(t*RAD);
+  const s = sideShiftsOn() ? Math.sin(t*RAD) : 0;
   if($('swivelMode').value!=='locked'){
     if(by.swivelL){ by.swivelL.ang = clampAngle(by.swivelL, 12*s); syncSwivelShift(by.swivelL); }
     if(by.swivelR){ by.swivelR.ang = clampAngle(by.swivelR, 6*s);  syncSwivelShift(by.swivelR); }
@@ -2198,7 +3173,7 @@ function setTurn(deg){
   if($('ikMode').value!=='fk'){
     for(const c of LIMB_CHAINS){
       const U = by[c.U], L = by[c.L], E = by[c.E];
-      if(c.kind==='leg' && Math.abs(L.ang) < 4){ L.ang = 0; setWorldDir(U, E.piv, Math.PI/2); setWorldDir(E, E.bone, E.flip ? Math.PI*0.75 : Math.PI*0.25); }
+      if(c.kind==='leg' && Math.abs(L.ang) < 4){ L.ang = 0; setWorldDir(U, E.piv, Math.PI/2); E.ang = 0; }
     }
     syncPins();
   }
@@ -2221,7 +3196,7 @@ function captureRigSnapshot(){
     gotz: {}
   };
   nodes.forEach(n => {
-    snap.nodes[n.id] = { ang: n.ang, tx: n.tx, ty: n.ty, piv: n.piv.slice(), flip: !!n.flip };
+    snap.nodes[n.id] = { ang: n.ang, tx: n.tx, ty: n.ty, piv: n.piv.slice(), flip: !!n.flip, localFlip: !!n.localFlip };
     if((n.id==='handL' || n.id==='handR') && n.gotzPose) snap.gotz[n.id] = gClone(n.gotzPose);
   });
   return snap;
@@ -2247,51 +3222,268 @@ function lerpGotzInto(st, a, b, u, antCoil){
     }
   }
 }
+// ======================================================= Multi-Mode Motion Engine (Fluid | Elastic | Snap [Snap/Flow/Mech/Clock])
+let motionMode = 'fluid';
+const snapState = {
+  poses: { A: null, B: null, C: null },
+  activeSlot: 'A',
+  loopDir: 1,
+  loopMode: 'pingpong', // 'pingpong' (A↔B↔C) | 'cycle' (C→A skip B)
+  style: 'snap',        // 'snap' | 'flow' | 'mechanical' | 'clock'
+  easing: 0.55,         // 0..1 tension easing leading into 'snap' style
+  playing: false,
+  playTimer: 0,
+  ghostVisible: true,
+  ghostOpacity: 0.32,
+  snapFrames: 3
+};
+const CW_CURVES = {
+  ease:    [0.25, 0.10, 0.25, 1.00],
+  mech:    [0.82, 0.00, 0.18, 1.00],
+  linear:  [0.00, 0.00, 1.00, 1.00],
+  stepped: [0.00, 0.00, 0.00, 0.00],
+  elastic: [0.34, 1.48, 0.64, 1.00]
+};
+const clockworkState = {
+  stages: [],
+  boneTracks: Object.create(null),
+  activeIdx: 0,
+  playing: false,
+  loop: true,
+  ikDrive: true,
+  durMs: 420,
+  scrubT: 0,
+  raf: 0,
+  nextId: 1
+};
+function defaultBoneCfg(){
+  return { curve:'mech', bezier:[0.82, 0.00, 0.18, 1.00], anticipation:0.12, stagger:0.00, overshoot:0.04 };
+}
+function evalCubicBezier(u, cx1, cy1, cx2, cy2){
+  if(u <= 0) return 0;
+  if(u >= 1) return 1;
+  const bx = t => ((3*(1-t)*(1-t)*t)*cx1 + (3*(1-t)*t*t)*cx2 + t*t*t);
+  const dbx = t => (3*(1-t)*(1-t)*cx1 + 6*(1-t)*t*(cx2-cx1) + 3*t*t*(1-cx2));
+  const by_ = t => ((3*(1-t)*(1-t)*t)*cy1 + (3*(1-t)*t*t)*cy2 + t*t*t);
+  let t = u;
+  for(let i=0;i<5;i++){
+    const err = bx(t) - u;
+    if(Math.abs(err) < 1e-4) return by_(t);
+    const d = dbx(t);
+    if(Math.abs(d) < 1e-5) break;
+    t = Math.max(0, Math.min(1, t - err/d));
+  }
+  let lo = 0, hi = 1;
+  for(let i=0;i<10;i++){
+    const mid = (lo + hi)*0.5;
+    if(bx(mid) < u) lo = mid; else hi = mid;
+  }
+  return by_((lo + hi)*0.5);
+}
+function evalClockworkBone(uRaw, cfg){
+  if(uRaw <= 0) return 0;
+  if(uRaw >= 1) return 1;
+  const stag = Math.max(0, Math.min(0.45, cfg.stagger || 0));
+  const u = stag > 0 ? Math.max(0, Math.min(1, (uRaw - stag) / (1 - stag))) : uRaw;
+  if(u <= 0) return 0;
+  if(u >= 1) return 1;
+  const ant = Math.max(0, Math.min(0.35, cfg.anticipation || 0));
+  if(ant > 0.005 && u < ant){
+    const w = u / ant;
+    return -Math.sin(w * Math.PI) * (0.12 + ant * 0.52);
+  }
+  const v = ant > 0.005 ? (u - ant) / (1 - ant) : u;
+  if(cfg.curve === 'stepped') return v >= 0.96 ? 1 : 0;
+  const bez = cfg.curve === 'custom' ? (cfg.bezier || CW_CURVES.mech) : (CW_CURVES[cfg.curve] || CW_CURVES.mech);
+  const base = cfg.curve === 'linear' ? v : evalCubicBezier(v, bez[0], bez[1], bez[2], bez[3]);
+  const over = Math.max(0, Math.min(0.25, cfg.overshoot || 0));
+  const osc = over > 0 ? Math.sin(v * Math.PI * 1.35) * Math.exp(-4.0 * v) * over : 0;
+  return base + osc;
+}
+function applySnapshotInstant(snap, syncControls=false){
+  if(!snap) return;
+  nodes.forEach(n=>{
+    const s = snap.nodes[n.id];
+    if(s){ n.ang = s.ang; n.tx = s.tx; n.ty = s.ty; n.piv = s.piv.slice(); n.flip = !!s.flip; n.localFlip = !!s.localFlip; }
+    if(snap.gotz && snap.gotz[n.id] && n.gotzPose){ n.gotzPose = gClone(snap.gotz[n.id]); bakeGotzStatic(n); }
+  });
+  Object.assign(persp, snap.persp);
+  setSkullView(snap.skull, false);
+  if($('bv')){ $('bv').checked = !!snap.bv; sortPieces(); }
+  if($('turn') && snap.turn !== undefined){ $('turn').value = Math.round(snap.turn); $('turnv').textContent = Math.round(snap.turn)+'°'; }
+  clearWorld();
+  if(syncControls){ syncPins(); ui(); }
+}
+function getStageBoneCfg(stageId, nodeId){
+  const tr = clockworkState.boneTracks[stageId];
+  return (tr && tr[nodeId]) ? tr[nodeId] : defaultBoneCfg();
+}
+function ensureStageBoneCfg(stageId, nodeId){
+  if(!clockworkState.boneTracks[stageId]) clockworkState.boneTracks[stageId] = Object.create(null);
+  if(!clockworkState.boneTracks[stageId][nodeId]) clockworkState.boneTracks[stageId][nodeId] = defaultBoneCfg();
+  return clockworkState.boneTracks[stageId][nodeId];
+}
+function snapshotEndEffectors(snap){
+  const saved = captureRigSnapshot();
+  applySnapshotInstant(snap, false);
+  const res = {};
+  for(const c of LIMB_CHAINS){
+    const E = by[c.E], U = by[c.U], L = by[c.L];
+    if(!E || !U || !L) continue;
+    res[c.key] = {
+      pos: pos(E),
+      dir: getWorldDir(E, E.bone),
+      bend: Math.abs(L.ang) > 4 ? Math.sign(L.ang) * (U.localFlip ? -1 : 1) : 0
+    };
+  }
+  applySnapshotInstant(saved, false);
+  return res;
+}
+function applyClockworkBlend(stA, stB, uGlobal){
+  if(!stA || !stB) return;
+  const fromSnap = stA.snap, toSnap = stB.snap;
+  const flipSwapAt = 0.45;
+  nodes.forEach(n=>{
+    const a = fromSnap.nodes[n.id], b = toSnap.nodes[n.id];
+    if(!a || !b) return;
+    const cfg = getStageBoneCfg(stB.id, n.id);
+    const k = evalClockworkBone(uGlobal, cfg);
+    n.flip = uGlobal >= flipSwapAt ? !!b.flip : !!a.flip;
+    n.localFlip = uGlobal >= flipSwapAt ? !!b.localFlip : !!a.localFlip;
+    n.piv = (uGlobal >= flipSwapAt ? b.piv : a.piv).slice();
+    const da = ((b.ang - a.ang + 540) % 360) - 180;
+    n.ang = uGlobal >= 1 ? b.ang : clampAngle(n, a.ang + da * k);
+    n.tx  = uGlobal >= 1 ? b.tx  : (a.tx + (b.tx - a.tx) * Math.max(-0.25, Math.min(1.25, k)));
+    n.ty  = uGlobal >= 1 ? b.ty  : (a.ty + (b.ty - a.ty) * Math.max(-0.25, Math.min(1.25, k)));
+    if(isSwivel(n)) syncSwivelShift(n);
+    if((n.id==='handL'||n.id==='handR') && n.gotzPose && fromSnap.gotz[n.id] && toSnap.gotz[n.id]){
+      lerpGotzInto(n.gotzPose, fromSnap.gotz[n.id], toSnap.gotz[n.id], uGlobal >= 1 ? 1 : Math.max(0, Math.min(1, k)), k < 0 ? k : 0);
+      bakeGotzStatic(n);
+    }
+  });
+  const targetSk = uGlobal >= flipSwapAt ? toSnap.skull : fromSnap.skull;
+  const targetBv = !!(uGlobal >= flipSwapAt ? toSnap.bv : fromSnap.bv);
+  if(($('skullView') && $('skullView').value !== targetSk) || ($('bv') && $('bv').checked !== targetBv)){
+    setSkullView(targetSk, false);
+    if($('bv')){ $('bv').checked = targetBv; sortPieces(); }
+  }
+  persp.groundY = fromSnap.persp.groundY + (toSnap.persp.groundY - fromSnap.persp.groundY) * uGlobal;
+  persp.horizonY = fromSnap.persp.horizonY + (toSnap.persp.horizonY - fromSnap.persp.horizonY) * uGlobal;
+  persp.vpX = fromSnap.persp.vpX + (toSnap.persp.vpX - fromSnap.persp.vpX) * uGlobal;
+  clearWorld();
+
+  if(clockworkState.ikDrive && uGlobal > 0.001 && uGlobal < 0.999){
+    const effA = stA._eff || (stA._eff = snapshotEndEffectors(fromSnap));
+    const effB = stB._eff || (stB._eff = snapshotEndEffectors(toSnap));
+    for(const c of LIMB_CHAINS){
+      const E = by[c.E], L = by[c.L];
+      const ea = effA[c.key], eb = effB[c.key];
+      if(!E || !ea || !eb) continue;
+      const cfgE = getStageBoneCfg(stB.id, E.id);
+      const kE = evalClockworkBone(uGlobal, cfgE);
+      const tx = ea.pos[0] + (eb.pos[0] - ea.pos[0]) * kE;
+      const ty = ea.pos[1] + (eb.pos[1] - ea.pos[1]) * kE;
+      const dDir = ((eb.dir - ea.dir + Math.PI*3) % (Math.PI*2)) - Math.PI;
+      solveLimbIK(c, [tx, ty], false, uGlobal >= 0.5 ? eb.bend : ea.bend);
+      setWorldDir(E, E.bone, ea.dir + dDir * kE);
+      if(L) L.ang = clampAngle(L, L.ang);
+    }
+  }
+  enforceGroundContact(false, uGlobal >= 1);
+  clearWorld();
+}
+
+function evalClockGearCurve(kNode, teeth){
+  if(kNode <= 0) return 0;
+  if(kNode >= 1) return 1;
+  const p = kNode * teeth;
+  const idx = Math.floor(p);
+  const sub = p - idx;
+  // Precision brass gear mesh: fast tooth engagement (0..0.38) -> steady pawl lock + crisp micro-seat
+  const toothFrac = sub < 0.38
+    ? (1 - Math.pow(1 - (sub / 0.38), 3))
+    : (1 + Math.sin(Math.min(1, (sub - 0.38) / 0.35) * Math.PI) * 0.025);
+  return Math.min(1.02, (idx + toothFrac) / teeth);
+}
+
 function animatePoseSwitch(applyTargetFn, opts={}){
   cancelPoseAnim(); cancelMechSnap(); cancelGravity();
-  const dur = opts.dur || 470;
-  const antFrac = opts.antFrac || 0.27;
-  const antScale = opts.antScale || 0.24;
+  if(motionMode === 'clockwork' && clockworkState.playing) stopClockworkPlay();
+  const mode = opts.modeOverride || motionMode;
+  const snapStyle = mode === 'snap' ? (opts.snapStyle || snapState.style || 'snap') : null;
+  const snapEase  = mode === 'snap' ? Math.max(0, Math.min(1, snapState.easing ?? 0.55)) : 0;
+  const fpsPeriod = fpsStepMs();
+  const snapFrames = Math.max(1, opts.snapFrames || snapState.snapFrames || 3);
+  const dur = mode === 'snap' ? Math.max(16, snapFrames * fpsPeriod)
+    : mode === 'elastic' ? Math.max(580, opts.dur || 580)
+    : mode === 'clockwork' ? Math.max(360, opts.dur || 420)
+    : (opts.dur || 490);
+  const antFrac = mode === 'snap'
+    ? (snapStyle === 'snap' && snapEase > 0.06 ? (0.10 + 0.24 * snapEase) : 0)
+    : mode === 'clockwork' ? (opts.antFrac || 0.20)
+    : mode === 'elastic' ? (opts.antFrac || 0.25)
+    : (opts.antFrac || 0.27);
+  const antScale = mode === 'snap'
+    ? (0.08 + 0.34 * snapEase)
+    : (opts.antScale || 0.24);
   const coilBias = opts.coilBias || 0;
+  const onComplete = typeof opts.onComplete === 'function' ? opts.onComplete : null;
+
   const fromSnap = captureRigSnapshot();
   // Temporarily evaluate target state to capture target snapshot, then restore `from` cleanly
   applyTargetFn();
   const toSnap = captureRigSnapshot();
-  // Restore `fromSnap` before starting animation frames
+  // Compute pose delta boost for richer elastic tension on larger switches/flips
+  let flipCount = 0, maxDa = 0;
   nodes.forEach(n => {
-    const s = fromSnap.nodes[n.id];
-    if(s){ n.ang = s.ang; n.tx = s.tx; n.ty = s.ty; n.piv = s.piv.slice(); n.flip = s.flip; }
-    if(fromSnap.gotz[n.id]){ n.gotzPose = gClone(fromSnap.gotz[n.id]); bakeGotzStatic(n); }
+    const a = fromSnap.nodes[n.id], b = toSnap.nodes[n.id];
+    if(!a || !b) return;
+    if(!!a.flip !== !!b.flip || !!a.localFlip !== !!b.localFlip) flipCount++;
+    const da = Math.abs(((b.ang - a.ang + 540) % 360) - 180);
+    if(da > maxDa) maxDa = da;
   });
-  Object.assign(persp, fromSnap.persp);
-  setSkullView(fromSnap.skull, false);
-  if($('bv')){ $('bv').checked = fromSnap.bv; sortPieces(); }
-  if($('turn')){ $('turn').value = Math.round(fromSnap.turn); $('turnv').textContent = Math.round(fromSnap.turn)+'°'; }
-  clearWorld(); draw();
+  const deltaBoost = Math.min(1.65, 1.0 + flipCount * 0.14 + maxDa / 220);
 
-  let swapped = false;
+  // Restore `fromSnap` before starting animation frames
+  applySnapshotInstant(fromSnap, false);
+  draw();
+
+  const stepped = isFpsStepped();
+  const totalF = mode === 'snap' ? snapFrames : Math.max(1, Math.round(dur / fpsPeriod));
+  let swapped = false, lastIdx = -1;
   const t0 = performance.now();
   const step = now => {
     poseAnimRaf = 0;
-    const t = Math.min(1, (now - t0) / dur);
-    if(t < antFrac){
-      // Phase 1: Anticipation coil (counter-move opposite to target delta + subtle spine/head coil)
+    const elapsed = now - t0;
+    let t = Math.min(1, elapsed / dur);
+    if(stepped && t < 1){
+      const idx = Math.min(totalF, Math.floor(elapsed / fpsPeriod));
+      if(idx === lastIdx){
+        poseAnimRaf = requestAnimationFrame(step);
+        return;
+      }
+      lastIdx = idx;
+      t = Math.min(1, idx / totalF);
+    }
+    if(antFrac > 0 && t < antFrac){
+      // Phase 1: Asymmetric elastic wind-up coil (tension leading into release)
       const u = t / antFrac;
-      const bell = Math.sin(u * Math.PI);
-      const pull = -antScale * bell;
+      const bell = Math.pow(Math.sin(u * Math.PI), 0.68);
+      const pull = -antScale * (mode === 'snap' ? 1.0 : deltaBoost) * bell;
       nodes.forEach(n => {
         const a = fromSnap.nodes[n.id], b = toSnap.nodes[n.id];
         if(!a || !b) return;
         let da = ((b.ang - a.ang + 540) % 360) - 180;
         let extra = 0;
-        if(n.id === 'lumbar') extra = 3.2 * bell;
-        else if(n.id === 'thorax') extra = (-4.5 + coilBias * 3.5) * bell;
-        else if(n.id === 'neck') extra = 2.8 * bell;
-        else if(n.id === 'head') extra = (coilBias * -5.5) * bell;
-        else if(n.id === 'swivelL' || n.id === 'swivelR') extra = (coilBias * 4.5) * bell;
-        n.ang = clampAngle(n, a.ang + da * pull + extra);
+        if(n.id === 'lumbar') extra = 3.8 * bell;
+        else if(n.id === 'thorax') extra = (-5.2 + coilBias * 4.0) * bell;
+        else if(n.id === 'neck') extra = 3.2 * bell;
+        else if(n.id === 'head') extra = (coilBias * -6.0) * bell;
+        else if(n.id === 'swivelL' || n.id === 'swivelR') extra = (coilBias * 4.8) * bell;
+        const extraScale = mode === 'snap' ? (0.45 + 0.85 * snapEase) : 1.0;
+        n.ang = clampAngle(n, a.ang + da * pull + extra * extraScale);
         n.tx = a.tx + (b.tx - a.tx) * pull;
-        n.ty = a.ty + (b.ty - a.ty) * pull + (n === root ? 28 * bell : 0);
+        n.ty = a.ty + (b.ty - a.ty) * pull + (n === root ? 32 * extraScale * bell : 0);
         if(isSwivel(n)) syncSwivelShift(n);
         if((n.id==='handL'||n.id==='handR') && n.gotzPose && fromSnap.gotz[n.id] && toSnap.gotz[n.id]){
           lerpGotzInto(n.gotzPose, fromSnap.gotz[n.id], toSnap.gotz[n.id], 0, pull * 0.9);
@@ -2305,29 +3497,79 @@ function animatePoseSwitch(applyTargetFn, opts={}){
     }
     if(!swapped){
       swapped = true;
-      nodes.forEach(n => {
+      nodes.forEach((n, ni) => {
         const b = toSnap.nodes[n.id];
-        if(b){ n.flip = b.flip; n.piv = b.piv.slice(); }
+        if(b){ n.flip = !!b.flip; n.localFlip = !!b.localFlip; n.piv = b.piv.slice(); }
       });
       setSkullView(toSnap.skull, false);
       if($('bv')){ $('bv').checked = toSnap.bv; sortPieces(); }
       if($('turn')){ $('turn').value = Math.round(toSnap.turn); $('turnv').textContent = Math.round(toSnap.turn)+'°'; }
     }
-    // Phase 2: Drive from wind-up trough -> target with slight damped follow-through
-    const k = Math.min(1, (t - antFrac) / Math.max(0.01, 1 - antFrac));
-    const ease = 1 - Math.pow(1 - k, 3.2);
-    const over = Math.sin(k * Math.PI) * Math.exp(-3.2 * k) * 0.065;
-    const s = Math.min(1.07, ease + over);
-    nodes.forEach(n => {
+    // Phase 2: Mode & Snap-Style drive -> exact target placement
+    const k = t >= 1 ? 1 : Math.min(1, (t - antFrac) / Math.max(0.01, 1 - antFrac));
+    const ease = mode === 'snap'
+      ? (snapStyle === 'flow' ? k
+        : snapStyle === 'mechanical' ? evalCubicBezier(k, 0.72, 0.0, 0.28, 1.0)
+        : snapStyle === 'clock' ? evalClockGearCurve(k, Math.max(4, Math.min(10, snapFrames * 2)))
+        : evalCubicBezier(k, 0.16 + 0.68 * snapEase, 0.0, 0.14 + 0.14 * (1 - snapEase), 1.0))
+      : mode === 'clockwork' ? evalCubicBezier(k, 0.82, 0.0, 0.18, 1.0)
+      : (1 - Math.pow(1 - k, 3.35));
+
+    const gearTeeth = Math.max(4, Math.min(10, snapFrames * 2));
+    nodes.forEach((n, ni) => {
       const a = fromSnap.nodes[n.id], b = toSnap.nodes[n.id];
       if(!a || !b) return;
+      const rawLag = chungusNodeLag(n.id);
+      const lag = mode === 'snap'
+        ? (snapStyle === 'snap' ? rawLag * 0.45 * snapEase
+          : snapStyle === 'clock' ? rawLag * 0.35
+          : 0)
+        : rawLag * (mode === 'elastic' ? 1.25 : 0.65);
+      const kNode = k >= 1 ? 1 : Math.max(0, Math.min(1, (k - lag) / (1 - lag)));
+      let eNode, over = 0, jitterDeg = 0;
+
+      if(mode === 'snap'){
+        if(snapStyle === 'flow'){
+          // Pure fluid pose-to-pose travel without easing or overshoot
+          eNode = kNode;
+        } else if(snapStyle === 'mechanical'){
+          // Crisp drive with slight, controlled clockwork escapement micro-jitter (never extreme)
+          eNode = evalCubicBezier(kNode, 0.72, 0.0, 0.28, 1.0);
+          if(k < 1){
+            const env = Math.sin(kNode * Math.PI);
+            jitterDeg = Math.sin(k * Math.PI * 10 + ni * 1.17) * env * 1.15;
+          }
+        } else if(snapStyle === 'clock'){
+          // Precision interlocking clock gear indexing
+          eNode = evalClockGearCurve(kNode, gearTeeth);
+        } else {
+          // Unified Snap setting with user tension easing + tight snap settle
+          eNode = evalCubicBezier(kNode, 0.16 + 0.68 * snapEase, 0.0, 0.14 + 0.14 * (1 - snapEase), 1.0);
+          over = Math.sin(kNode * Math.PI * 2.1) * Math.exp(-3.8 * kNode) * (0.015 + 0.105 * snapEase);
+        }
+      } else if(mode === 'elastic'){
+        eNode = 1 - Math.pow(1 - kNode, 3.35);
+        const amp = (lag > 0.06 ? 0.23 : (lag > 0 ? 0.16 : 0.105)) * deltaBoost;
+        over = (Math.sin(kNode * Math.PI * 2.85) + 0.22 * Math.sin(kNode * Math.PI * 5.2)) * Math.exp(-3.1 * kNode) * amp;
+      } else if(mode === 'clockwork'){
+        eNode = evalCubicBezier(kNode, 0.82, 0, 0.18, 1);
+        over = Math.sin(kNode * Math.PI * 1.25) * Math.exp(-3.4 * kNode) * 0.04;
+      } else {
+        // Fluid with richer damped spring tension
+        eNode = 1 - Math.pow(1 - kNode, 3.35);
+        const amp = (lag > 0.06 ? 0.115 : (lag > 0 ? 0.08 : 0.055)) * deltaBoost;
+        over = Math.sin(kNode * Math.PI * 1.65) * Math.exp(-3.1 * kNode) * amp;
+      }
+
+      const s = k >= 1 ? 1 : (eNode + over);
       const da = ((b.ang - a.ang + 540) % 360) - 180;
-      const flipChanged = (a.flip !== b.flip);
+      const flipChanged = (!!a.flip !== !!b.flip) || (!!a.localFlip !== !!b.localFlip);
       const startAng = flipChanged ? b.ang * -0.25 : a.ang;
       const stepAng = flipChanged ? (b.ang - startAng) : da;
-      n.ang = k >= 1 ? b.ang : clampAngle(n, startAng + stepAng * s);
-      n.tx = k >= 1 ? b.tx : (a.tx + (b.tx - a.tx) * ease);
-      n.ty = k >= 1 ? b.ty : (a.ty + (b.ty - a.ty) * ease);
+      n.ang = k >= 1 ? b.ang : clampAngle(n, startAng + stepAng * s + jitterDeg);
+      const tScale = k >= 1 ? 1 : Math.max(-0.2, Math.min(1.14, eNode + over * 0.45));
+      n.tx = k >= 1 ? b.tx : (a.tx + (b.tx - a.tx) * tScale);
+      n.ty = k >= 1 ? b.ty : (a.ty + (b.ty - a.ty) * tScale);
       if(isSwivel(n)) syncSwivelShift(n);
       if((n.id==='handL'||n.id==='handR') && n.gotzPose && fromSnap.gotz[n.id] && toSnap.gotz[n.id]){
         lerpGotzInto(n.gotzPose, fromSnap.gotz[n.id], toSnap.gotz[n.id], k >= 1 ? 1 : s, 0);
@@ -2345,6 +3587,7 @@ function animatePoseSwitch(applyTargetFn, opts={}){
       syncPins(); ui(); draw();
       if(gotzNode) renderGotzSide();
       ddraw();
+      if(onComplete) onComplete();
     }
   };
   poseAnimRaf = requestAnimationFrame(step);
@@ -2370,54 +3613,58 @@ const TR_ARCHETYPES = {
 };
 let trFacing = 1; // +1 = face Right (+X, ribs +X, hips/feet +X), -1 = face Left (-X, ribs -X, hips/feet -X)
 function applyTransitionPreview(){
-  const snap = snapshotPose();
-  const u = (+$('trScrub').value || 0) / 100;
-  const swivA = +$('trSwiv').value, padA = +$('trPad').value, boneA = +$('trBone').value, stagA = +$('trStag').value;
-  $('trScrubV').textContent = Math.round(u*100) + '%';
-  $('trSwivV').textContent  = Math.round(swivA) + '°';
-  $('trPadV').textContent   = Math.round(padA) + '°';
-  $('trBoneV').textContent  = Math.round(boneA) + '°';
-  $('trStagV').textContent  = Math.round(stagA) + '°';
+  anchorFigureOnPerspectiveShift(() => {
+    const snap = snapshotPose();
+    const u = (+$('trScrub').value || 0) / 100;
+    const swivA = +$('trSwiv').value, padA = +$('trPad').value, boneA = +$('trBone').value, stagA = +$('trStag').value;
+    $('trScrubV').textContent = Math.round(u*100) + '%';
+    $('trSwivV').textContent  = Math.round(swivA) + '°';
+    $('trPadV').textContent   = Math.round(padA) + '°';
+    $('trBoneV').textContent  = Math.round(boneA) + '°';
+    $('trStagV').textContent  = Math.round(stagA) + '°';
 
-  const crossed = u >= 0.5;
-  const nearSwiv = trFacing > 0 ? by.swivelL : by.swivelR;
-  const farSwiv  = trFacing > 0 ? by.swivelR : by.swivelL;
-  const nearPad  = pairWing(nearSwiv), farPad = pairWing(farSwiv);
-  const nearBone = by[nearSwiv.id==='swivelL'?'acromionL':'acromionR'];
-  const farBone  = by[farSwiv.id==='swivelL'?'acromionL':'acromionR'];
+    const crossed = u >= 0.5;
+    const nearSwiv = trFacing > 0 ? by.swivelL : by.swivelR;
+    const farSwiv  = trFacing > 0 ? by.swivelR : by.swivelL;
+    const nearPad  = pairWing(nearSwiv), farPad = pairWing(farSwiv);
+    const nearBone = by[nearSwiv.id==='swivelL'?'acromionL':'acromionR'];
+    const farBone  = by[farSwiv.id==='swivelL'?'acromionL':'acromionR'];
 
-  if(crossed){
-    setRibsToSide(trFacing);
-    setHipsToSide(trFacing);
-    setSkullView(trFacing > 0 ? 'side' : 'sideFlip', true);
-    const k = (u - 0.5) * 2;
-    nearSwiv.ang = clampAngle(nearSwiv, -trFacing * (swivA * 0.45 + stagA * 0.5) * k);
-    farSwiv.ang  = clampAngle(farSwiv,  -trFacing * (swivA * 0.45 - stagA * 0.5) * k);
-    syncSwivelShift(nearSwiv); syncSwivelShift(farSwiv);
-    if(nearPad) nearPad.ang = clampAngle(nearPad, -trFacing * padA * k);
-    if(farPad)  farPad.ang  = clampAngle(farPad,  -trFacing * (padA - stagA*0.4) * k);
-    if(nearBone) nearBone.ang = (-trFacing * (boneA + stagA*0.35)) * k;
-    if(farBone)  farBone.ang  = (-trFacing * (boneA - stagA*0.35)) * k;
-    if(by.hipL){ by.hipL.ang = clampAngle(by.hipL, trFacing * 10 * k); syncSwivelShift(by.hipL); }
-    if(by.hipR){ by.hipR.ang = clampAngle(by.hipR, trFacing * 6  * k); syncSwivelShift(by.hipR); }
-  } else {
-    setFlip(by.swivelL, false); setFlip(by.swivelR, false);
-    setFlip(by.hipL, false);    setFlip(by.hipR, false);
-    setSkullView('front', true);
-    const k = u * 2;
-    farSwiv.ang  = clampAngle(farSwiv,  -trFacing * swivA * k);
-    nearSwiv.ang = clampAngle(nearSwiv,  trFacing * (swivA * 0.25) * k);
-    syncSwivelShift(farSwiv); syncSwivelShift(nearSwiv);
-    if(farPad)  farPad.ang  = clampAngle(farPad,  -trFacing * padA * k);
-    if(nearPad) nearPad.ang = 0;
-    if(farBone) farBone.ang = -trFacing * boneA * k;
-    if(nearBone) nearBone.ang = 0;
-  }
-  applyBalance(root, snap);
-  enforceGroundContact(false);
-  syncPins();
-  kickGolden(0.45);
-  $('trReadout').textContent = `Swiv:${Math.round(farSwiv.ang)}° Pad:${Math.round((farPad&&farPad.ang)||0)}° Bone:${Math.round((farBone&&farBone.ang)||0)}°`;
+    if(crossed){
+      setRibsToSide(trFacing);
+      setHipsToSide(trFacing);
+      setSkullView(trFacing > 0 ? 'side' : 'sideFlip', true);
+      const k = (u - 0.5) * 2;
+      nearSwiv.ang = clampAngle(nearSwiv, -trFacing * (swivA * 0.45 + stagA * 0.5) * k);
+      farSwiv.ang  = clampAngle(farSwiv,  -trFacing * (swivA * 0.45 - stagA * 0.5) * k);
+      syncSwivelShift(nearSwiv); syncSwivelShift(farSwiv);
+      if(nearPad) nearPad.ang = clampAngle(nearPad, -trFacing * padA * k);
+      if(farPad)  farPad.ang  = clampAngle(farPad,  -trFacing * (padA - stagA*0.4) * k);
+      if(nearBone) nearBone.ang = (-trFacing * (boneA + stagA*0.35)) * k;
+      if(farBone)  farBone.ang  = (-trFacing * (boneA - stagA*0.35)) * k;
+      if(by.hipL){ by.hipL.ang = clampAngle(by.hipL, trFacing * 10 * k); syncSwivelShift(by.hipL); }
+      if(by.hipR){ by.hipR.ang = clampAngle(by.hipR, trFacing * 6  * k); syncSwivelShift(by.hipR); }
+    } else {
+      setFlip(by.swivelL, false); setFlip(by.swivelR, false);
+      setFlip(by.hipL, false);    setFlip(by.hipR, false);
+      if(by.femurL) by.femurL.localFlip = false;
+      if(by.femurR) by.femurR.localFlip = false;
+      setSkullView('front', true);
+      const k = u * 2;
+      farSwiv.ang  = clampAngle(farSwiv,  -trFacing * swivA * k);
+      nearSwiv.ang = clampAngle(nearSwiv,  trFacing * (swivA * 0.25) * k);
+      syncSwivelShift(farSwiv); syncSwivelShift(nearSwiv);
+      if(farPad)  farPad.ang  = clampAngle(farPad,  -trFacing * padA * k);
+      if(nearPad) nearPad.ang = 0;
+      if(farBone) farBone.ang = -trFacing * boneA * k;
+      if(nearBone) nearBone.ang = 0;
+    }
+    applyBalance(root, snap);
+    enforceGroundContact(false);
+    syncPins();
+    kickGolden(0.45);
+    $('trReadout').textContent = `Swiv:${Math.round(farSwiv.ang)}° Pad:${Math.round((farPad&&farPad.ang)||0)}° Bone:${Math.round((farBone&&farBone.ang)||0)}°`;
+  });
   ui(); draw();
 }
 document.querySelectorAll('.trp').forEach(b=>{
@@ -2437,7 +3684,7 @@ $('trDir').onclick = ()=>{
 };
 $('trApply').onclick = ()=>{ $('trScrub').value = 100; animatePoseSwitch(()=>applyTransitionPreview(), { dur: 460, antFrac: 0.27, antScale: 0.25, coilBias: trFacing }); };
 
-$('skullView').onchange = e => { const v = e.target.value; animatePoseSwitch(()=>{ setSkullView(v, true); ui(); }, { dur: 380, antFrac: 0.28, antScale: 0.25, coilBias: v==='side' ? 1 : v==='sideFlip' ? -1 : 0.4 }); };
+$('skullView').onchange = e => { const v = e.target.value; animatePoseSwitch(()=>{ anchorFigureOnPerspectiveShift(() => setSkullView(v, true)); ui(); }, { dur: 380, antFrac: 0.28, antScale: 0.25, coilBias: v==='side' ? 1 : v==='sideFlip' ? -1 : 0.4 }); };
 $('bv').onchange = ()=>{
   const ch = $('bv').checked;
   animatePoseSwitch(()=>{
@@ -2450,6 +3697,7 @@ $('rn').onclick = ()=>{
   animatePoseSwitch(()=>{
     cancelMechSnap(); clearChungusAnchors(sel.id);
     if(sel.twin) setFlip(sel,false);
+    sel.localFlip = false;
     sel.ang = 0; sel.tx = sel.ty = 0; sel.piv = sel.rest.slice();
     if(sel.id==='handL' || sel.id==='handR'){ sel.gotzPose = makeGotzPose(sel); bakeGotzStatic(sel); if(gotzNode===sel) renderGotzSide(); }
     else { sel.gotzPose = null; }
@@ -2461,8 +3709,9 @@ $('rn').onclick = ()=>{
 $('ra').onclick = ()=>{
   animatePoseSwitch(()=>{
     cancelMechSnap(); cancelGravity(); clearChungusAnchors();
+    if(typeof stopSnapPlay === 'function') stopSnapPlay();
     nodes.forEach(n=>{
-      n.flip = false; n.ang = 0; n.tx = 0; n.ty = 0; n.piv = n.rest.slice();
+      n.flip = false; n.localFlip = false; n.ang = 0; n.tx = 0; n.ty = 0; n.piv = n.rest.slice();
       if(n.id==='handL' || n.id==='handR'){ n.gotzPose = makeGotzPose(n); n._gotzStatic = null; }
       else { n.gotzPose = null; }
     });
@@ -2477,10 +3726,11 @@ $('ra').onclick = ()=>{
 
 const round1 = v => Math.round(v*10)/10;
 $('get').onclick = ()=>{
-  const o = {pose:{}, pivots:{}, flips:[], root:[root.tx,root.ty], shifts:{}, skull:$('skullView').value, bv:$('bv').checked, turn:+$('turn').value, ikMode:$('ikMode').value, swivelMode:$('swivelMode').value, hipMode:$('hipMode').value, constrain:$('constrain').checked, footGrav:$('footGrav').checked, persp:{groundY:round1(persp.groundY), horizonY:round1(persp.horizonY), vpX:round1(persp.vpX)}, gotz:{}};
+  const o = {pose:{}, pivots:{}, flips:[], localFlips:[], root:[root.tx,root.ty], shifts:{}, skull:$('skullView').value, bv:$('bv').checked, turn:+$('turn').value, ikMode:$('ikMode').value, swivelMode:$('swivelMode').value, hipMode:$('hipMode').value, constrain:$('constrain').checked, footGrav:$('footGrav').checked, persp:{groundY:round1(persp.groundY), horizonY:round1(persp.horizonY), vpX:round1(persp.vpX)}, gotz:{}};
   nodes.forEach(n=>{
     o.pose[n.id] = round1(n.ang); o.pivots[n.id] = n.piv.map(round1);
     if(n.flip && n.twin) o.flips.push(n.id);
+    if(n.localFlip) o.localFlips.push(n.id);
     if(n!==root && (n.tx||n.ty)) o.shifts[n.id] = [round1(n.tx), round1(n.ty)];
     if(n.gotzPose && n.gotzPose.active) o.gotz[n.id] = n.gotzPose;
   });
@@ -2505,6 +3755,7 @@ $('set').onclick = ()=>{
         if(o.pivots && o.pivots[n.id]) n.piv = o.pivots[n.id].slice();
         n.tx = o.shifts && o.shifts[n.id] ? o.shifts[n.id][0] : 0;
         n.ty = o.shifts && o.shifts[n.id] ? o.shifts[n.id][1] : 0;
+        n.localFlip = !!(o.localFlips && o.localFlips.includes(n.id));
         if(n.id==='handL' || n.id==='handR'){
           n.gotzPose = (o.gotz && o.gotz[n.id]) ? o.gotz[n.id] : makeGotzPose(n);
           n.gotzPose.active = true;
@@ -2524,6 +3775,24 @@ $('set').onclick = ()=>{
 };
 addEventListener('keydown', e=>{
   if(e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT' || e.target.tagName==='SELECT') return;
+  if(drag && !e.repeat){
+    const keyL = (e.key || '').toLowerCase();
+    if(keyL === 'i' && (drag.t === 'rot' || drag.ikPending) && $('ikMode').value !== 'fk'){
+      const qCur = drag.lastQ || pos(sel);
+      const ch = chainByEnd[sel.id] || LIMB_CHAINS.find(c => c.U === sel.id || c.L === sel.id);
+      const pend = ch && chainByEnd[sel.id]
+        ? { kind:'chain', chain:ch, node:sel, q0:qCur.slice(), downPx:[drag.downX||0, drag.downY||0], t0:performance.now(), e:{ clientX:drag.lastClientX??drag.downX??0, clientY:drag.lastClientY??drag.downY??0 } }
+        : { kind:'fbik', fbNode: kneeNodeFor(sel, qCur) || (FBIK_CHAIN_NODES.has(sel.id) ? sel : (by.thorax || root)), node:sel, q0:qCur.slice(), downPx:[drag.downX||0, drag.downY||0], t0:performance.now(), e:{ clientX:drag.lastClientX??drag.downX??0, clientY:drag.lastClientY??drag.downY??0 } };
+      if(drag.ikPending) clearLong();
+      promoteDragToIK(pend);
+      return;
+    }
+    if((keyL === 'f' || e.key === 'Alt') && (drag.t === 'ik' || drag.t === 'fbik')){
+      if(e.key === 'Alt') e.preventDefault();
+      if(typeof dropDragToFK === 'function') dropDragToFK();
+      return;
+    }
+  }
   const s = e.shiftKey ? 5 : 1, snap = snapshotPose();
   if(e.key==='ArrowLeft') applyAngle(sel, sel.ang - s);
   else if(e.key==='ArrowRight') applyAngle(sel, sel.ang + s);
@@ -2681,34 +3950,126 @@ function clearWingDwell(){
 function clearHandDwell(){
   if(handDwell){ cancelAnimationFrame(handDwell.timer); handDwell = null; }
 }
-function updateHandDwell(nh){
-  const isHand = nh && (nh.id==='handL' || nh.id==='handR') && $('ikMode').value!=='fk';
-  if(!isHand){
-    clearHandDwell();
-    if(handIkArmed){ handIkArmed = null; draw(); }
-    return;
+function updateHandDwell(){
+  handIkArmed = null;
+}
+const canvasScale = () => cv.width/cv.getBoundingClientRect().width;
+function clearLong(){
+  if(longTimer){ cancelAnimationFrame(longTimer); longTimer = null; }
+  if(drag && drag.ikPending) drag.ikPending = null;
+}
+function promoteDragToIK(pend){
+  if(!drag || !pend || mechSnap) return;
+  clearChungusTimer();
+  const node = pend.node;
+  if(pend.kind === 'chain' && pend.chain){
+    const ch = pend.chain, swiv = by[ch.swiv], twinSwiv = swiv && swiv.twin ? by[swiv.twin] : null;
+    const U_ = by[ch.U], L_ = by[ch.L], E_ = by[ch.E];
+    const initBend = Math.abs(L_.ang) > 4 ? Math.sign(L_.ang)
+      : (ch.kind==='leg' ? ch.bendDefault
+      : (U_.id==='humerusL' ? (pos(E_)[0] < pos(U_)[0] ? 1 : -1) : (pos(E_)[0] > pos(U_)[0] ? -1 : 1)));
+    drag = {
+      t:'ik', chain:ch, target0:pos(node), q0:pend.q0.slice(), lastQ:pend.q0.slice(),
+      downX: pend.downPx ? pend.downPx[0] : 0, downY: pend.downPx ? pend.downPx[1] : 0,
+      lastClientX: pend.e ? pend.e.clientX : 0, lastClientY: pend.e ? pend.e.clientY : 0,
+      endDir0:getWorldDir(node, node.bone),
+      swiv0:swiv.ang, twinSwiv, twinSwiv0:twinSwiv?twinSwiv.ang:0,
+      snap: snapshotPose(),
+      bendHint: initBend,
+      ikFlashUntil: performance.now() + 260,
+      chungus: initChungusDrag(node, ch, pend.e, 'ik')
+    };
+    if(drag.chungus) ensureChungusTimer();
+  } else if(pend.kind === 'fbik' && pend.fbNode){
+    drag = initFullBodyIKDrag(pend.fbNode, pend.q0);
+    drag.downX = pend.downPx ? pend.downPx[0] : 0;
+    drag.downY = pend.downPx ? pend.downPx[1] : 0;
+    drag.lastClientX = pend.e ? pend.e.clientX : 0;
+    drag.lastClientY = pend.e ? pend.e.clientY : 0;
+    drag.ikFlashUntil = performance.now() + 260;
   }
-  if(handIkArmed === nh) return;
-  if(handDwell && handDwell.node === nh) return;
-  clearHandDwell();
-  const t0 = performance.now();
-  const pulse = ()=>{
-    if(!handDwell || handDwell.node !== nh || drag) return;
-    if(performance.now() - t0 >= 650){
-      handIkArmed = nh;
-      handDwell = null;
-      hover = nh;
-      cv.style.cursor = 'grab';
-      draw();
+  cv.style.cursor = 'grab';
+  ui(); draw();
+}
+function dropDragToFK(){
+  if(!drag || (drag.t !== 'ik' && drag.t !== 'fbik')) return;
+  const targetNode = sel || (drag.chain && by[drag.chain.E]) || root;
+  const pp = pos(targetNode);
+  const qCur = drag.lastQ || pp;
+  const a0 = targetNode.ang || 0;
+  const s = Math.atan2(qCur[1] - pp[1], qCur[0] - pp[0]);
+  const downX = drag.downX ?? (drag.lastClientX ?? 0);
+  const downY = drag.downY ?? (drag.lastClientY ?? 0);
+  drag = {
+    t: 'rot',
+    a0,
+    s,
+    shift: false,
+    twin: targetNode.twin ? by[targetNode.twin] : null,
+    b0: targetNode.twin && by[targetNode.twin] ? by[targetNode.twin].ang : 0,
+    downX,
+    downY,
+    lastClientX: downX,
+    lastClientY: downY,
+    lastQ: qCur.slice(),
+    snap: snapshotPose(),
+    chungus: initChungusDrag(targetNode, null, { clientX: downX, clientY: downY }, 'rot')
+  };
+  if(drag.chungus) ensureChungusTimer();
+  cv.style.cursor = 'grab';
+  ui(); draw();
+}
+function updateFkIkCue(){
+  const el = $('fkIkCue'); if(!el) return;
+  if(drag){
+    if(drag.ikPending){
+      el.innerHTML = '<span class="cue-k cue-ik">IK Charging</span> Hold still for IK · move for FK';
+    } else if(drag.t === 'rot'){
+      const name = sel ? sel.name.split(' (')[0] : 'Joint';
+      el.innerHTML = `<span class="cue-k cue-fk">FK: ${name}</span><span class="cue-sep">·</span><span>Press <b>I</b> → promote to IK</span>`;
+    } else if(drag.t === 'ik'){
+      const c = drag.chain;
+      const lbl = c ? (c.kind==='arm' ? 'Arm IK' : 'Leg IK') : 'Limb IK';
+      el.innerHTML = `<span class="cue-k cue-ik">${lbl} Active</span><span class="cue-sep">·</span><span>Press <b>F</b> / <b>Alt</b> → drop to FK</span>`;
+    } else if(drag.t === 'fbik'){
+      const lbl = drag.isKnee ? 'Knee Chain IK' : 'Full-Body Spine IK';
+      el.innerHTML = `<span class="cue-k cue-ik">${lbl} Active</span><span class="cue-sep">·</span><span>Press <b>F</b> / <b>Alt</b> → drop to FK</span>`;
+    } else if(drag.t === 'persp'){
+      el.innerHTML = `<span class="cue-k" style="background:rgba(143,106,143,.25);color:#d8b4e2;border:1px solid rgba(143,106,143,.45)">Perspective ${drag.what.toUpperCase()}</span> Anchored figure`;
+    } else {
+      el.innerHTML = '<span class="cue-k cue-fk">Active Drag</span>';
+    }
+  } else if(hover){
+    const allowIK = $('ikMode') && $('ikMode').value !== 'fk';
+    const hasChain = allowIK && !!chainByEnd[hover.id];
+    const hasFb = allowIK && !hasChain && (hover.id==='femurL' || hover.id==='femurR' || FBIK_CHAIN_NODES.has(hover.id));
+    const hName = hover.name ? hover.name.split(' (')[0] : hover.id;
+    if(hasChain || hasFb){
+      el.innerHTML = `<span class="cue-k cue-fk">FK: Quick drag</span><span class="cue-sep">·</span><span class="cue-k cue-ik">IK: Long-click</span><span class="cue-sep">·</span><span>${hName}</span>`;
+    } else {
+      el.innerHTML = `<span class="cue-k cue-fk">FK Rotate</span><span class="cue-sep">·</span><span>${hName}</span>`;
+    }
+  } else {
+    el.innerHTML = '<span class="cue-k cue-fk">FK: Click-drag</span><span class="cue-sep">·</span><span class="cue-k cue-ik">IK: Long-click</span><span class="cue-sep">·</span><span>Press <b>I</b> / <b>F</b> mid-drag</span>';
+  }
+}
+function armLongClickIK(pend){
+  clearLong();
+  if(!drag || !pend) return;
+  drag.ikPending = pend;
+  const tick = now => {
+    longTimer = 0;
+    if(!drag || !drag.ikPending || mechSnap){ return; }
+    if(now - pend.t0 >= LONG_IK_MS){
+      drag.ikPending = null;
+      promoteDragToIK(pend);
       return;
     }
     draw();
-    handDwell.timer = requestAnimationFrame(pulse);
+    longTimer = requestAnimationFrame(tick);
   };
-  handDwell = { node: nh, t0, timer: requestAnimationFrame(pulse) };
+  longTimer = requestAnimationFrame(tick);
 }
-const canvasScale = () => cv.width/cv.getBoundingClientRect().width;
-function clearLong(){ if(longTimer){ clearTimeout(longTimer); longTimer = null; } }
 
 // Convert figure point q -> unmirrored Gotz SVG space for hand node n
 function toHandGotzCoords(q, n){
@@ -2762,32 +4123,37 @@ function chungusEndPoint(node, ch){
   const child = nodes.find(m => parentOf(m) === node && !m.aim);
   return child ? pos(child) : pos(node);
 }
-function initChungusDrag(node, chain, e){
+function initChungusDrag(node, chain, e, dragMode='rot'){
   if(!$('chungusPose') || !$('chungusPose').checked) return null;
   const existing = chungusAnchors[node.id];
   const full = captureRigSnapshot();
   const curPt = chungusEndPoint(node, chain);
   const now = performance.now();
-  const alreadyNearAnchor = !!(existing && Math.abs((node.ang||0) - existing.lockedAng) < 8 && Math.hypot(curPt[0]-existing.anchorPt[0], curPt[1]-existing.anchorPt[1]) < 45);
+  const canReuse = !!(existing && existing.mode === dragMode && Math.abs((node.ang||0) - existing.lockedAng) < 8 && Math.hypot(curPt[0]-existing.anchorPt[0], curPt[1]-existing.anchorPt[1]) < 45);
+  const ex = (e && typeof e.clientX === 'number') ? e.clientX : 0;
+  const ey = (e && typeof e.clientY === 'number') ? e.clientY : 0;
   return {
     node, chain,
-    stage: alreadyNearAnchor ? 'locked' : 'posing',
+    mode: dragMode,
+    stage: canReuse ? 'locked' : 'posing',
     startSnap: full,
-    anchorSnap: alreadyNearAnchor ? full : null,
-    originPt: alreadyNearAnchor ? existing.originPt.slice() : curPt.slice(),
-    anchorPt: alreadyNearAnchor ? curPt.slice() : null,
-    originAng: alreadyNearAnchor ? existing.originAng : (node.ang || 0),
-    lockedAng: alreadyNearAnchor ? (node.ang || 0) : 0,
+    anchorSnap: canReuse ? full : null,
+    originPt: canReuse ? existing.originPt.slice() : curPt.slice(),
+    anchorPt: canReuse ? curPt.slice() : null,
+    originAng: canReuse ? existing.originAng : (node.ang || 0),
+    lockedAng: canReuse ? (node.ang || 0) : 0,
     steadyT0: now,
-    steadyPx: [e.clientX, e.clientY],
-    downPx: [e.clientX, e.clientY],
+    steadyPx: [ex, ey],
+    downPx: [ex, ey],
     holdMs: HOLD_POSE_MS,
     holdProg: 0,
     moved: false,
     inwardLocked: false,
     lockFlashUntil: 0,
     rawAng: node.ang || 0,
-    rawPt: curPt.slice()
+    rawPt: curPt.slice(),
+    tension: 0,
+    stretchPt: null
   };
 }
 function commitChungusLock(ch, isInward=false){
@@ -2799,8 +4165,11 @@ function commitChungusLock(ch, isInward=false){
   ch.lockedAng = ch.node.ang || 0;
   ch.holdProg = 0;
   ch.inwardLocked = isInward;
+  ch.tension = 0;
+  ch.stretchPt = null;
   ch.lockFlashUntil = performance.now() + 260;
   chungusAnchors[ch.node.id] = {
+    mode: ch.mode || 'rot',
     originPt: ch.originPt.slice(),
     anchorPt: ch.anchorPt.slice(),
     originAng: ch.originAng,
@@ -2836,22 +4205,48 @@ function chungusNodeLag(id){
   if(id==='shinL' || id==='shinR' || id==='forearmL' || id==='forearmR' || id==='acromionL' || id==='acromionR') return 0.045;
   return 0;
 }
-function snapBackToSnapshot(targetSnap, dur=235){
+function snapBackToSnapshot(targetSnap, dur=235, modeOverride=null, tensionBoost=0){
   if(!targetSnap) return;
   cancelPoseAnim(); cancelMechSnap();
+  const mode = modeOverride || motionMode;
+  const fpsPeriod = fpsStepMs();
+  const effDur = mode === 'snap' ? Math.max(16, (snapState.snapFrames || 3) * fpsPeriod)
+    : (mode === 'elastic' ? Math.max(340, Math.round(dur * (1.15 + tensionBoost * 0.45))) : Math.round(dur * (1.0 + tensionBoost * 0.3)));
   const fromSnap = captureRigSnapshot();
   const t0 = performance.now();
+  const stepped = isFpsStepped();
+  const totalF = Math.max(1, Math.round(effDur / fpsPeriod));
+  let lastIdx = -1;
   const step = now => {
     poseAnimRaf = 0;
-    const t = Math.min(1, (now - t0) / dur);
+    const elapsed = now - t0;
+    let t = Math.min(1, elapsed / effDur);
+    if(stepped && t < 1){
+      const idx = Math.min(totalF, Math.floor(elapsed / fpsPeriod));
+      if(idx === lastIdx){
+        poseAnimRaf = requestAnimationFrame(step);
+        return;
+      }
+      lastIdx = idx;
+      t = Math.min(1, idx / totalF);
+    }
     nodes.forEach(n => {
       const a = fromSnap.nodes[n.id], b = targetSnap.nodes[n.id];
       if(!a || !b) return;
-      const lag = chungusNodeLag(n.id);
+      const lag = mode === 'snap' ? 0 : chungusNodeLag(n.id) * (mode === 'elastic' ? 1.25 : 1);
       const tNode = t >= 1 ? 1 : Math.max(0, Math.min(1, (t - lag) / (1 - lag)));
-      const ease = 1 - Math.pow(1 - tNode, 3.1);
-      const amp = lag > 0.06 ? 0.065 : (lag > 0 ? 0.045 : 0.030);
-      const over = Math.sin(tNode * Math.PI * 1.35) * Math.exp(-4.4 * tNode) * amp;
+      const ease = mode === 'snap' ? evalCubicBezier(tNode, 0.85, 0, 0.15, 1) : (1 - Math.pow(1 - tNode, 3.1));
+      let over = 0;
+      const tBoost = 1.0 + tensionBoost * 0.75;
+      if(mode === 'elastic'){
+        const amp = (lag > 0.06 ? 0.20 : (lag > 0 ? 0.14 : 0.09)) * tBoost;
+        over = Math.sin(tNode * Math.PI * (2.45 + tensionBoost * 0.6)) * Math.exp(-3.4 * tNode) * amp;
+      } else if(mode === 'snap'){
+        over = Math.sin(tNode * Math.PI * 1.1) * Math.exp(-6.0 * tNode) * 0.015;
+      } else {
+        const amp = (lag > 0.06 ? 0.08 : (lag > 0 ? 0.055 : 0.038)) * tBoost;
+        over = Math.sin(tNode * Math.PI * 1.45) * Math.exp(-4.2 * tNode) * amp;
+      }
       const k = tNode >= 1 ? 1 : (ease + over);
       const da = ((b.ang - a.ang + 540) % 360) - 180;
       n.ang = t >= 1 ? b.ang : clampAngle(n, a.ang + da * k);
@@ -2867,6 +4262,85 @@ function snapBackToSnapshot(targetSnap, dur=235){
     draw();
     if(t < 1){ poseAnimRaf = requestAnimationFrame(step); }
     else { syncPins(); ui(); draw(); if(gotzNode) renderGotzSide(); ddraw(); }
+  };
+  poseAnimRaf = requestAnimationFrame(step);
+}
+function normalizeStretchedPose(prevDrag){
+  if(!prevDrag) return captureRigSnapshot();
+  clearWorld();
+  if(prevDrag.t === 'ik' && prevDrag.chain){
+    const c = prevDrag.chain, E = by[c.E];
+    if(E){
+      const rawEnd = pos(E);
+      solveLimbIK(c, rawEnd, false, prevDrag.bendHint || 0);
+      if(prevDrag.endDir0 !== undefined) setWorldDir(E, E.bone, prevDrag.endDir0);
+    }
+  }
+  nodes.forEach(n => {
+    n.ang = clampAngle(n, n.ang);
+    if(isSwivel(n)) syncSwivelShift(n);
+  });
+  if(prevDrag.snap){
+    applyBalance(sel, prevDrag.snap, prevDrag.chain ? prevDrag.chain.key : null);
+  }
+  enforceGroundContact(false, true);
+  clearWorld();
+  return captureRigSnapshot();
+}
+function kickElasticRelease(targetSnap, prevDrag){
+  if(!targetSnap || !prevDrag) return;
+  const vx = prevDrag.velQ ? prevDrag.velQ[0] : 0;
+  const vy = prevDrag.velQ ? prevDrag.velQ[1] : 0;
+  const vAng = prevDrag.velAng || 0;
+  const speed = Math.hypot(vx, vy);
+  if(speed < 12 && Math.abs(vAng) < 6) return;
+  cancelPoseAnim(); cancelMechSnap();
+  const c = prevDrag.chain;
+  const swivId = c ? c.swiv : (groupRoot(sel) ? groupRoot(sel).id : null);
+  const t0 = performance.now(), dur = 270;
+  const step = now => {
+    poseAnimRaf = 0;
+    const t = Math.min(1, (now - t0) / dur);
+    const wave = t >= 1 ? 0 : Math.sin(t * Math.PI * 2.6) * Math.exp(-5.4 * t);
+    applySnapshotInstant(targetSnap, false);
+    if(wave !== 0){
+      const impulseDeg = Math.max(-14, Math.min(14, vAng * 0.055 + (vx - vy) * 0.008));
+      if(prevDrag.t === 'fbik'){
+        if(prevDrag.isKnee){
+          const sk = prevDrag.kneeSide;
+          const fm = by['femur'+sk], sh = by['shin'+sk];
+          if(fm) fm.ang = clampAngle(fm, fm.ang + impulseDeg * 0.55 * wave);
+          if(sh) sh.ang = clampAngle(sh, sh.ang - impulseDeg * 0.75 * wave);
+        } else {
+          if(by.lumbar) by.lumbar.ang = clampAngle(by.lumbar, by.lumbar.ang + impulseDeg * 0.45 * wave);
+          if(by.thorax) by.thorax.ang = clampAngle(by.thorax, by.thorax.ang + impulseDeg * 0.60 * wave);
+          if(by.neck)   by.neck.ang   = clampAngle(by.neck,   by.neck.ang   - impulseDeg * 0.35 * wave);
+          if(by.head)   by.head.ang   = clampAngle(by.head,   by.head.ang   + impulseDeg * 0.40 * wave);
+        }
+        if(prevDrag.wasGrounded){
+          clampPelvisToPlantedFeet(prevDrag.plantL, prevDrag.plantR, prevDrag.lastQ ? prevDrag.lastQ[0] : MX, false);
+          solveFBIKLegs(prevDrag.plantL, prevDrag.plantR);
+        }
+      } else if(c){
+        const U = by[c.U], L = by[c.L], E = by[c.E], S = by[c.swiv];
+        if(U) U.ang = clampAngle(U, U.ang + impulseDeg * 0.55 * wave);
+        if(L) L.ang = clampAngle(L, L.ang - impulseDeg * 0.85 * wave);
+        if(E) E.ang = clampAngle(E, E.ang + impulseDeg * 1.15 * wave);
+        if(S && !isLocked(S)){ S.ang = clampAngle(S, S.ang + impulseDeg * 0.25 * wave); syncSwivelShift(S); }
+      } else if(sel && !isLocked(sel)){
+        sel.ang = clampAngle(sel, sel.ang + impulseDeg * wave);
+        if(isSwivel(sel)) syncSwivelShift(sel);
+        const pw = swivId ? pairWing(by[swivId]) : null;
+        if(pw) pw.ang = clampAngle(pw, pw.ang - impulseDeg * 0.45 * wave);
+      }
+      if(by.head && sel !== by.head && prevDrag.t !== 'fbik') by.head.ang = clampAngle(by.head, by.head.ang - impulseDeg * 0.22 * wave);
+      if(prevDrag.t !== 'fbik' || prevDrag.wasGrounded) enforceGroundContact(false, false);
+    } else {
+      if(prevDrag.t !== 'fbik' || prevDrag.wasGrounded) enforceGroundContact(false, true);
+    }
+    draw();
+    if(t < 1){ poseAnimRaf = requestAnimationFrame(step); }
+    else { syncPins(); ui(); draw(); }
   };
   poseAnimRaf = requestAnimationFrame(step);
 }
@@ -2886,11 +4360,16 @@ function applyChungusInwardIK(ch, q, targetRaw){
         }
         const maxIn = Math.max(70, Math.min(240, len * 0.24));
         const effIn = maxIn * (1 - Math.exp(-inwardRaw / (maxIn * 1.15)));
+        ch.tension = Math.min(1.5, inwardRaw / maxIn);
         const pxPerp = dx + inwardRaw * ux, pyPerp = dy + inwardRaw * uy;
-        return [anc[0] + pxPerp * 0.38 - effIn * ux, anc[1] + pyPerp * 0.38 - effIn * uy];
+        const pt = [anc[0] + pxPerp * 0.38 - effIn * ux, anc[1] + pyPerp * 0.38 - effIn * uy];
+        ch.stretchPt = pt;
+        return pt;
       } else {
         // Pulling outward further from held pose -> fresh pose excursion from anchor
         ch.stage = 'posing';
+        ch.tension = 0;
+        ch.stretchPt = null;
       }
     }
   }
@@ -2909,9 +4388,11 @@ function applyChungusInwardRot(ch, rawAng){
       }
       const maxIn = Math.max(8, Math.min(22, Math.abs(exc || ch.lockedAng) * 0.24));
       const effIn = maxIn * (1 - Math.exp(-inwardDeg / (maxIn * 1.15)));
+      ch.tension = Math.min(1.5, inwardDeg / maxIn);
       return ch.lockedAng - dir * effIn;
     } else if(Math.abs(dAng) > 4){
       ch.stage = 'posing';
+      ch.tension = 0;
     }
   }
   return rawAng;
@@ -2974,24 +4455,16 @@ cv.onpointerdown = e=>{
   ui(); draw();
   const pp = pos(sel), snap = snapshotPose(), ch = chainByEnd[sel.id];
   if(joint && $('ep').checked){ drag = {t:'piv'}; return; }
-  const allowChainIK = $('ikMode').value!=='fk' && ch && !e.altKey && !e.shiftKey && (ch.kind!=='arm' || handIkArmed===sel);
-  if(allowChainIK){
-    const swiv = by[ch.swiv], twinSwiv = swiv && swiv.twin ? by[swiv.twin] : null;
-    const U_ = by[ch.U], L_ = by[ch.L], E_ = by[ch.E];
-    const initBend = Math.abs(L_.ang) > 4 ? Math.sign(L_.ang)
-      : (ch.kind==='leg' ? ch.bendDefault
-      : (U_.id==='humerusL' ? (pos(E_)[0] < pos(U_)[0] ? 1 : -1) : (pos(E_)[0] > pos(U_)[0] ? -1 : 1)));
-    drag = {
-      t:'ik', chain:ch, target0:pos(sel), q0:q, endDir0:getWorldDir(sel, sel.bone),
-      swiv0:swiv.ang, twinSwiv, twinSwiv0:twinSwiv?twinSwiv.ang:0, snap,
-      bendHint: initBend,
-      chungus: initChungusDrag(sel, ch, e)
-    };
-    if(drag.chungus) ensureChungusTimer();
-    return;
-  }
-  drag = {t:'rot', a0:sel.ang, s:Math.atan2(q[1]-pp[1], q[0]-pp[0]), shift:!!e.shiftKey, twin:mirror, b0:mirror&&mirror.ang, downX:e.clientX, downY:e.clientY, lastQ:q, snap, chungus: initChungusDrag(sel, null, e)};
+  const allowIK = $('ikMode').value!=='fk' && !e.altKey && !e.shiftKey;
+  const kneeTarget = kneeNodeFor(sel, q);
+  const fbNode = allowIK && !ch ? (kneeTarget || (FBIK_CHAIN_NODES.has(sel.id) ? sel : null)) : null;
+  const ikPend = (allowIK && ch)
+    ? { kind:'chain', chain:ch, node:sel, q0:q.slice(), downPx:[e.clientX, e.clientY], t0:performance.now(), e }
+    : (fbNode ? { kind:'fbik', fbNode, node:sel, q0:q.slice(), downPx:[e.clientX, e.clientY], t0:performance.now(), e } : null);
+  drag = {t:'rot', a0:sel.ang, s:Math.atan2(q[1]-pp[1], q[0]-pp[0]), shift:!!e.shiftKey, twin:mirror, b0:mirror&&mirror.ang, downX:e.clientX, downY:e.clientY, lastClientX:e.clientX, lastClientY:e.clientY, lastQ:q, snap, chungus: initChungusDrag(sel, null, e)};
   if(drag.chungus) ensureChungusTimer();
+  if(ikPend) armLongClickIK(ikPend);
+  if(typeof updateFkIkCue === 'function') updateFkIkCue();
 };
 cv.onpointermove = e=>{
   const q = toFigure(e);
@@ -3022,6 +4495,8 @@ cv.onpointermove = e=>{
     }
     return;
   }
+  drag.lastClientX = e.clientX;
+  drag.lastClientY = e.clientY;
   if(drag.t==='persp'){
     lastManualCamMs = performance.now();
     cancelGolden();
@@ -3030,18 +4505,7 @@ cv.onpointermove = e=>{
     } else if(drag.what === 'horizon'){
       persp.horizonY = Math.max(-1800, Math.min(persp.groundY + 1200, drag.h0 + (q[1] - drag.q0[1])));
     } else if(drag.what === 'ground'){
-      const prevG = persp.groundY;
       persp.groundY = Math.max(persp.horizonY - 900, Math.min(H + 1400, drag.g0 + (q[1] - drag.q0[1])));
-      if(!$('footGrav') || $('footGrav').checked){
-        if(drag.wasGrounded){
-          root.ty += (persp.groundY - prevG);
-          clearWorld();
-          if($('ty')) $('ty').value = Math.round(root.ty);
-          syncPins();
-        } else {
-          enforceGroundContact(false);
-        }
-      }
     }
     ui(); draw(); return;
   }
@@ -3059,12 +4523,26 @@ cv.onpointermove = e=>{
     drag.x = e.clientX; drag.y = e.clientY;
     draw(); return;
   }
+  const prevQ = drag.lastQ || q, prevT = drag.lastMoveT || performance.now(), nowMove = performance.now();
+  const dtMove = Math.max(8, nowMove - prevT);
+  drag.velQ = drag.velQ
+    ? [drag.velQ[0]*0.55 + ((q[0]-prevQ[0])/dtMove*16)*0.45, drag.velQ[1]*0.55 + ((q[1]-prevQ[1])/dtMove*16)*0.45]
+    : [(q[0]-prevQ[0])/dtMove*16, (q[1]-prevQ[1])/dtMove*16];
+  drag.lastMoveT = nowMove;
   drag.lastQ = q;
   if(drag.t==='piv'){                      // move pivot: solve in the parent's space
     const pw = parentWorld(sel), k = pw[0]*pw[3]-pw[1]*pw[2], [tx,ty] = effShift(sel);
     const x = q[0]-pw[4]-tx, y = q[1]-pw[5]-ty;
     const v = [(pw[3]*x-pw[2]*y)/k, (-pw[1]*x+pw[0]*y)/k];
     sel.piv = sel.flip ? [2*MX-v[0], v[1]] : v; syncPins(); draw(); return;
+  }
+  if(drag.ikPending){
+    if(Math.hypot(e.clientX - drag.ikPending.downPx[0], e.clientY - drag.ikPending.downPx[1]) >= 11){
+      clearLong(); // Quick move -> stay in crisp FK rotation without charging IK
+      if(typeof updateFkIkCue === 'function') updateFkIkCue();
+    } else {
+      return; // Holding steady while long-click charges IK
+    }
   }
   if(drag.chungus){
     const ch = drag.chungus;
@@ -3076,55 +4554,86 @@ cv.onpointermove = e=>{
     }
     ensureChungusTimer();
   }
+  if(drag.t==='fbik'){
+    runAtFpsCadence(()=>{
+      solveFullBodyIK(q, drag);
+      kickGolden(0.28);
+      $('ang').value = $('angn').value = Math.round(sel.ang);
+      ui(); draw();
+    });
+    return;
+  }
   if(drag.t==='ik'){
     if(mechSnap && mechSnap.swiv && (mechSnap.swiv === by[drag.chain.swiv] || mechSnap.swiv === drag.twinSwiv)) return;
-    if(drag.chungus){
-      const rawT = [drag.target0[0] + (q[0] - drag.q0[0]), drag.target0[1] + (q[1] - drag.q0[1])];
-      const effT = applyChungusInwardIK(drag.chungus, q, rawT);
-      const effQ = [drag.q0[0] + (effT[0] - drag.target0[0]), drag.q0[1] + (effT[1] - drag.target0[1])];
-      dragEndEffectorIK(effQ, drag);
-    } else {
-      dragEndEffectorIK(q, drag);
-    }
-    enforceGroundContact(false, false);
-    kickGolden(0.28);
-    draw(); return;
+    runAtFpsCadence(()=>{
+      if(drag.chungus){
+        const rawT = [drag.target0[0] + (q[0] - drag.q0[0]), drag.target0[1] + (q[1] - drag.q0[1])];
+        const effT = applyChungusInwardIK(drag.chungus, q, rawT);
+        const effQ = [drag.q0[0] + (effT[0] - drag.target0[0]), drag.q0[1] + (effT[1] - drag.target0[1])];
+        dragEndEffectorIK(effQ, drag);
+      } else {
+        dragEndEffectorIK(q, drag);
+      }
+      enforceGroundContact(false, false);
+      kickGolden(0.28);
+      draw();
+    });
+    return;
   }
   if(mechSnap && mechSnap.swiv && (groupRoot(sel) === groupRoot(mechSnap.swiv) || sel === mechSnap.swiv)){
     return;
   }
   const pp = pos(sel);
-  let da = (Math.atan2(q[1]-pp[1], q[0]-pp[0]) - drag.s)/RAD;
-  da = ((da+540)%360)-180;
-  let desiredAng = drag.a0 + da;
-  if(drag.chungus) desiredAng = applyChungusInwardRot(drag.chungus, desiredAng);
-  const res = applyAngle(sel, desiredAng, drag.shift ? 'mirror' : undefined);
-  if(res==='snapped'){
-    const np = pos(sel);
-    drag.a0 = sel.ang; drag.s = Math.atan2(q[1]-np[1], q[0]-np[0]);
-  }
-  applyBalance(sel, drag.snap);
-  enforceGroundContact(false, false);
-  kickGolden(0.28);
-  $('ang').value = $('angn').value = Math.round(sel.ang);
-  draw();
+  const distToPiv = Math.hypot(q[0]-pp[0], q[1]-pp[1]);
+  if(distToPiv < 14) return;
+  runAtFpsCadence(()=>{
+    let da = (Math.atan2(q[1]-pp[1], q[0]-pp[0]) - drag.s)/RAD;
+    da = ((da+540)%360)-180;
+    let desiredAng = drag.a0 + da;
+    if(drag.chungus) desiredAng = applyChungusInwardRot(drag.chungus, desiredAng);
+    const prevSelAng = sel.ang;
+    const res = applyAngle(sel, desiredAng, drag.shift ? 'mirror' : undefined);
+    drag.velAng = (drag.velAng || 0)*0.55 + (((sel.ang - prevSelAng)/dtMove*16))*0.45;
+    if(res==='snapped'){
+      const np = pos(sel);
+      drag.a0 = sel.ang; drag.s = Math.atan2(q[1]-np[1], q[0]-np[0]);
+    }
+    applyBalance(sel, drag.snap);
+    enforceGroundContact(false, false);
+    kickGolden(0.28);
+    $('ang').value = $('angn').value = Math.round(sel.ang);
+    draw();
+  });
 };
 cv.onpointerleave = ()=>{ clearWingDwell(); clearHandDwell(); wingArmed = null; handIkArmed = null; gotzHoverDigit = null; hoverPersp = null; if(hover){ hover = null; cv.style.cursor = 'crosshair'; draw(); } else draw(); };
 cv.onpointerup = cv.onpointercancel = ()=>{
+  flushFpsInteractive();
   clearLong(); clearChungusTimer();
   const prevDrag = drag; drag = null;
   if(prevDrag && prevDrag.t==='gotzIk' && prevDrag.node && gotzNode === prevDrag.node){ bakeGotzStatic(prevDrag.node); draw(); }
   if(prevDrag && prevDrag.chungus && prevDrag.chungus.moved && !mechSnap && ($('chungusPose') && $('chungusPose').checked)){
     const ch = prevDrag.chungus;
-    if(ch.stage === 'posing'){
-      snapBackToSnapshot(ch.startSnap, 230);
-    } else if(ch.stage === 'inwardStretch'){
-      snapBackToSnapshot(ch.anchorSnap || ch.startSnap, 210);
+    if(ch.stage === 'posing' || ch.stage === 'inwardStretch'){
+      // Snap to the normalized rigid, balanced, grounded version of the stretched pose
+      const preSnap = captureRigSnapshot();
+      const normSnap = normalizeStretchedPose(prevDrag);
+      if(ch.stage === 'inwardStretch' && chungusAnchors[ch.node.id]){
+        chungusAnchors[ch.node.id].anchorPt = chungusEndPoint(ch.node, ch.chain);
+        chungusAnchors[ch.node.id].lockedAng = ch.node.ang || 0;
+      }
+      applySnapshotInstant(preSnap, false);
+      snapBackToSnapshot(normSnap, motionMode === 'elastic' ? 320 : 210, null, ch.tension || 0);
     } else if(ch.stage === 'locked'){
       enforceGroundContact(false, true); syncPins(); kickGravity(); ui(); draw();
     }
-  } else if(prevDrag && (prevDrag.t==='rot' || prevDrag.t==='ik' || prevDrag.t==='persp')){
-    enforceGroundContact(false, true); syncPins(); kickGravity(); ui(); draw();
+  } else if(prevDrag && (prevDrag.t==='rot' || prevDrag.t==='ik' || prevDrag.t==='fbik' || prevDrag.t==='persp')){
+    const liftedToFloat = (prevDrag.t==='ik' && prevDrag.chain && prevDrag.chain.kind==='leg' && !isAnyFootOnGround()) || (prevDrag.t==='fbik' && !prevDrag.wasGrounded && !isAnyFootOnGround());
+    enforceGroundContact(false, true); syncPins();
+    if(!liftedToFloat) kickGravity();
+    ui(); draw();
+    if(motionMode === 'elastic' && (prevDrag.t==='rot' || prevDrag.t==='ik' || prevDrag.t==='fbik')){
+      kickElasticRelease(captureRigSnapshot(), prevDrag);
+    }
   }
   cv.style.cursor = spaceHeld ? 'grab' : (hover ? 'pointer' : 'crosshair');
 };
@@ -3238,6 +4747,7 @@ function syncSplitLayout(refitBody=false){
     z = p.z; ox = p.ox; oy = p.oy;
   }
   dfit();
+  if(typeof applyHudPosition === 'function' && motionMode === 'snap') applyHudPosition($('snapBar'), 'snap');
   draw(); ddraw();
 }
 
@@ -3657,6 +5167,96 @@ $('gotzReset').onclick  = ()=>{
   animateGotzPoseTo(gotzNode, makeGotzPose(gotzNode), 0, 390);
 };
 
+function sideGroupIds(g){
+  const isL = g && g.id.endsWith('L');
+  const s = isL ? 'L' : 'R';
+  if(isRibSwivel(g)) return ['swivel'+s,'acromion'+s,'humerus'+s,'forearm'+s,'hand'+s,'brace'+s];
+  return ['hip'+s,'femur'+s,'shin'+s,'foot'+s];
+}
+function isSideChungused(g){
+  if(!g) return false;
+  if(g.flip) return true;
+  if(isRibSwivel(g) && isSideState() !== 0) return true;
+  return sideGroupIds(g).some(id => !!chungusAnchors[id]);
+}
+function snapToRegularKeepPose(g, clickedNode){
+  if(!g) return;
+  if(clickedNode) sel = clickedNode;
+  const isArm = isRibSwivel(g);
+  const s = g.id.endsWith('L') ? 'L' : 'R';
+  const ids = sideGroupIds(g);
+  clearWorld();
+  const chainKey = isArm ? ('arm'+s) : ('leg'+s);
+  const chain = LIMB_CHAINS.find(c => c.key === chainKey);
+  const swiv = by[chain.swiv], U = by[chain.U], L = by[chain.L], E = by[chain.E];
+  const acr = isArm ? by['acromion'+s] : null;
+  const brace = isArm ? by['brace'+s] : null;
+  const wasFlipped = !!g.flip, wasSide = isSideState();
+  // Capture current world pose of arm+shoulder (or leg+hip) before returning side to regular non-chungus
+  const endPos = pos(E);
+  const endDir = getWorldDir(E, E.bone);
+  const uDir = getWorldDir(U, L.piv);
+  const lDir = getWorldDir(L, E.piv);
+  const prevBend = Math.abs(L.ang) > 4 ? Math.sign(L.ang) : chain.bendDefault;
+  const swivAngRaw = wasFlipped ? -swiv.ang : swiv.ang;
+  const acrAngRaw = acr ? (wasFlipped ? -acr.ang : acr.ang) : 0;
+
+  // Also preserve the opposite side limbs cleanly if returning from side view
+  const otherSnap = snapshotPose();
+  const otherSwiv = swiv.twin ? by[swiv.twin] : null;
+  const otherSwivAng = otherSwiv ? otherSwiv.ang : 0;
+
+  animatePoseSwitch(()=>{
+    ids.forEach(id => clearChungusAnchors(id));
+    if(wasSide !== 0){
+      setSkullView('front', true);
+      if($('turn')){ $('turn').value = 0; $('turnv').textContent = '0°'; }
+      ['swivelL','swivelR','hipL','hipR'].forEach(id=>{
+        const node = by[id]; if(!node) return;
+        setFlip(node, false);
+        node.tx = node.ty = 0;
+      });
+      if(by.femurL) by.femurL.localFlip = false;
+      if(by.femurR) by.femurR.localFlip = false;
+      if(otherSwiv){ otherSwiv.ang = clampAngle(otherSwiv, otherSwivAng); syncSwivelShift(otherSwiv); }
+      for(const oc of LIMB_CHAINS){
+        if(oc.key === chainKey) continue;
+        const sl = otherSnap.limbs[oc.key]; if(!sl) continue;
+        solveLimbIK(oc, sl.Epos, sl.straight);
+        setWorldDir(by[oc.E], by[oc.E].bone, sl.Edir);
+      }
+    } else if(wasFlipped){
+      setFlip(g, false);
+      g.tx = g.ty = 0;
+      if(by.femurL) by.femurL.localFlip = false;
+      if(by.femurR) by.femurR.localFlip = false;
+    }
+
+    // Apply preserved shoulder/hip & arm/leg in regular non-chungus limits
+    swiv.ang = clampAngle(swiv, swivAngRaw);
+    syncSwivelShift(swiv);
+    if(acr) acr.ang = clampAngle(acr, acrAngRaw);
+    if(brace) brace.ang = 0;
+    clearWorld();
+
+    const [L1, L2] = limbLengths(chain);
+    const S_ = pos(U), dist = Math.hypot(endPos[0]-S_[0], endPos[1]-S_[1]);
+    if(dist <= (L1 + L2) * 1.18){
+      solveLimbIK(chain, endPos, false, prevBend);
+    } else {
+      setWorldDir(U, L.piv, uDir);
+      setWorldDir(L, E.piv, lDir);
+    }
+    setWorldDir(E, E.bone, endDir);
+    U.ang = clampAngle(U, U.ang);
+    L.ang = clampAngle(L, L.ang);
+    E.ang = clampAngle(E, E.ang);
+    enforceGroundContact(false, true);
+    syncPins();
+    ui();
+  }, { dur: 380, antFrac: 0.22, antScale: 0.20, coilBias: sideSign(g) });
+}
+
 cv.ondblclick = e=>{
   clearLong();
   const q = toFigure(e), n = nearestJoint(q) || hit(q, false);
@@ -3679,7 +5279,8 @@ cv.ondblclick = e=>{
   }
   const g = groupRoot(n);
   if(g && !e.altKey){
-    triggerMechFlip(g, n);
+    if(isSideChungused(g)) snapToRegularKeepPose(g, n);
+    else triggerMechFlip(g, n);
     return;
   }
   else openPart(n);                                                  // Alt+dbl-click or non-flip parts -> side detail window
@@ -3725,7 +5326,7 @@ const getVersionData = () => {
     if(by[id] && by[id].gotzPose) gotz[id] = gClone(by[id].gotzPose);
   });
   return JSON.stringify({
-    nodes: nodes.map(n => ({ id: n.id, ang: n.ang, tx: n.tx, ty: n.ty, piv: n.piv, flip: !!n.flip })),
+    nodes: nodes.map(n => ({ id: n.id, ang: n.ang, tx: n.tx, ty: n.ty, piv: n.piv, flip: !!n.flip, localFlip: !!n.localFlip })),
     persp: { ...persp },
     skull: $('skullView') ? $('skullView').value : 'front',
     bv: !!($('bv') && $('bv').checked),
@@ -3746,6 +5347,7 @@ const applyVersionData = (jsonStr, withAnim=true) => {
           n.ty = dn.ty || 0;
           if(dn.piv) n.piv = dn.piv.slice();
           if(dn.flip !== undefined) n.flip = dn.flip;
+          if(dn.localFlip !== undefined) n.localFlip = dn.localFlip;
         }
       });
     }
@@ -3803,6 +5405,721 @@ if(saveBtn){
     setTimeout(() => { saveBtn.textContent = 'Save Version Snapshot'; }, 1500);
   };
 }
+
+// ======================================================= Motion Mode HUD + Snap Ghost + Clockwork Sequencer UI
+function updateFpsUI(){
+  if($('fpsBtn')){
+    $('fpsBtn').textContent = `${fpsState.fps} FPS`;
+    $('fpsBtn').classList.add('on');
+  }
+  updateSnapDurReadout();
+}
+function saveFpsState(){
+  try{ localStorage.setItem(FPS_STORE_KEY, JSON.stringify({ fps: fpsState.fps, active: true })); }catch(e){}
+}
+function loadFpsState(){
+  try{
+    const raw = localStorage.getItem(FPS_STORE_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(p && typeof p.fps === 'number' && FPS_LEVELS.includes(p.fps)){
+        fpsState.fps = p.fps;
+      }
+    }
+  }catch(e){}
+  fpsState.active = true;
+  updateFpsUI();
+}
+function cycleFps(){
+  const curIdx = FPS_LEVELS.indexOf(fpsState.fps);
+  const nextIdx = (curIdx + 1) % FPS_LEVELS.length;
+  fpsState.fps = FPS_LEVELS[nextIdx];
+  fpsState.active = true;
+  saveFpsState();
+  updateFpsUI();
+}
+function updateSnapDurReadout(){
+  const lbl = $('snapDurReadout');
+  if(!lbl) return;
+  const frames = Math.max(1, snapState.snapFrames || 3);
+  lbl.textContent = `${frames} frames @ ${fpsState.fps} FPS`;
+}
+
+function updateSnapUI(){
+  const bar = $('snapBar');
+  if(!bar) return;
+  bar.hidden = (motionMode !== 'snap');
+  const filled = ['A','B','C'].filter(s => !!snapState.poses[s]);
+  if($('snapStateLbl')){
+    if(!filled.length) $('snapStateLbl').textContent = 'No Saved Poses';
+    else $('snapStateLbl').textContent = `Live: ${snapState.activeSlot} (${filled.join('·')})`;
+  }
+  ['A','B','C'].forEach(s => {
+    const capBtn = $('snapCap' + s);
+    const goBtn  = $('snapGo'  + s);
+    const hasPose = !!snapState.poses[s];
+    const isLive = (snapState.activeSlot === s);
+    if(capBtn){
+      capBtn.classList.toggle('on', isLive);
+      capBtn.style.fontWeight = hasPose ? '700' : '400';
+    }
+    if(goBtn){
+      goBtn.disabled = !hasPose;
+      goBtn.classList.toggle('on', isLive && hasPose);
+    }
+  });
+  if($('snapToggle')){
+    $('snapToggle').disabled = (filled.length < 2);
+  }
+  if($('snapLoopPlay')){
+    $('snapLoopPlay').disabled = (filled.length < 2);
+    $('snapLoopPlay').classList.toggle('on', !!snapState.playing);
+    $('snapLoopPlay').textContent = snapState.playing ? 'Pause ❚❚' : 'Loop ⟳';
+  }
+  if($('snapLoopMode')){
+    $('snapLoopMode').value = snapState.loopMode || 'pingpong';
+  }
+  document.querySelectorAll('#snapStyleRow .b').forEach(b => {
+    b.classList.toggle('on', b.dataset.sstyle === snapState.style);
+  });
+  if($('snapEaseRow')){
+    $('snapEaseRow').hidden = (snapState.style !== 'snap');
+  }
+  if($('snapEasing')){
+    $('snapEasing').value = Math.round((snapState.easing ?? 0.55) * 100);
+  }
+  if($('snapEaseVal')){
+    $('snapEaseVal').textContent = Math.round((snapState.easing ?? 0.55) * 100) + '%';
+  }
+  if($('snapGhostOn')) $('snapGhostOn').checked = !!snapState.ghostVisible;
+  if($('snapAlpha')) $('snapAlpha').value = Math.round((snapState.ghostOpacity ?? 0.32) * 100);
+  if($('snapFrames')) $('snapFrames').value = snapState.snapFrames || 3;
+  updateSnapDurReadout();
+}
+
+function nextSnapSlot(mutateDir=false){
+  const filled = ['A','B','C'].filter(s => !!snapState.poses[s]);
+  if(filled.length < 2) return filled[0] || null;
+  const cur = snapState.activeSlot;
+  if(snapState.loopMode === 'cycle'){
+    if(filled.includes('A') && filled.includes('B') && filled.includes('C')){
+      if(cur === 'A') return 'B';
+      if(cur === 'B') return 'C';
+      return 'A'; // loop from C directly back to A without B
+    }
+    const idx = filled.indexOf(cur);
+    return filled[(idx + 1) % filled.length];
+  }
+  // pingpong
+  let dir = snapState.loopDir || 1;
+  let next = null;
+  if(filled.includes('A') && filled.includes('B') && filled.includes('C')){
+    if(cur === 'A'){
+      next = 'B';
+      if(mutateDir) snapState.loopDir = 1;
+    } else if(cur === 'C'){
+      next = 'B';
+      if(mutateDir) snapState.loopDir = -1;
+    } else {
+      if(dir > 0){
+        next = 'C';
+      } else {
+        next = 'A';
+      }
+    }
+    return next;
+  }
+  const idx = filled.indexOf(cur);
+  if(idx === -1) return filled[0];
+  return filled[idx === 0 ? 1 : 0];
+}
+
+function stopSnapPlay(){
+  snapState.playing = false;
+  if(snapState.playTimer){ clearTimeout(snapState.playTimer); snapState.playTimer = 0; }
+  if($('snapLoopPlay')){
+    $('snapLoopPlay').textContent = 'Loop ⟳';
+    $('snapLoopPlay').classList.remove('on');
+  }
+}
+function startSnapPlay(){
+  const filled = ['A','B','C'].filter(s => !!snapState.poses[s]);
+  if(filled.length < 2) return;
+  stopSnapPlay();
+  snapState.playing = true;
+  if($('snapLoopPlay')){
+    $('snapLoopPlay').textContent = 'Pause ❚❚';
+    $('snapLoopPlay').classList.add('on');
+  }
+  const playNext = () => {
+    if(!snapState.playing) return;
+    const nxt = nextSnapSlot(true);
+    if(!nxt){ stopSnapPlay(); return; }
+    snapToSlot(nxt, () => {
+      if(!snapState.playing) return;
+      const holdMs = Math.max(25, Math.round(fpsStepMs() * 2));
+      snapState.playTimer = setTimeout(playNext, holdMs);
+    });
+  };
+  playNext();
+}
+function stepSnapOnce(){
+  stopSnapPlay();
+  const nxt = nextSnapSlot(true);
+  if(!nxt) return;
+  snapToSlot(nxt);
+}
+function snapToSlot(slot, onDone=null){
+  const target = snapState.poses[slot];
+  if(!target) return;
+  snapState.activeSlot = slot;
+  updateSnapUI();
+  animatePoseSwitch(() => applySnapshotInstant(target, true), {
+    modeOverride: 'snap',
+    snapStyle: snapState.style,
+    snapFrames: snapState.snapFrames,
+    onComplete: () => {
+      draw();
+      if(onDone) onDone();
+    }
+  });
+}
+function stopClockworkPlay(){
+  clockworkState.playing = false;
+  if(clockworkState.raf){ cancelAnimationFrame(clockworkState.raf); clockworkState.raf = 0; }
+  if($('cwPlay')) $('cwPlay').textContent = 'Play';
+}
+function drawClockworkCurveSvg(cfg){
+  const svg = $('cwCurveSvg'); if(!svg) return;
+  const W_ = 260, H_ = 66, padX = 10, padY = 10, iw = W_ - padX*2, ih = H_ - padY*2;
+  const yBase = padY + ih * 0.72, yTop = padY + ih * 0.14, ySpan = yBase - yTop;
+  let d = '';
+  for(let i=0;i<=52;i++){
+    const u = i / 52;
+    const val = evalClockworkBone(u, cfg);
+    const x = padX + u * iw;
+    const y = yBase - val * ySpan;
+    d += (i===0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+  }
+  const antX = padX + (cfg.anticipation || 0) * (1 - (cfg.stagger || 0)) * iw + (cfg.stagger || 0) * iw;
+  const stagX = padX + (cfg.stagger || 0) * iw;
+  svg.innerHTML =
+    `<line x1="${padX}" y1="${yBase.toFixed(1)}" x2="${padX+iw}" y2="${yBase.toFixed(1)}" stroke="rgba(157,161,147,0.3)" stroke-width="1"/>` +
+    `<line x1="${padX}" y1="${yTop.toFixed(1)}" x2="${padX+iw}" y2="${yTop.toFixed(1)}" stroke="rgba(157,161,147,0.28)" stroke-dasharray="3 3" stroke-width="1"/>` +
+    ((cfg.stagger||0)>0 ? `<line x1="${stagX.toFixed(1)}" y1="4" x2="${stagX.toFixed(1)}" y2="${H_-4}" stroke="rgba(217,119,6,0.45)" stroke-dasharray="2 2" stroke-width="1"/>` : '') +
+    ((cfg.anticipation||0)>0 ? `<line x1="${antX.toFixed(1)}" y1="4" x2="${antX.toFixed(1)}" y2="${H_-4}" stroke="rgba(163,116,168,0.45)" stroke-dasharray="2 2" stroke-width="1"/>` : '') +
+    `<path d="${d}" fill="none" stroke="#1ea875" stroke-width="2" stroke-linecap="round"/>`;
+}
+function activeTransitionPair(){
+  const n = clockworkState.stages.length;
+  if(n < 2) return [clockworkState.stages[0]||null, clockworkState.stages[0]||null, 0, 0];
+  const idxA = Math.max(0, Math.min(n - 1, clockworkState.activeIdx));
+  const idxB = (idxA + 1) % n;
+  return [clockworkState.stages[idxA], clockworkState.stages[idxB], idxA, idxB];
+}
+function syncClockworkBoneUI(){
+  const [, stB, idxA, idxB] = activeTransitionPair();
+  if($('cwTransLbl')) $('cwTransLbl').textContent = clockworkState.stages.length >= 2 ? (`S${idxA+1} → S${idxB+1}`) : 'Need 2+ stages';
+  if(!sel) return;
+  if($('cwBoneLbl')) $('cwBoneLbl').textContent = 'Bone: ' + sel.name.split(' (')[0];
+  const cfg = stB ? getStageBoneCfg(stB.id, sel.id) : defaultBoneCfg();
+  if($('cwCurve')) $('cwCurve').value = cfg.curve;
+  if($('cwAnt')){ $('cwAnt').value = Math.round((cfg.anticipation||0)*100); $('cwAntV').textContent = Math.round((cfg.anticipation||0)*100)+'%'; }
+  if($('cwStag')){ $('cwStag').value = Math.round((cfg.stagger||0)*100); $('cwStagV').textContent = Math.round((cfg.stagger||0)*100)+'%'; }
+  if($('cwOver')){ $('cwOver').value = Math.round((cfg.overshoot||0)*100); $('cwOverV').textContent = Math.round((cfg.overshoot||0)*100)+'%'; }
+  const bez = cfg.curve === 'custom' ? (cfg.bezier || CW_CURVES.mech) : (CW_CURVES[cfg.curve] || CW_CURVES.mech);
+  if($('cwCx1')) $('cwCx1').value = bez[0].toFixed(2);
+  if($('cwCy1')) $('cwCy1').value = bez[1].toFixed(2);
+  if($('cwCx2')) $('cwCx2').value = bez[2].toFixed(2);
+  if($('cwCy2')) $('cwCy2').value = bez[3].toFixed(2);
+  drawClockworkCurveSvg(cfg);
+}
+function renderClockworkUI(){
+  const box = $('clockStages') || $('cwStages');
+  if(!box) return;
+  box.innerHTML = '';
+  clockworkState.stages.forEach((st, i) => {
+    const b = document.createElement('button');
+    b.className = 'cw-stage' + (i === clockworkState.activeIdx ? ' on' : '');
+    b.textContent = st.label;
+    b.onclick = () => {
+      stopClockworkPlay();
+      clockworkState.activeIdx = i;
+      clockworkState.scrubT = 0;
+      if($('cwScrub')) $('cwScrub').value = 0;
+      if($('cwScrubV')) $('cwScrubV').textContent = st.label;
+      applySnapshotInstant(st.snap, true);
+      enforceGroundContact(false, true);
+      draw();
+      renderClockworkUI();
+      if(typeof saveClockworkState === 'function') saveClockworkState();
+    };
+    box.appendChild(b);
+  });
+  syncClockworkBoneUI();
+}
+function addClockworkStage(label=null, snapOverride=null){
+  const idx = clockworkState.stages.length + 1;
+  const st = {
+    id: 'cw_' + (clockworkState.nextId++),
+    label: label || ('S' + idx),
+    snap: snapOverride || captureRigSnapshot(),
+    _eff: null
+  };
+  clockworkState.stages.push(st);
+  clockworkState.activeIdx = clockworkState.stages.length - 1;
+  renderClockworkUI();
+  return st;
+}
+function mutateActiveBoneCfg(fn){
+  const [, stB] = activeTransitionPair();
+  if(!stB || !sel) return;
+  const cfg = ensureStageBoneCfg(stB.id, sel.id);
+  fn(cfg);
+  syncClockworkBoneUI();
+  saveClockworkState();
+  if(!clockworkState.playing && clockworkState.stages.length >= 2 && clockworkState.scrubT > 0){
+    const [stA, stB2] = activeTransitionPair();
+    applyClockworkBlend(stA, stB2, clockworkState.scrubT);
+    draw();
+  }
+}
+
+// ---- Persistent Draggable Left-Space HUD Layout & Session State ----
+const HUD_LAYOUT_KEY = 'puppyt_hud_layout_v1';
+const SNAP_STORE_KEY = 'puppyt_snap_state_v1';
+const CW_STORE_KEY   = 'puppyt_clockwork_state_v1';
+const MODE_STORE_KEY = 'puppyt_motion_mode_v1';
+const hudLayout = {
+  snap:  { left: 10, top: 48 },
+  clock: { left: 10, top: 48, collapsed: false }
+};
+function loadHudLayout(){
+  try{
+    const raw = localStorage.getItem(HUD_LAYOUT_KEY);
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    if(p && p.snap){
+      if(typeof p.snap.left === 'number') hudLayout.snap.left = p.snap.left;
+      if(typeof p.snap.top  === 'number') hudLayout.snap.top  = p.snap.top;
+    }
+    if(p && p.clock){
+      if(typeof p.clock.left === 'number') hudLayout.clock.left = p.clock.left;
+      if(typeof p.clock.top  === 'number') hudLayout.clock.top  = p.clock.top;
+      if(typeof p.clock.collapsed === 'boolean') hudLayout.clock.collapsed = p.clock.collapsed;
+    }
+  }catch(e){}
+}
+function saveHudLayout(){
+  try{ localStorage.setItem(HUD_LAYOUT_KEY, JSON.stringify(hudLayout)); }catch(e){}
+}
+function applyHudPosition(el, key){
+  if(!el || !$('mainWrap')) return;
+  const wrap = $('mainWrap');
+  const posCfg = hudLayout[key] || { left: 10, top: 48 };
+  const maxL = Math.max(8, Math.round(wrap.clientWidth * 0.333 - (el.offsetWidth || 220) - 8));
+  const maxT = Math.max(8, wrap.clientHeight - (el.offsetHeight || 90) - 8);
+  const l = Math.max(8, Math.min(maxL, posCfg.left));
+  const t = Math.max(8, Math.min(maxT, posCfg.top));
+  el.style.left = l + 'px';
+  el.style.top  = t + 'px';
+  posCfg.left = l; posCfg.top = t;
+}
+function makeHudDraggable(el, hdrEl, key){
+  if(!el || !hdrEl) return;
+  let d = null;
+  hdrEl.addEventListener('pointerdown', e => {
+    if(e.button !== 0) return;
+    if(e.target.closest('button,input,select,label,a')) return;
+    e.preventDefault(); e.stopPropagation();
+    hdrEl.setPointerCapture(e.pointerId);
+    el.classList.add('hud-dragging');
+    d = { sx: e.clientX, sy: e.clientY, l0: el.offsetLeft, t0: el.offsetTop };
+  });
+  hdrEl.addEventListener('pointermove', e => {
+    if(!d || !$('mainWrap')) return;
+    const wrap = $('mainWrap');
+    const maxL = Math.max(8, Math.round(wrap.clientWidth * 0.333 - el.offsetWidth - 8));
+    const maxT = Math.max(8, wrap.clientHeight - el.offsetHeight - 8);
+    const l = Math.max(8, Math.min(maxL, d.l0 + (e.clientX - d.sx)));
+    const t = Math.max(8, Math.min(maxT, d.t0 + (e.clientY - d.sy)));
+    el.style.left = l + 'px';
+    el.style.top  = t + 'px';
+    hudLayout[key].left = Math.round(l);
+    hudLayout[key].top  = Math.round(t);
+  });
+  const endDrag = () => {
+    if(!d) return;
+    d = null;
+    el.classList.remove('hud-dragging');
+    saveHudLayout();
+  };
+  hdrEl.addEventListener('pointerup', endDrag);
+  hdrEl.addEventListener('pointercancel', endDrag);
+}
+function saveSnapState(){
+  try{
+    localStorage.setItem(SNAP_STORE_KEY, JSON.stringify({
+      poses: snapState.poses,
+      activeSlot: snapState.activeSlot,
+      loopDir: snapState.loopDir,
+      loopMode: snapState.loopMode,
+      style: snapState.style,
+      easing: snapState.easing,
+      ghostVisible: snapState.ghostVisible,
+      ghostOpacity: snapState.ghostOpacity,
+      snapFrames: snapState.snapFrames
+    }));
+  }catch(e){}
+}
+function loadSnapState(){
+  try{
+    const raw = localStorage.getItem(SNAP_STORE_KEY);
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    if(!p) return;
+    if(p.poses && typeof p.poses === 'object'){
+      if(p.poses.A) snapState.poses.A = p.poses.A;
+      if(p.poses.B) snapState.poses.B = p.poses.B;
+      if(p.poses.C) snapState.poses.C = p.poses.C;
+    }
+    if(!snapState.poses.A && p.poseA) snapState.poses.A = p.poseA;
+    if(!snapState.poses.B && p.ghostPose) snapState.poses.B = p.ghostPose;
+    if(['A','B','C'].includes(p.activeSlot)) snapState.activeSlot = p.activeSlot;
+    if(p.loopMode === 'pingpong' || p.loopMode === 'cycle') snapState.loopMode = p.loopMode;
+    if(p.loopDir === 1 || p.loopDir === -1) snapState.loopDir = p.loopDir;
+    if(['snap','flow','mechanical','clock'].includes(p.style)) snapState.style = p.style;
+    if(typeof p.easing === 'number') snapState.easing = Math.max(0, Math.min(1, p.easing));
+    if(typeof p.ghostVisible === 'boolean') snapState.ghostVisible = p.ghostVisible;
+    if(typeof p.ghostOpacity === 'number') snapState.ghostOpacity = Math.max(0.1, Math.min(0.7, p.ghostOpacity));
+    if(typeof p.snapFrames === 'number') snapState.snapFrames = Math.max(1, Math.min(120, Math.round(p.snapFrames)));
+  }catch(e){}
+  updateSnapUI();
+}
+function saveClockworkState(){
+  try{
+    const cleanStages = clockworkState.stages.map(st => ({ id: st.id, label: st.label, snap: st.snap }));
+    localStorage.setItem(CW_STORE_KEY, JSON.stringify({
+      stages: cleanStages,
+      boneTracks: clockworkState.boneTracks,
+      activeIdx: clockworkState.activeIdx,
+      loop: clockworkState.loop,
+      ikDrive: clockworkState.ikDrive,
+      durMs: clockworkState.durMs,
+      scrubT: clockworkState.scrubT,
+      nextId: clockworkState.nextId
+    }));
+  }catch(e){}
+}
+function loadClockworkState(){
+  try{
+    const raw = localStorage.getItem(CW_STORE_KEY);
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    if(!p) return;
+    if(Array.isArray(p.stages)){
+      clockworkState.stages = p.stages.filter(s => s && s.snap && s.snap.nodes).map((s, i) => ({
+        id: s.id || ('cw_' + (i + 1)),
+        label: s.label || ('S' + (i + 1)),
+        snap: s.snap,
+        _eff: null
+      }));
+    }
+    if(p.boneTracks && typeof p.boneTracks === 'object'){
+      clockworkState.boneTracks = Object.assign(Object.create(null), p.boneTracks);
+    }
+    if(typeof p.activeIdx === 'number'){
+      clockworkState.activeIdx = Math.max(0, Math.min(Math.max(0, clockworkState.stages.length - 1), p.activeIdx));
+    }
+    if(typeof p.loop === 'boolean') clockworkState.loop = p.loop;
+    if(typeof p.ikDrive === 'boolean') clockworkState.ikDrive = p.ikDrive;
+    if(typeof p.durMs === 'number') clockworkState.durMs = Math.max(80, Math.min(3000, p.durMs));
+    if(typeof p.scrubT === 'number') clockworkState.scrubT = Math.max(0, Math.min(1, p.scrubT));
+    if(typeof p.nextId === 'number') clockworkState.nextId = Math.max(clockworkState.stages.length + 1, p.nextId);
+  }catch(e){}
+  if($('cwLoop')) $('cwLoop').checked = !!clockworkState.loop;
+  if($('cwIkDrive')) $('cwIkDrive').checked = !!clockworkState.ikDrive;
+  if($('cwDur')) $('cwDur').value = clockworkState.durMs;
+  if($('cwScrub')) $('cwScrub').value = Math.round(clockworkState.scrubT * 1000);
+  if($('cwBody')) $('cwBody').hidden = !!hudLayout.clock.collapsed;
+  if($('cwCollapse')) $('cwCollapse').textContent = hudLayout.clock.collapsed ? '+' : '–';
+  if(clockworkState.stages.length > 0) renderClockworkUI();
+}
+function setMotionMode(mode, persist=true){
+  if(mode === 'clockwork') mode = 'fluid';
+  if(motionMode === 'snap'){ stopSnapPlay(); saveSnapState(); }
+  if(motionMode === 'clockwork'){ stopClockworkPlay(); saveClockworkState(); }
+  motionMode = mode;
+  if(persist){ try{ localStorage.setItem(MODE_STORE_KEY, mode); }catch(e){} }
+  document.querySelectorAll('#motionBar .mb').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+  if($('clockDrawer')){
+    $('clockDrawer').hidden = (mode !== 'clockwork');
+    if(mode === 'clockwork'){
+      if(clockworkState.stages.length === 0){ addClockworkStage('S1'); saveClockworkState(); }
+      if($('cwBody')) $('cwBody').hidden = !!hudLayout.clock.collapsed;
+      if($('cwCollapse')) $('cwCollapse').textContent = hudLayout.clock.collapsed ? '+' : '–';
+      renderClockworkUI();
+      requestAnimationFrame(() => applyHudPosition($('clockDrawer'), 'clock'));
+    }
+  }
+  updateSnapUI();
+  if(mode === 'snap'){
+    fpsState.active = true;
+    updateFpsUI();
+    if($('snapBar')){
+      requestAnimationFrame(() => applyHudPosition($('snapBar'), 'snap'));
+    }
+  }
+  draw();
+}
+document.querySelectorAll('#motionBar .mb').forEach(b => {
+  b.onclick = () => setMotionMode(b.dataset.mode);
+});
+if($('fpsBtn')) $('fpsBtn').onclick = () => cycleFps();
+['A','B','C'].forEach(s => {
+  const capBtn = $('snapCap' + s);
+  if(capBtn) capBtn.onclick = () => {
+    snapState.poses[s] = captureRigSnapshot();
+    snapState.activeSlot = s;
+    saveSnapState();
+    updateSnapUI();
+    draw();
+  };
+  const goBtn = $('snapGo' + s);
+  if(goBtn) goBtn.onclick = () => {
+    stopSnapPlay();
+    snapToSlot(s);
+  };
+});
+if($('snapToggle')) $('snapToggle').onclick = () => stepSnapOnce();
+if($('snapLoopPlay')) $('snapLoopPlay').onclick = () => {
+  if(snapState.playing) stopSnapPlay();
+  else startSnapPlay();
+};
+if($('snapLoopMode')) $('snapLoopMode').onchange = e => {
+  snapState.loopMode = e.target.value;
+  saveSnapState();
+  updateSnapUI();
+};
+document.querySelectorAll('#snapStyleRow .b').forEach(b => {
+  b.onclick = () => {
+    snapState.style = b.dataset.sstyle || 'snap';
+    saveSnapState();
+    updateSnapUI();
+  };
+});
+if($('snapEasing')) $('snapEasing').oninput = e => {
+  snapState.easing = Math.max(0, Math.min(1, (+e.target.value)/100));
+  if($('snapEaseVal')) $('snapEaseVal').textContent = Math.round(snapState.easing * 100) + '%';
+  saveSnapState();
+};
+if($('snapGhostOn')) $('snapGhostOn').onchange = e => {
+  snapState.ghostVisible = !!e.target.checked;
+  saveSnapState();
+  draw();
+};
+if($('snapAlpha')) $('snapAlpha').oninput = e => {
+  snapState.ghostOpacity = Math.max(0.1, Math.min(0.7, (+e.target.value)/100));
+  saveSnapState();
+  draw();
+};
+if($('snapFrames')) $('snapFrames').onchange = e => {
+  snapState.snapFrames = Math.max(1, Math.min(120, Math.round(+e.target.value || 3)));
+  saveSnapState();
+  updateSnapDurReadout();
+};
+
+if($('cwCollapse')) $('cwCollapse').onclick = () => {
+  const b = $('cwBody'); if(!b) return;
+  b.hidden = !b.hidden;
+  hudLayout.clock.collapsed = !!b.hidden;
+  $('cwCollapse').textContent = b.hidden ? '+' : '–';
+  saveHudLayout();
+  requestAnimationFrame(() => applyHudPosition($('clockDrawer'), 'clock'));
+};
+if($('cwAdd')) $('cwAdd').onclick = () => { stopClockworkPlay(); addClockworkStage(); saveClockworkState(); };
+if($('cwUpdate')) $('cwUpdate').onclick = () => {
+  const st = clockworkState.stages[clockworkState.activeIdx];
+  if(!st) return;
+  st.snap = captureRigSnapshot(); st._eff = null;
+  renderClockworkUI();
+  saveClockworkState();
+};
+if($('cwDup')) $('cwDup').onclick = () => {
+  const st = clockworkState.stages[clockworkState.activeIdx];
+  if(!st) return;
+  stopClockworkPlay();
+  addClockworkStage(null, JSON.parse(JSON.stringify(st.snap)));
+  saveClockworkState();
+};
+if($('cwDel')) $('cwDel').onclick = () => {
+  if(clockworkState.stages.length <= 1) return;
+  stopClockworkPlay();
+  const rem = clockworkState.stages.splice(clockworkState.activeIdx, 1)[0];
+  if(rem) delete clockworkState.boneTracks[rem.id];
+  clockworkState.stages.forEach((s, i) => s.label = 'S' + (i + 1));
+  clockworkState.activeIdx = Math.min(clockworkState.activeIdx, clockworkState.stages.length - 1);
+  renderClockworkUI();
+  saveClockworkState();
+};
+if($('cwDemo')) $('cwDemo').onclick = () => {
+  stopClockworkPlay();
+  clockworkState.stages = [];
+  clockworkState.boneTracks = Object.create(null);
+  const baseSnap = captureRigSnapshot();
+  addClockworkStage('S1', baseSnap);
+  // Stage 2: coiled ready windup
+  applySnapshotInstant(baseSnap, false);
+  if(by.thorax) by.thorax.ang = clampAngle(by.thorax, (by.thorax.ang||0) - 8);
+  if(by.head) by.head.ang = clampAngle(by.head, (by.head.ang||0) + 10);
+  if(by.humerusL) by.humerusL.ang = clampAngle(by.humerusL, (by.humerusL.ang||0) + 28);
+  if(by.forearmL) by.forearmL.ang = clampAngle(by.forearmL, (by.forearmL.ang||0) - 42);
+  if(by.humerusR) by.humerusR.ang = clampAngle(by.humerusR, (by.humerusR.ang||0) - 24);
+  if(by.forearmR) by.forearmR.ang = clampAngle(by.forearmR, (by.forearmR.ang||0) + 38);
+  enforceGroundContact(false, true);
+  const s2 = addClockworkStage('S2');
+  ensureStageBoneCfg(s2.id, 'head').stagger = 0.18;
+  ensureStageBoneCfg(s2.id, 'handL').stagger = 0.14;
+  ensureStageBoneCfg(s2.id, 'handR').stagger = 0.14;
+  // Stage 3: extended strike / counterweight reach
+  if(by.thorax) by.thorax.ang = clampAngle(by.thorax, (by.thorax.ang||0) + 14);
+  if(by.head) by.head.ang = clampAngle(by.head, (by.head.ang||0) - 12);
+  if(by.humerusL) by.humerusL.ang = clampAngle(by.humerusL, (by.humerusL.ang||0) - 72);
+  if(by.forearmL) by.forearmL.ang = clampAngle(by.forearmL, 6);
+  if(by.humerusR) by.humerusR.ang = clampAngle(by.humerusR, (by.humerusR.ang||0) + 46);
+  enforceGroundContact(false, true);
+  const s3 = addClockworkStage('S3');
+  ensureStageBoneCfg(s3.id, 'thorax').anticipation = 0.20;
+  ensureStageBoneCfg(s3.id, 'handL').anticipation = 0.16;
+  ensureStageBoneCfg(s3.id, 'handL').stagger = 0.10;
+  clockworkState.activeIdx = 0;
+  applySnapshotInstant(baseSnap, true);
+  renderClockworkUI();
+  saveClockworkState();
+  draw();
+};
+if($('cwLoop')) $('cwLoop').onchange = e => { clockworkState.loop = !!e.target.checked; saveClockworkState(); };
+if($('cwIkDrive')) $('cwIkDrive').onchange = e => { clockworkState.ikDrive = !!e.target.checked; saveClockworkState(); };
+if($('cwDur')) $('cwDur').onchange = e => { clockworkState.durMs = Math.max(80, Math.min(3000, +e.target.value || 420)); saveClockworkState(); };
+if($('cwScrub')) $('cwScrub').oninput = e => {
+  stopClockworkPlay();
+  if(clockworkState.stages.length < 2) return;
+  const u = Math.max(0, Math.min(1, (+e.target.value)/1000));
+  clockworkState.scrubT = u;
+  const [stA, stB, iA, iB] = activeTransitionPair();
+  applyClockworkBlend(stA, stB, u);
+  if($('cwScrubV')) $('cwScrubV').textContent = `S${iA+1}→${iB+1}`;
+  saveClockworkState();
+  ui(); draw();
+};
+if($('cwStep')) $('cwStep').onclick = () => {
+  stopClockworkPlay();
+  if(clockworkState.stages.length < 2) return;
+  const nxt = (clockworkState.activeIdx + 1) % clockworkState.stages.length;
+  const [stA, stB] = activeTransitionPair();
+  const dur = clockworkState.durMs, t0 = performance.now();
+  const step = now => {
+    const u = Math.min(1, (now - t0) / dur);
+    clockworkState.scrubT = u;
+    if($('cwScrub')) $('cwScrub').value = Math.round(u * 1000);
+    applyClockworkBlend(stA, stB, u);
+    draw();
+    if(u < 1){ clockworkState.raf = requestAnimationFrame(step); }
+    else { clockworkState.raf = 0; clockworkState.activeIdx = nxt; clockworkState.scrubT = 0; renderClockworkUI(); saveClockworkState(); syncPins(); ui(); draw(); }
+  };
+  clockworkState.raf = requestAnimationFrame(step);
+};
+if($('cwPlay')) $('cwPlay').onclick = () => {
+  if(clockworkState.playing){ stopClockworkPlay(); return; }
+  if(clockworkState.stages.length < 2) return;
+  clockworkState.playing = true;
+  $('cwPlay').textContent = 'Pause';
+  let stageT0 = performance.now() - clockworkState.scrubT * clockworkState.durMs;
+  const tick = now => {
+    if(!clockworkState.playing) return;
+    const dur = Math.max(80, clockworkState.durMs);
+    let u = (now - stageT0) / dur;
+    while(u >= 1){
+      const nextIdx = clockworkState.activeIdx + 1;
+      if(!clockworkState.loop && nextIdx >= clockworkState.stages.length - 1){
+        const lastIdx = clockworkState.stages.length - 1;
+        applyClockworkBlend(clockworkState.stages[lastIdx-1], clockworkState.stages[lastIdx], 1);
+        clockworkState.activeIdx = lastIdx;
+        clockworkState.scrubT = 0;
+        stopClockworkPlay(); renderClockworkUI(); saveClockworkState(); syncPins(); ui(); draw();
+        return;
+      }
+      clockworkState.activeIdx = nextIdx % clockworkState.stages.length;
+      stageT0 += dur;
+      u = (now - stageT0) / dur;
+      renderClockworkUI();
+    }
+    clockworkState.scrubT = Math.max(0, Math.min(1, u));
+    if($('cwScrub')) $('cwScrub').value = Math.round(clockworkState.scrubT * 1000);
+    const [stA, stB, iA, iB] = activeTransitionPair();
+    if($('cwScrubV')) $('cwScrubV').textContent = `S${iA+1}→${iB+1}`;
+    applyClockworkBlend(stA, stB, clockworkState.scrubT);
+    draw();
+    clockworkState.raf = requestAnimationFrame(tick);
+  };
+  clockworkState.raf = requestAnimationFrame(tick);
+};
+if($('cwCurve')) $('cwCurve').onchange = e => mutateActiveBoneCfg(c => { c.curve = e.target.value; if(c.curve !== 'custom' && CW_CURVES[c.curve]) c.bezier = CW_CURVES[c.curve].slice(); });
+if($('cwAnt')) $('cwAnt').oninput = e => mutateActiveBoneCfg(c => { c.anticipation = (+e.target.value)/100; });
+if($('cwStag')) $('cwStag').oninput = e => mutateActiveBoneCfg(c => { c.stagger = (+e.target.value)/100; });
+if($('cwOver')) $('cwOver').oninput = e => mutateActiveBoneCfg(c => { c.overshoot = (+e.target.value)/100; });
+['cwCx1','cwCy1','cwCx2','cwCy2'].forEach((id, idx) => {
+  const el = $(id); if(!el) return;
+  el.oninput = () => mutateActiveBoneCfg(c => {
+    c.curve = 'custom';
+    c.bezier = c.bezier ? c.bezier.slice() : CW_CURVES.mech.slice();
+    c.bezier[idx] = +el.value || 0;
+  });
+});
+if($('cwResetBone')) $('cwResetBone').onclick = () => {
+  const [, stB] = activeTransitionPair();
+  if(!stB || !sel || !clockworkState.boneTracks[stB.id]) return;
+  delete clockworkState.boneTracks[stB.id][sel.id];
+  syncClockworkBoneUI();
+  saveClockworkState();
+};
+if($('cwCopyLimb')) $('cwCopyLimb').onclick = () => {
+  const [, stB] = activeTransitionPair();
+  if(!stB || !sel) return;
+  const src = JSON.parse(JSON.stringify(getStageBoneCfg(stB.id, sel.id)));
+  const ch = LIMB_CHAINS.find(c => c.U===sel.id || c.L===sel.id || c.E===sel.id || c.swiv===sel.id);
+  const targets = ch ? [ch.swiv, ch.U, ch.L, ch.E] : ['lumbar','thorax','neck','head'];
+  targets.forEach(nid => { clockworkState.boneTracks[stB.id] = clockworkState.boneTracks[stB.id] || Object.create(null); clockworkState.boneTracks[stB.id][nid] = JSON.parse(JSON.stringify(src)); });
+  syncClockworkBoneUI();
+  saveClockworkState();
+};
+
+if($('legendToggleBtn')) $('legendToggleBtn').onclick = () => {
+  const body = $('legendBody');
+  const btn = $('legendToggleBtn');
+  const collapsed = body.style.display === 'none';
+  body.style.display = collapsed ? 'flex' : 'none';
+  btn.textContent = collapsed ? '–' : '+';
+};
+
+loadHudLayout();
+loadFpsState();
+loadSnapState();
+loadClockworkState();
+makeHudDraggable($('snapBar'), $('snapDragHdr'), 'snap');
+makeHudDraggable($('clockDrawer'), $('cwDragHdr'), 'clock');
+addEventListener('resize', () => {
+  if(motionMode === 'snap') applyHudPosition($('snapBar'), 'snap');
+  if(motionMode === 'clockwork') applyHudPosition($('clockDrawer'), 'clock');
+});
+try{
+  const savedMode = localStorage.getItem(MODE_STORE_KEY);
+  if(savedMode && ['fluid','elastic','snap'].includes(savedMode)){
+    setMotionMode(savedMode, false);
+  } else if(savedMode === 'clockwork'){
+    setMotionMode('fluid', true);
+  }
+}catch(e){}
 
 }
 </script>
