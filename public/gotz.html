@@ -237,7 +237,7 @@ button.btn:disabled{opacity:.4;cursor:default}
 
     <div class="sec">
       <h3>Global Morph</h3>
-      <div class="srow"><label>Grip</label><input id="gripRange" type="range" min="-35" max="105" step="1" value="0"><span class="val" id="gripVal">0°</span></div>
+      <div class="srow"><label>Grip</label><input id="gripRange" type="range" min="-35" max="105" step="1" value="56"><span class="val" id="gripVal">56°</span></div>
       <div class="srow"><label>Meta</label><input id="metaRange" type="range" min="-45" max="45" step="1" value="0"><span class="val" id="metaVal">0°</span></div>
       <div class="srow"><label>Width</label><input id="widthRange" type="range" min="0.45" max="1.1" step="0.05"><span class="val" id="widthVal">0.75</span></div>
       <div class="pgrid" style="margin-top:4px">
@@ -327,14 +327,15 @@ const H_LEG = {
 };
 
 const PRESETS = {
-  Neutral: { splay:45, tilt:0, wrist:0, thumb:0, fs:{index:0,ring:0,pinky:0}, rot:{thumb:0,index:0,middle:0,ring:0,pinky:0}, cj:{thumb:[10,12],index:[8,12,8],middle:[6,10,6],ring:[10,14,8],pinky:[14,18,10]} },
-  Open:    { splay:72, tilt:0, wrist:0, thumb:12, fs:{index:-10,ring:8,pinky:18}, rot:{thumb:-6,index:-3,middle:0,ring:3,pinky:6}, cj:{thumb:[0,0],index:[-10,0,0],middle:[-8,0,0],ring:[-10,0,0],pinky:[-12,0,0]} },
-  Fist:    { splay:18, tilt:0, wrist:0, thumb:-22, fs:{index:0,ring:0,pinky:0}, rot:{thumb:18,index:4,middle:0,ring:-4,pinky:-8}, cj:{thumb:[62,68],index:[88,104,78],middle:[88,106,80],ring:[88,112,80],pinky:[88,122,82]} },
-  Point:   { splay:35, tilt:0, wrist:0, thumb:-10, fs:{index:-12,ring:0,pinky:0}, rot:{thumb:12,index:-4,middle:0,ring:-2,pinky:-4}, cj:{thumb:[45,40],index:[0,0,0],middle:[86,102,75],ring:[88,108,78],pinky:[88,118,80]} },
-  Peace:   { splay:50, tilt:0, wrist:0, thumb:-15, fs:{index:-25,ring:0,pinky:0}, rot:{thumb:16,index:-10,middle:6,ring:-4,pinky:-8}, cj:{thumb:[52,48],index:[0,0,0],middle:[0,0,0],ring:[88,110,78],pinky:[88,120,82]} },
-  Rock:    { splay:48, tilt:0, wrist:0, thumb:10, fs:{index:-15,ring:0,pinky:20}, rot:{thumb:-8,index:-6,middle:0,ring:-4,pinky:10}, cj:{thumb:[12,18],index:[0,0,0],middle:[88,105,78],ring:[88,112,78],pinky:[0,0,0]} },
-  Pinch:   { splay:30, tilt:0, wrist:0, thumb:-20, fs:{index:15,ring:-5,pinky:-5}, rot:{thumb:24,index:14,middle:0,ring:-4,pinky:-6}, cj:{thumb:[42,50],index:[52,65,42],middle:[22,26,15],ring:[32,38,20],pinky:[42,50,28]} },
-  Flat:    { splay:0, tilt:0, wrist:0, thumb:-45, fs:{index:0,ring:0,pinky:0}, rot:{thumb:20,index:0,middle:0,ring:0,pinky:0}, cj:{thumb:[0,0],index:[0,0,0],middle:[0,0,0],ring:[0,0,0],pinky:[0,0,0]} }
+  Grip:    { splay:28, tilt:0, wrist:0, thumb:6,  fs:{index:0,ring:2,pinky:5},   rot:{thumb:-6,index:6,middle:0,ring:-3,pinky:-6},   cj:{thumb:[38,44],index:[48,66,42],middle:[54,72,46],ring:[60,78,50],pinky:[66,84,54]} },
+  Neutral: { splay:45, tilt:0, wrist:0, thumb:0,  fs:{index:0,ring:0,pinky:0},   rot:{thumb:0,index:0,middle:0,ring:0,pinky:0},     cj:{thumb:[10,12],index:[8,12,8],middle:[6,10,6],ring:[10,14,8],pinky:[14,18,10]} },
+  Open:    { splay:72, tilt:0, wrist:0, thumb:12, fs:{index:-10,ring:8,pinky:18},rot:{thumb:-6,index:-3,middle:0,ring:3,pinky:6},   cj:{thumb:[0,0],index:[-10,0,0],middle:[-8,0,0],ring:[-10,0,0],pinky:[-12,0,0]} },
+  Fist:    { splay:18, tilt:0, wrist:0, thumb:-22,fs:{index:0,ring:0,pinky:0},   rot:{thumb:18,index:4,middle:0,ring:-4,pinky:-8},  cj:{thumb:[62,68],index:[88,104,78],middle:[88,106,80],ring:[88,112,80],pinky:[88,122,82]} },
+  Point:   { splay:35, tilt:0, wrist:0, thumb:-10,fs:{index:-12,ring:0,pinky:0}, rot:{thumb:12,index:-4,middle:0,ring:-2,pinky:-4}, cj:{thumb:[45,40],index:[0,0,0],middle:[86,102,75],ring:[88,108,78],pinky:[88,118,80]} },
+  Peace:   { splay:50, tilt:0, wrist:0, thumb:-15,fs:{index:-25,ring:0,pinky:0}, rot:{thumb:16,index:-10,middle:6,ring:-4,pinky:-8},cj:{thumb:[52,48],index:[0,0,0],middle:[0,0,0],ring:[88,110,78],pinky:[88,120,82]} },
+  Rock:    { splay:48, tilt:0, wrist:0, thumb:10, fs:{index:-15,ring:0,pinky:20},rot:{thumb:-8,index:-6,middle:0,ring:-4,pinky:10}, cj:{thumb:[12,18],index:[0,0,0],middle:[88,105,78],ring:[88,112,78],pinky:[0,0,0]} },
+  Pinch:   { splay:30, tilt:0, wrist:0, thumb:-20,fs:{index:15,ring:-5,pinky:-5},rot:{thumb:24,index:14,middle:0,ring:-4,pinky:-6}, cj:{thumb:[42,50],index:[52,65,42],middle:[22,26,15],ring:[32,38,20],pinky:[42,50,28]} },
+  Flat:    { splay:0,  tilt:0, wrist:0, thumb:-45,fs:{index:0,ring:0,pinky:0},   rot:{thumb:20,index:0,middle:0,ring:0,pinky:0},    cj:{thumb:[0,0],index:[0,0,0],middle:[0,0,0],ring:[0,0,0],pinky:[0,0,0]} }
 };
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -342,7 +343,7 @@ const clone = o => JSON.parse(JSON.stringify(o));
 const RAD = Math.PI / 180;
 
 function makeInitialState(){
-  const p = clone(PRESETS.Neutral);
+  const p = clone(PRESETS.Grip);
   return {
     ...p,
     mirror: false,
